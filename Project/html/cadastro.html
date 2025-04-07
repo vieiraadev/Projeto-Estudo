@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Estudo+ | Cadastro</title>
     <meta name="description" content="Plataforma de estudos online" />
-    <link rel="stylesheet" href="/Project/css/cadastro.css">
+    <link rel="stylesheet" href="/Projeto-Planner/Project/css/cadastro.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
   </head>
@@ -21,7 +21,8 @@
         </div>
         <div class="header-actions">
           <span class="signup-text">Ja tem uma conta?</span> 
-          <button class="signup-btn">Entre</button>
+          <button class="signup-btn" onclick="window.location.href='login.html'">Entre</button>
+          
         </div>
       </header>
 
@@ -31,7 +32,7 @@
           
           <button class="google-btn">
             <img 
-              src="/Project/img/google.png" 
+              src="/Projeto-Planner/Project/img/google.png" 
               alt="Google" 
             />
             <span>Continuar com o Google</span>
@@ -85,7 +86,23 @@
                 </button>
               </div>
             </div>
-          </form>
+          
+
+            <div class="form-group">
+              <label for="confirm-password">Confirme a Senha</label>
+              <div class="input-wrapper">
+                <i class='bx bx-lock-alt input-icon'></i>
+                <input
+                  id="confirm-password"
+                  type="password"
+                  placeholder="Confirme a senha"
+                  required
+                />
+                <button type="button" id="togglePassword" class="password-toggle">
+                  <i class='bx bx-show'></i>
+                </button>
+              </div>
+            </div>
           
             
             <button type="submit" id="loginButton" class="login-btn">
@@ -111,6 +128,7 @@
       </div>
     </div>
 
-    <script src=""></script>
+    <script src="/Projeto-Planner/Project/js/cadastro.js"></script>
+
   </body>
 </html>
