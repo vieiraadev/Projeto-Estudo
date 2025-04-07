@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Estudo+ | Login</title>
     <meta name="description" content="Plataforma de estudos online" />
-    <link rel="stylesheet" href="/Project/css/login.css">
+    <link rel="stylesheet" href="/Projeto-Planner/Project/css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
   </head>
@@ -21,7 +21,7 @@
         </div>
         <div class="header-actions">
           <span class="signup-text">Não tem uma conta?</span> 
-          <button class="signup-btn">Criar uma conta</button>
+          <button class="signup-btn" onclick="window.location.href='cadastro.html'">Criar uma conta</button>
         </div>
       </header>
 
@@ -31,7 +31,7 @@
           
           <button class="google-btn">
             <img 
-              src="/Project/img/google.png" 
+              src="/Projeto-Planner/Project/img/google.png" 
               alt="" 
             />
             <span>Continuar com o Google</span>
@@ -43,13 +43,14 @@
             <hr>
           </div>
           
-          <form id="loginForm">
+          <form id="loginForm" action="/Projeto-Planner/Project/php/login.php" method="post">
             <div class="form-group">
               <label for="email">E-mail profissional</label>
               <div class="input-wrapper">
                 <i class='bx bx-envelope input-icon'></i>
                 <input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="Insira o seu e-mail de trabalho"
                   required
@@ -63,6 +64,7 @@
                 <i class='bx bx-lock input-icon'></i>
                 <input
                   id="password"
+                  name="senha_aluno"
                   type="password"
                   placeholder="Insira a senha"
                   required
@@ -98,6 +100,6 @@
       </div>
     </div>
 
-    <script src="/js/login.js"></script>
+    
   </body>
 </html>

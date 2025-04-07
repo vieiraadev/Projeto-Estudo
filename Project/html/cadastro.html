@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Estudo+ | Cadastro</title>
     <meta name="description" content="Plataforma de estudos online" />
-    <link rel="stylesheet" href="/Project/css/cadastro.css">
+    <link rel="stylesheet" href="/Projeto-Planner/Project/css/cadastro.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
   </head>
@@ -21,7 +21,8 @@
         </div>
         <div class="header-actions">
           <span class="signup-text">Ja tem uma conta?</span> 
-          <button class="signup-btn">Entre</button>
+          <button class="signup-btn" onclick="window.location.href='login.html'">Entre</button>
+          
         </div>
       </header>
 
@@ -31,7 +32,7 @@
           
           <button class="google-btn">
             <img 
-              src="/Project/img/google.png" 
+              src="/Projeto-Planner/Project/img/google.png" 
               alt="Google" 
             />
             <span>Continuar com o Google</span>
@@ -43,13 +44,14 @@
             <hr>
           </div>
           
-          <form id="loginForm">
+          <form id="loginForm" action="/Projeto-Planner/Project/php/cadastro.php" method="POST">
             <div class="form-group">
               <label for="name">Nome Completo</label>
               <div class="input-wrapper">
                 <i class='bx bx-user input-icon'></i>
                 <input
                   id="name"
+                  name="nome_aluno"
                   type="text"
                   placeholder="Insira seu nome completo"
                   required
@@ -63,6 +65,7 @@
                 <i class='bx bx-envelope input-icon'></i>
                 <input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="Insira o seu e-mail de trabalho"
                   required
@@ -77,15 +80,34 @@
                 <input
                   id="password"
                   type="password"
+                  name="senha_aluno"
                   placeholder="Insira a senha"
                   required
                 />
-                <button type="button" id="togglePassword" class="password-toggle">
+                <button type="button" class="password-toggle" data-target="password">
                   <i class='bx bx-show'></i>
-                </button>
+                </button>                
               </div>
             </div>
-          </form>
+          
+
+            <div class="form-group">
+              <label for="confirm-password">Confirme a Senha</label>
+              <div class="input-wrapper">
+                <i class='bx bx-lock-alt input-icon'></i>
+                <input
+                  id="confirm-password"
+                  name="senha_aluno"
+                  type="password"
+                  placeholder="Confirme a senha"
+                  required
+                />
+                <button type="button" class="password-toggle" data-target="confirm-password">
+                  <i class='bx bx-show'></i>
+                </button>
+                
+              </div>
+            </div>
           
             
             <button type="submit" id="loginButton" class="login-btn">
@@ -111,6 +133,7 @@
       </div>
     </div>
 
-    <script src=""></script>
+    <script src="/Projeto-Planner/Project/js/cadastro.js"></script>
+
   </body>
 </html>
