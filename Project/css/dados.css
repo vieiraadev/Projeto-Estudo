@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  body {
+    background-color: #f9f9f9;
+  }
+  
+  /* Logo com ícone e texto */
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 24px 32px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c2c2c;
+  }
+  
+  .logo-icon i {
+    font-size: 24px;
+    color: #574fd6;
+  }
+  
+  /* Conteúdo centralizado */
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 16px;
+  }
+  
+  /* Cartão central */
+  .card {
+    background-color: #ffffff;
+    padding: 48px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 640px;
+    text-align: center;
+  }
+  
+  /* Título */
+  .card h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #2c2c2c;
+    margin-bottom: 32px;
+  }
+  
+  /* Botões de escolha */
+  .button-group {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  
+  .button-group button {
+    padding: 12px 20px;
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  
+  .button-group button:hover {
+    background-color: #f3f3f3;
+  }
+  
+  /* Barra de progresso */
+  .progress-bar {
+    background-color: #e5e5e5;
+    height: 5px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  
+  .progress {
+    background-color: #1cc7c1;
+    height: 100%;
+    width: 30%;
+  }
+  
+  /* Botões inferior */
+  .footer-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Botão voltar */
+  .btn-voltar {
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid #dcdcdc;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .btn-voltar:hover {
+    background-color: #f3f3f3;
+  }
+  
+  /* Botão próximo */
+  .btn-proximo {
+    background-color: #14607d;
+    color: #ffffff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .btn-proximo:hover {
+    background-color: #0e4c61;
+  }
+
+  .wave-background {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none; /* evita que a wave interfira com cliques */
+  }
+  
+  .wave-background svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  
+  

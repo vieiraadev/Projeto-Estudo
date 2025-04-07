@@ -1,54 +1,55 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/Project/css/dados.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <title>Estudo+</title>
-  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 font-sans">
+<body>
 
-  <!-- Top logo -->
-  <header class="p-6">
-    <img src="logo_estudo_mais.svg" alt="Estudo+" class="h-6">
-  </header>
+    <div class="logo">
+      <div class="logo-icon">
+        <i class='bx bx-book'></i>
+      </div>
+      <span>Estudo+</span>
+    </div>
 
-  <!-- Main content -->
-  <main class="flex justify-center items-center min-h-[80vh] px-4">
-    <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-xl text-center">
-      <h1 class="text-2xl font-semibold text-gray-800 mb-6">
-        Para que você gostaria de usar o Estudo+?
-      </h1>
+  <main>
+    <div class="card">
+      <h1>Para que você gostaria de usar o Estudo+?</h1>
 
-      <!-- Buttons -->
-      <div class="flex justify-center gap-4 mb-8 flex-wrap">
-        <button class="bg-white border border-gray-300 px-5 py-2 rounded-md hover:bg-gray-100">
-          Estudos pessoais
-        </button>
-        <button class="bg-white border border-gray-300 px-5 py-2 rounded-md hover:bg-gray-100">
-          Faculdade
-        </button>
-        <button class="bg-white border border-gray-300 px-5 py-2 rounded-md hover:bg-gray-100">
-          Outros
-        </button>
+      <div class="button-group">
+        <button>Estudos pessoais</button>
+        <button>Faculdade</button>
+        <button>Outros</button>
       </div>
 
-      <!-- Progress bar -->
-      <div class="w-full h-1 bg-gray-200 rounded-full overflow-hidden mb-6">
-        <div class="bg-teal-500 h-full w-[30%]"></div>
+      <div class="progress-bar">
+        <div class="progress"></div>
       </div>
 
-      <!-- Navigation buttons -->
-      <div class="flex justify-between">
-        <button class="px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">
-          &lt; Voltar
-        </button>
-        <button class="px-4 py-2 bg-teal-700 text-white rounded-md hover:bg-teal-800">
-          Próximo &gt;
-        </button>
+      <div class="footer-buttons">
+        <button class="btn-voltar">&lt; Voltar</button>
+        <button class="btn-proximo">Próximo &gt;</button>
       </div>
     </div>
   </main>
+  <div class="wave-background">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1440 320"
+      preserveAspectRatio="none"
+    >
+      <path
+        fill="#3f7a89"
+        fill-opacity="5"
+        d="M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,224C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+      ></path>
+    </svg>
+  </div>
+</div>
 
 </body>
 </html>
