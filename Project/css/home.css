@@ -12,33 +12,37 @@
   }
   
   aside {
-    width: 240px;
-    background-color: white;
-    padding: 1.5rem;
+    width: 60px; 
+    background-color: #fff;
     height: 100vh;
+    padding: 1rem 0;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-  }
-  
-  .logo {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 2rem;
-  }
-  
-  nav a {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+  }
+  
+  aside nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  aside nav a {
     text-decoration: none;
     color: #333;
-    font-weight: 500;
+    font-size: 1.5rem;
   }
   
-  nav a:hover {
-    color: #007b9e;
+  aside nav a:hover {
+    color: #2e86de;
   }
   
+  nav a i {
+    font-size: 1.4rem;
+  }
   main {
     flex: 1;
     padding: 2rem;
