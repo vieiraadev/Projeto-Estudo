@@ -43,13 +43,14 @@
             <hr>
           </div>
           
-          <form id="loginForm">
+          <form id="loginForm" action="/Projeto-Planner/Project/php/login.php" method="post">
             <div class="form-group">
               <label for="email">E-mail profissional</label>
               <div class="input-wrapper">
                 <i class='bx bx-envelope input-icon'></i>
                 <input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="Insira o seu e-mail de trabalho"
                   required
@@ -63,6 +64,7 @@
                 <i class='bx bx-lock input-icon'></i>
                 <input
                   id="password"
+                  name="senha_aluno"
                   type="password"
                   placeholder="Insira a senha"
                   required
@@ -98,6 +100,6 @@
       </div>
     </div>
 
-    <script src="/js/login.js"></script>
+    
   </body>
 </html>
