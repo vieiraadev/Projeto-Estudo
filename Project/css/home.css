@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  body {
+    display: flex;
+    background-color: #f7f7f7;
+    color: #333;
+  }
+  
+  aside {
+    width: 240px;
+    background-color: white;
+    padding: 1.5rem;
+    height: 100vh;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+  
+  nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+  }
+  
+  nav a:hover {
+    color: #007b9e;
+  }
+  
+  main {
+    flex: 1;
+    padding: 2rem;
+  }
+  
+  .header {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .subheader {
+    font-size: 1.2rem;
+    color: gray;
+    margin-bottom: 2rem;
+  }
+  
+  .semana {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .dia {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 140px;
+  }
+  
+  .dia span {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  .dia button {
+    background-color: #3d869c;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    align-self: flex-end;
+  }
+  
