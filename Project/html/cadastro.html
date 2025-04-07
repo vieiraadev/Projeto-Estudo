@@ -44,13 +44,14 @@
             <hr>
           </div>
           
-          <form id="loginForm">
+          <form id="loginForm" action="/Projeto-Planner/Project/php/cadastro.php" method="POST">
             <div class="form-group">
               <label for="name">Nome Completo</label>
               <div class="input-wrapper">
                 <i class='bx bx-user input-icon'></i>
                 <input
                   id="name"
+                  name="nome_aluno"
                   type="text"
                   placeholder="Insira seu nome completo"
                   required
@@ -64,6 +65,7 @@
                 <i class='bx bx-envelope input-icon'></i>
                 <input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="Insira o seu e-mail de trabalho"
                   required
@@ -78,12 +80,13 @@
                 <input
                   id="password"
                   type="password"
+                  name="senha_aluno"
                   placeholder="Insira a senha"
                   required
                 />
-                <button type="button" id="togglePassword" class="password-toggle">
+                <button type="button" class="password-toggle" data-target="password">
                   <i class='bx bx-show'></i>
-                </button>
+                </button>                
               </div>
             </div>
           
@@ -94,13 +97,15 @@
                 <i class='bx bx-lock-alt input-icon'></i>
                 <input
                   id="confirm-password"
+                  name="senha_aluno"
                   type="password"
                   placeholder="Confirme a senha"
                   required
                 />
-                <button type="button" id="togglePassword" class="password-toggle">
+                <button type="button" class="password-toggle" data-target="confirm-password">
                   <i class='bx bx-show'></i>
                 </button>
+                
               </div>
             </div>
           
