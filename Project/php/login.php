@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 // ver se deu certo o comando
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

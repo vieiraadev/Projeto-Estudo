@@ -21,7 +21,22 @@
     </nav>
   </aside>
   <main>
-    <div class="header">Boa Tarde Vitor!</div>
+     <h1 id="mensagem">Olá,...</h1>
+    <script>
+      fetch('/Projeto-Planner/Project/php/home.php')
+        .then(response => response.json())
+        .then(data => {
+          if (data.nome) {
+            document.getElementById('mensagem').textContent = `Olá, ${data.nome} 👋`;
+          } else {
+            document.getElementById('mensagem').textContent = 'Olá, visitante!';
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao buscar nome:', error);
+          document.getElementById('mensagem').textContent = 'Erro ao carregar nome.';
+        });
+    </script>
     <div class="subheader">Tarefas semanais</div>
 
     <div class="semana">
