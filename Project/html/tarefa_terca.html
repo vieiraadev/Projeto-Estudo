@@ -7,6 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
   <link rel="stylesheet" href="/Projeto-Planner/Project/css/tarefa.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body>
     <aside>
@@ -21,9 +23,9 @@
         </nav>
       </aside>
       
-  <main>
+  <main data-dia="terca">
     <h1>Minhas tarefas</h1>
-    <h2>Segunda-Feira</h2>
+    <h2>Terça-Feira</h2>
 
     <div id="lista-tarefas">
 
@@ -42,7 +44,7 @@
       <span class="baixa">Prioridade Baixa</span>
     </div>
 
-    <button class="next-day">Terça-feira ></button>
+    <button class="next-day" onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quarta.html'">Quarta-feira ></button>
 
     <div class="popup" id="popup">
       <div class="popup-box">
@@ -67,11 +69,6 @@
     
               <input type="time" name="hora_validade" required />
             </div>
-    
-            <div class="popup-row">
-              <input type="date" name="data_validade" required />
-            </div>
-          </div>
     
           <div class="popup-footer">
             <button type="submit" class="criar-btn">Criar tarefa</button>

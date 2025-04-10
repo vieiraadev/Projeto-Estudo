@@ -212,4 +212,29 @@
     font-size: 0.95rem;
     color: #333;
   }
+  .acoes {
+    display:flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .botao-acao {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    
+    color: #888;
+    transition: color 0.2s ease;
+  }
+  
+  .botao-acao:hover {
+    color: #d9534f;
+  }
+  
+  .botao-acao i {
+    font-size: 1.1rem;
+  }
+  
+  
   
