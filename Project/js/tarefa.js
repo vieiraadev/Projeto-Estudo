@@ -12,7 +12,6 @@ document.querySelector(".criar-btn").addEventListener("click", function (e) {
   const form = document.querySelector("form");
   const formData = new FormData(form);
 
-  // Adiciona o dia da semana ao FormData
   const dia = document.querySelector("main")?.dataset?.dia;
   if (!dia) {
     alert("Dia da semana não definido.");
