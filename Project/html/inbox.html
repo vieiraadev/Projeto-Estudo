@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudo+ | Respostas do Suporte</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/Projeto-Planner/Project/css/duvidas.css">
+</head>
+<body>
+    <aside>
+        <nav>
+            <a href="#"><i class='bx bx-home'></i></a>
+            <a href="#" class="active"><i class='bx bxs-inbox'></i></a>
+            <a href="#"><i class='bx bx-bar-chart'></i></a>
+            <a href="#"><i class='bx bx-image'></i></a>
+            <a href="#"><i class='bx bx-book'></i></a>
+            <a href="#"><i class='bx bx-brain'></i></a>
+            <a href="#"><i class='bx bx-cog'></i></a>
+        </nav>
+    </aside>
+
+    <div class="app-container">
+        <div class="inbox-container">
+            <div class="email-list" id="lista-respostas">
+                <div class="search-container">
+                    <i class='bx bx-search search-icon'></i>
+                    <input type="text" class="search-input" placeholder="Pesquisar resposta">
+                </div>
+                <!-- Respostas serão carregadas aqui via PHP ou JavaScript -->
+            </div>
+
+            <div class="email-content">
+                <div class="email-title">Selecione uma resposta</div>
+                <div class="email-meta">
+                    <div class="sender-avatar">R</div>
+                    <div>
+                        <div class="sender-info">Estudo+ Suporte</div>
+                        <div class="email-time">---</div>
+                    </div>
+                </div>
+                <div class="email-body">
+                    <p>Clique em uma resposta à esquerda para ver os detalhes aqui.</p>
+                </div>
+                <div class="reply-section" style="display: none;">
+                    <h3>Resposta do Suporte</h3>
+                    <div class="resposta-suporte">
+                        <!-- A resposta será inserida aqui via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/Projeto-Planner/Project/js/inbox.js"></script>
+</body>
+</html>
