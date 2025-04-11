@@ -18,9 +18,9 @@ if (!$id_suporte || !$resposta) {
     exit;
 }
 
-$sql = "INSERT INTO respostas (id_suporte, resposta) VALUES (?, ?)";
+$sql = "UPDATE suporte SET resposta = ? WHERE id = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("is", $id_suporte, $resposta);
+$stmt->bind_param("si", $resposta, $id_suporte);
 
 if ($stmt->execute()) {
     echo json_encode(['status' => 'sucesso', 'mensagem' => 'Resposta enviada com sucesso.']);
@@ -30,3 +30,4 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $conn->close();
+?>

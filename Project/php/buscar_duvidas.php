@@ -7,7 +7,7 @@ if ($mysqli->connect_errno) {
     exit;
 }
 
-$query = "SELECT suporte.id, suporte.mensagem, suporte.data_envio, aluno.nome_aluno 
+$query = "SELECT suporte.id, suporte.mensagem, suporte.resposta, suporte.data_envio, aluno.nome_aluno 
           FROM suporte 
           INNER JOIN aluno ON aluno.id_aluno = suporte.fk_id_aluno 
           ORDER BY suporte.id DESC";
@@ -20,6 +20,7 @@ while ($row = $result->fetch_assoc()) {
     $duvidas[] = [
         'id' => $row['id'],
         'mensagem' => $row['mensagem'],
+        'resposta' => $row['resposta'], 
         'data_envio' => $row['data_envio'],
         'nome' => $row['nome_aluno'] 
     ];

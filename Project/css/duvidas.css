@@ -48,6 +48,17 @@ nav a.active {
     color: #2e86de;
 }
 
+.email-item.respondido .email-preview {
+    color: green;
+    font-weight: bold;
+}
+
+.email-item.respondido {
+    background-color: #e6ffed;
+    border-left: 4px solid green;
+}
+
+
 .app-container {
     display: flex;
     flex: 1;
@@ -325,4 +336,3 @@ nav a.active {
 .reply-section h3 {
     margin-bottom: 10px;
 }
-
