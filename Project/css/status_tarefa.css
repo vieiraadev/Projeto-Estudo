@@ -172,3 +172,60 @@ button {
     background-color: #4285f4;
     color: white;
 }
+
+.perfil-sidebar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid #2e86de;
+    object-fit: cover;
+  }
+  
+  
+  aside-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+    background-color: #fff;
+    width: 60px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+  }
+  
+  .perfil-sidebar {
+    margin-top: auto; /* empurra a foto para o final do aside */
+    margin-bottom: 10px; /* distância da base da sidebar */
+  }
+  
+  .perfil-sidebar .profile-photo-iniciais {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+    border-radius: 50%;
+    background-color: #2e86de;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: 3px solid #2e86de;
+  }
+  
+  .perfil-sidebar a {
+    text-decoration: none;  /* Remove o sublinhado */
+    border: none;           /* Remove qualquer borda */
+    outline: none;          /* Remove o contorno */
+    box-shadow: none;       /* Remove qualquer sombra */
+  }
+  
+  a {
+    text-decoration: none;  /* Remove o sublinhado */
+    border: none;           /* Remove qualquer borda */
+    outline: none;          /* Remove o contorno */
+    box-shadow: none;       /* Remove qualquer sombra */
+  }
