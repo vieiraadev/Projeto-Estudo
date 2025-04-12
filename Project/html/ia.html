@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de estudos com IA | Estudo+</title>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/Projeto-Planner/Project/css/ia.css">
+</head>
+<body>
+    <aside>
+        <nav>
+            <a href="#" class="active"><i class='bx bx-home'></i></a>
+            <a href="#"><i class='bx bxs-inbox'></i></a>
+            <a href="#"><i class='bx bx-bar-chart'></i></a>
+            <a href="#"><i class='bx bx-image'></i></a>
+            <a href="#"><i class='bx bx-book'></i></a>
+            <a href="#"><i class='bx bx-brain'></i></a>
+            <a href="#"><i class='bx bx-cog'></i></a>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Assistente de Estudos com IA</h1>
+            <p>Converse com nossa IA para criar um plano de estudos personalizado.</p>
+        </div>
+
+        <!-- Card do Chat - Adicionei um form para melhor controle -->
+        <form id="chatForm" class="card chat-container" onsubmit="return false;">
+            <div class="chat-box" id="chatBox">
+                <div class="message bot-message">
+                    Olá! Sou seu assistente de estudos inteligente. Me conte sobre sua rotina e objetivos que vou te ajudar a criar um plano personalizado.
+                </div>
+            </div>
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="Digite sua mensagem..." autocomplete="off">
+                <button type="submit" id="sendButton" class="btn">Enviar</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Incluindo o arquivo JavaScript externo -->
+    <script src="/Projeto-Planner/Project/js/chat.js"></script>
+</body>
+</html>

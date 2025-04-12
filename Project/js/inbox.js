@@ -9,14 +9,6 @@ function renderEmails(lista) {
     const emailList = document.querySelector('.email-list');
     emailList.innerHTML = ''; 
 
-    const searchContainer = document.createElement('div');
-    searchContainer.className = "search-container";
-    searchContainer.innerHTML = `
-        <i class='bx bx-search search-icon'></i>
-        <input type="text" class="search-input" placeholder="Pesquisar resposta">
-    `;
-    emailList.appendChild(searchContainer);
-
     if (!lista || !lista.length) {
         const noMessages = document.createElement('div');
         noMessages.className = "no-messages";
@@ -68,6 +60,7 @@ function selectEmail(item) {
         </div>
     `;
     replySection.style.display = "block";
+
 
     document.querySelectorAll('.email-item').forEach(el => {
         el.classList.remove('active-email');
