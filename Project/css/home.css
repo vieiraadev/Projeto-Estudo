@@ -24,30 +24,43 @@
     left: 0;
     top: 0;
     z-index: 100;
-}
-
-aside nav {
+  }
+  
+  aside nav {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
     margin-top: 1rem;
-}
-
-aside nav a {
+  }
+  
+  aside nav a {
     text-decoration: none;
     color: #333;
     font-size: 1.5rem;
-}
-
-aside nav a:hover {
+  }
+  
+  aside nav a:hover {
     color: #2e86de;
-}
-
-nav a i {
+  }
+  
+  nav a i {
     font-size: 1.4rem;
-}
-
+  }
+  
+  .perfil-sidebar {
+    margin-top: auto;
+    margin-bottom: 10px;
+  }
+  
+  .perfil-sidebar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid #2e86de;
+    object-fit: cover;
+  }
+  
   main {
     flex: 1;
     padding: 2rem;
