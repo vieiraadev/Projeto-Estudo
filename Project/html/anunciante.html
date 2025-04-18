@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Anúncios - Adicionar Publicação</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/Projeto-Planner/Project/css/anunciante.css">
+</head>
+<body>
+    <aside>
+        <nav>
+            <a href="#" class="active"><i class='bx bx-home'></i></a>
+            <a href="#"><i class='bx bxs-inbox'></i></a>
+            <a href="#"><i class='bx bx-bar-chart'></i></a>
+            <a href="#"><i class='bx bx-image'></i></a>
+            <a href="#"><i class='bx bx-book'></i></a>
+            <a href="#"><i class='bx bx-brain'></i></a>
+            <a href="#"><i class='bx bx-cog'></i></a>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Nova Publicação</h1>
+        </div>
+        <form action="/Projeto-Planner/Project/php/anunciante.php" method="POST"  method="POST" enctype="multipart/form-data">
+            >
+
+            <div class="card">
+                <h2 class="section-title">Informações Básicas</h2>
+                <div class="form-group">
+                    <label class="form-label" for="title">Título da Publicação</label>
+                    <input name="titulo" type="text" id="titulo" class="form-control" placeholder="Digite um título">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mídia</label>
+                    
+                    <label for="imagem_anuncio" class="upload-area">
+                        <i class='bx bx-image' style="font-size: 40px; color: #a0aec0;"></i>
+                        <p>Arraste imagens ou clique para fazer upload</p>
+                    </label>
+                
+                    <input type="file" id="imagem_anuncio" name="imagem_anuncio[]" class="upload-input" multiple accept="image/*" style="display: none;">
+                </div>
+                
+                
+            </div>
+            
+            <div class="card">
+                <h2 class="section-title">Configurações de Divulgação</h2>
+                <div class="form-group">
+                    <label class="form-label" for="category">Categoria</label>
+                    <select name="categoria" id="categoria" class="form-control">
+                        <option value="">Selecione uma categoria</option>
+                        <option value="moda">Moda e Vestuário</option>
+                        <option value="tecnologia">Tecnologia</option>
+                        <option value="casa">Casa e Decoração</option>
+                        <option value="beleza">Beleza e Cuidados Pessoais</option>
+                        <option value="alimentos">Outros</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="category">URL do site</label>
+                    <input type="text" name="URL" placeholder="URL" class="form-control" id="site_empresa">
+                    
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="duration">Duração da campanha</label>
+                    <select id="duracao" name="duracao" class="form-control">
+                        <option value="7">7 dias</option>
+                        <option value="14">14 dias</option>
+                        <option value="30">30 dias</option>
+                        <option value="60">60 dias</option>
+                        <option value="custom">Personalizado</option>
+                    </select>
+                </div>
+                
+                <div class="footer-actions">
+                    <button class="btn-secondary">Salvar como rascunho</button>
+                    <button class="btn-primary">Publicar agora</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
