@@ -29,16 +29,33 @@ if (!isset($_SESSION['id_aluno'])) {
 
 $id_aluno = $_SESSION['id_aluno'];
 
-if (!isset($_POST['id_tarefa'])) {
+if (!isset($_POST['id_tarefa'], $_POST['dia'])) {
     http_response_code(400);
-    echo json_encode(["erro" => "ID da tarefa não fornecido."]);
+    echo json_encode(["erro" => "ID da tarefa ou dia não fornecido."]);
     exit;
 }
 
 $id_tarefa = intval($_POST['id_tarefa']);
+$dia = $_POST['dia'];
 
-$sql = "DELETE FROM tarefa_segunda WHERE id_tarefa = ? AND fk_id_aluno = ?";
+// Protege contra nomes inválidos de tabela
+$dias_validos = [
+    "segunda" => "tarefa_segunda",
+    "terca"   => "tarefa_terca",
+    "quarta"  => "tarefa_quarta",
+    "quinta"  => "tarefa_quinta",
+    "sexta"   => "tarefa_sexta"
+];
 
+if (!array_key_exists($dia, $dias_validos)) {
+    http_response_code(400);
+    echo json_encode(["erro" => "Dia inválido."]);
+    exit;
+}
+
+$tabela = $dias_validos[$dia];
+
+$sql = "DELETE FROM $tabela WHERE id_tarefa = ? AND fk_id_aluno = ?";
 $stmt = $conexao->prepare($sql);
 if (!$stmt) {
     http_response_code(500);

@@ -30,6 +30,7 @@ document.querySelector(".criar-btn").addEventListener("click", function (e) {
         return;
       }
 
+      tarefa.dia = dia; // Salvar o dia para uso posterior (exclusão)
       adicionarTarefaNoDOM(tarefa);
       fecharPopup();
       form.reset();
@@ -68,7 +69,10 @@ window.addEventListener("DOMContentLoaded", () => {
         console.error("Resposta inválida da API:", tarefas);
         return;
       }
-      tarefas.forEach(adicionarTarefaNoDOM);
+      tarefas.forEach((tarefa) => {
+        tarefa.dia = dia; // Adiciona o dia dinamicamente
+        adicionarTarefaNoDOM(tarefa);
+      });
     })
     .catch((err) => {
       console.error("Erro ao carregar tarefas:", err);
@@ -88,7 +92,7 @@ function adicionarTarefaNoDOM(tarefa) {
 
   const descricaoTarefa = document.createElement("div");
   descricaoTarefa.className = "descricao-tarefa";
-  descricaoTarefa.textContent = tarefa.descricao;
+  descricaoTarefa.textContent = tarefa.descricao || "";
 
   info.appendChild(nomeTarefa);
   info.appendChild(descricaoTarefa);
@@ -108,7 +112,7 @@ function adicionarTarefaNoDOM(tarefa) {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: `id_tarefa=${tarefa.id_tarefa}`,
+      body: `id_tarefa=${tarefa.id_tarefa}&dia=${tarefa.dia}`,
     })
       .then((res) => res.json())
       .then((resposta) => {
@@ -138,7 +142,7 @@ function adicionarTarefaNoDOM(tarefa) {
       return;
     }
 
-    fetch(`/Projeto-Planner/Project/php/detalhes_tarefa.php?id_tarefa=${tarefa.id_tarefa}`)
+    fetch(`/Projeto-Planner/Project/php/detalhes_tarefa.php?id_tarefa=${tarefa.id_tarefa}&dia=${tarefa.dia}`)
       .then((res) => res.text())
       .then((html) => {
         const detalhes = document.createElement("div");
@@ -153,4 +157,3 @@ function adicionarTarefaNoDOM(tarefa) {
 
   document.getElementById("lista-tarefas").appendChild(div);
 }
-
