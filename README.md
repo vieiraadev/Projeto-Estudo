@@ -18,13 +18,6 @@ O Planner Estudantil será uma ferramenta essencial para auxiliar estudantes na 
 
 ---
 
-## 🎨 Protótipo no Figma
-
-O design do projeto está em desenvolvimento e pode ser acessado pelo link:
-[Protótipo no Figma](https://www.figma.com/design/XKVY1xA6hNCulx6wCiR6ph/Untitled?node-id=0-1&t=sA2nunS7isTHSrfW-1)
-
-
----
 
 ## 👥 Equipe de Desenvolvimento
 
