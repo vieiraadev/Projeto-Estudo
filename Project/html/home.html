@@ -11,14 +11,17 @@
 <body>
   <aside>
     <nav>
-      <a href="#"><i class='bx bx-home'></i></a>
+      <a href="/Projeto-Planner/Project/html/home.html"><i class='bx bx-home'></i></a>
       <a href="/Projeto-Planner/Project/html/inbox.html"><i class='bx bxs-inbox'></i></a>
       <a href="#"><i class='bx bx-bar-chart'></i></a>
       <a href="#"><i class='bx bx-image'></i></a>
-      <a href="#"><i class='bx bx-book'></i></a>
+      <a href="/Projeto-Planner/Project/html/disciplinas.html"><i class='bx bx-book'></i></a>
       <a href="/Projeto-Planner/Project/html/ia.html"><i class='bx bx-brain'></i></a>
       <a href="/Projeto-Planner/Project/html/suporte.html"><i class='bx bx-cog'></i></a>
     </nav>
+    <div class="perfil-sidebar">
+      <div class="profile-photo-iniciais" id="profile-initials-sidebar"></div>
+    </div>
   </aside>
 
   <main>
@@ -27,12 +30,35 @@
     <div class="subheader">Tarefas semanais</div>
 
     <div class="semana">
-      <div class="dia"><span>Seg</span><button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_segunda.html'">Ver tarefas</button></div>
-      <div class="dia"><span>Ter</span><button>Ver tarefas</button></div>
-      <div class="dia"><span>Qua</span><button>Ver tarefas</button></div>
-      <div class="dia"><span>Qui</span><button>Ver tarefas</button></div>
-      <div class="dia"><span>Sex</span><button>Ver tarefas</button></div>
-      <div class="dia"><span>Sab</span><button>Ver tarefas</button></div>
+      <div class="dia">
+        <span>Seg</span>
+        <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_segunda.html'">Ver tarefas</button>
+      </div>
+      <div class="dia">
+        <span>Ter</span>
+        <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_terca.html'">Ver tarefas</button>
+      </div>
+      
+      <div class="dia">
+        <span>Qua</span>
+        <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quarta.html'">Ver tarefas</button>
+      </div>
+      
+      <div class="dia">
+        <span>Qui</span>
+        <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quinta.html'">Ver tarefas</button>
+      </div>
+      
+      <div class="dia">
+        <span>Sex</span>
+        <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_sexta.html'">Ver tarefas</button>
+      </div>
+      
+      <div class="dia">
+        <span>Sab</span>
+        <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_sabado.html'">Ver tarefas</button>
+      </div>
+      
     </div>
     <div class="grid-2">
         <div class="card">
@@ -97,7 +123,8 @@
             </div>
           </div>
       
-          <button class="btn detalhes-btn">Detalhes</button>
+          <button class="btn detalhes-btn" onclick="window.location.href='/Projeto-Planner/Project/html/disciplinas.html'">Detalhes</button>
+
         </div>
       </div>
       
@@ -124,7 +151,9 @@
         <div class="card" style="position: relative;">
           <h3>Plano de estudos inteligente com IA!</h3>
           <p>Compartilhe sua rotina e a IA calculará o tempo ideal de estudo para cada assunto...</p>
-          <button class="gerar-plano">Gerar plano</button>
+          <button class="gerar-plano" onclick="window.location.href='/Projeto-Planner/Project/html/ia.html'">Gerar plano</button>
+
+
         </div>
       
         <div class="card">

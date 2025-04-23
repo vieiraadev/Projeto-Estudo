@@ -130,6 +130,14 @@
     max-width: 28rem;
     animation: fadeIn 0.5s ease-out;
   }
+
+  .error-message {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin-top: 4px;
+    padding-left: 4px;
+    display: none;
+  }
   
   @keyframes fadeIn {
     from {
@@ -184,6 +192,11 @@
     margin-bottom: 1.5rem;
     transition: var(--transition-base);
   }
+  .google-btn i {
+    margin-right: 8px;
+    font-size: 1.2em;
+  }
+  
   
   .google-btn:hover {
     box-shadow: var(--shadow-md);

@@ -14,12 +14,12 @@
       <a href="/Projeto-Planner/Project/html/inbox.html"><i class='bx bxs-inbox'></i></a>
       <a href="#"><i class='bx bx-bar-chart'></i></a>
       <a href="#"><i class='bx bx-image'></i></a>
-      <a href="#"><i class='bx bx-book'></i></a>
+      <a href="/Projeto-Planner/Project/html/disciplinas.html"><i class='bx bx-book'></i></a>
       <a href="/Projeto-Planner/Project/html/ia.html"><i class='bx bx-brain'></i></a>
       <a href="/Projeto-Planner/Project/html/suporte.html"><i class='bx bx-cog'></i></a>
     </nav>
     <div class="perfil-sidebar">
-      <img src="/Projeto-Planner/Project/img/image.png" alt="Foto de Perfil" class="profile-photo" id="profile-photo-sidebar">
+      <div class="profile-photo-iniciais" id="profile-initials-sidebar"></div>
     </div>
   </aside>
 
@@ -29,39 +29,40 @@
 
     <div class="form-container">
       <div class="photo-edit-container">
-        <img src="/Projeto-Planner/Project/img/image.png" alt="Foto de Perfil" class="profile-photo" id="profile-photo-preview" />
-        <div class="photo-edit-actions">
-          <div class="file-input-wrapper">
-            <button type="button" class="photo-btn photo-btn-upload">
-              <i class='bx bx-upload'></i> Carregar foto
-            </button>
-            <input type="file" id="photo-upload" name="foto" accept="image/*" />
-          </div>
-          <button type="button" class="photo-btn photo-btn-remove" id="remove-photo">
-            <i class='bx bx-trash'></i> Remover
-          </button>
-        </div>
+        <div class="profile-photo-iniciais" id="profile-initials"></div>
       </div>
 
-      <form id="profile-form" action="salvar_perfil.php" method="POST" enctype="multipart/form-data">
+      <form id="profile-form">
         <div class="form-group">
-          <label for="nome" class="form-label">Nome</label>
-          <input type="text" id="nome" name="nome" class="form-input" placeholder="Seu nome completo" required />
+          <label class="form-label">Nome:</label>
+          <div class="info-row">
+            <p id="nome-atual" class="info-text">Nome do usuário</p>
+            <button type="button" class="btn-editar-campo" data-campo="nome">Editar</button>
+          </div>
+          <input type="text" id="nome" name="nome" class="form-input campo-editavel" style="display:none;" />
         </div>
 
         <div class="form-group">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" id="email" name="email" class="form-input" placeholder="Seu email" required />
+          <label class="form-label">Email:</label>
+          <div class="info-row">
+            <p id="email-atual" class="info-text">email@email.com</p>
+            <button type="button" class="btn-editar-campo" data-campo="email">Editar</button>
+          </div>
+          <input type="email" id="email" name="email" class="form-input campo-editavel" style="display:none;" />
         </div>
 
         <div class="form-group">
-          <label for="senha" class="form-label">Senha (deixe em branco para não alterar)</label>
-          <input type="password" id="senha" name="senha" class="form-input" placeholder="••••••••" />
+          <label class="form-label">Senha (deixe em branco para não alterar)</label>
+          <div class="info-row">
+            <p id="senha-atual" class="info-text">••••••••</p>
+            <button type="button" class="btn-editar-campo" data-campo="senha">Editar</button>
+          </div>
+          <input type="password" id="senha" name="senha" class="form-input campo-editavel" placeholder="Nova senha" style="display:none;" />
         </div>
 
-        <div class="button-container">
+        <div class="button-container" id="botoes-acoes" style="display: none;">
           <button type="button" class="btn btn-secondary" id="cancel-btn">Cancelar</button>
-          <button type="submit" class="btn btn-primary" id="save-btn">Salvar alterações</button>
+          <button type="submit" class="btn btn-primary">Salvar alterações</button>
         </div>
       </form>
     </div>
@@ -69,7 +70,7 @@
 
   <div class="notification" id="notification"></div>
 
+  <!-- JavaScript externo -->
   <script src="/Projeto-Planner/Project/js/perfil.js"></script>
-  
 </body>
 </html>
