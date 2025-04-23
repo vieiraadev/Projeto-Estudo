@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefas | Estudo+</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/Projeto-Planner/Project/css/status_tarefa.css">
+</head>
+<body>
+    <aside>
+        <nav>
+            <a href="/Projeto-Planner/Project/html/home.html"><i class='bx bx-home'></i></a>
+            <a href="/Projeto-Planner/Project/html/inbox.html"><i class='bx bxs-inbox'></i></a>
+            <a href="#"><i class='bx bx-bar-chart'></i></a>
+            <a href="#"><i class='bx bx-image'></i></a>
+            <a href="/Projeto-Planner/Project/html/disciplinas.html"><i class='bx bx-book'></i></a>
+            <a href="/Projeto-Planner/Project/html/ia.html"><i class='bx bx-brain'></i></a>
+            <a href="/Projeto-Planner/Project/html/suporte.html"><i class='bx bx-cog'></i></a>
+        </nav>
+        <div class="perfil-sidebar">
+            <div class="profile-photo-iniciais" id="profile-initials-sidebar"></div>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Todas as suas tarefas estão aqui!</h1>
+            <p class="subtitle">Suas tarefas pendentes e concluídas estão aqui!</p>
+        </div>
+
+        <div class="tasks-container">
+            <div class="task-column">
+                <div class="column-header">Tarefas Pendentes</div>
+                <div class="task-card pending" draggable="true">
+                    <div class="task-title">Estudar para prova de exp...</div>
+                    <div class="task-info">
+                        <span>Prioridade: baixa</span>
+                        <span>Data de vencimento: 21/02/2025</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="task-column">
+                <div class="column-header">Tarefas Concluídas</div>
+                <div class="task-card completed" draggable="true">
+                    <div class="task-title">TDE3 filosofia</div>
+                    <div class="task-info">
+                        <span>Prioridade: baixa</span>
+                        <span>Data de vencimento: 21/02/2025</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -107,6 +107,11 @@ main {
 .detalhes-btn {
 width: 100px;
 margin-top: 15px;
+text-decoration: none;
+}
+
+a.detalhes-btn {
+  text-decoration: none;
 }
 
 .gerar-plano {
@@ -137,8 +142,6 @@ font-size: 14px;
 color: #3a7ca5;
 }
 
-
-
 .card {
   background-color: white;
   border-radius: 10px;
@@ -168,6 +171,7 @@ color: #3a7ca5;
   display: block;
   width: 100%;
   text-align: center;
+  text-decoration: none;
 }
 
 .btn:hover {
