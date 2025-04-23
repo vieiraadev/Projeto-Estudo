@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Perfil</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/Projeto-Planner/Project/css/perfil.css" />
+</head>
+<body>
+  <aside>
+    <nav>
+      <a href="/Projeto-Planner/Project/html/home.html"><i class='bx bx-home'></i></a>
+      <a href="/Projeto-Planner/Project/html/inbox.html"><i class='bx bxs-inbox'></i></a>
+      <a href="#"><i class='bx bx-bar-chart'></i></a>
+      <a href="#"><i class='bx bx-image'></i></a>
+      <a href="#"><i class='bx bx-book'></i></a>
+      <a href="/Projeto-Planner/Project/html/ia.html"><i class='bx bx-brain'></i></a>
+      <a href="/Projeto-Planner/Project/html/suporte.html"><i class='bx bx-cog'></i></a>
+    </nav>
+    <div class="perfil-sidebar">
+      <img src="/Projeto-Planner/Project/img/image.png" alt="Foto de Perfil" class="profile-photo" id="profile-photo-sidebar">
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <h1 class="page-title">Editar Perfil</h1>
+    <p class="page-subtitle">Revise e atualize suas informações cadastrais</p>
+
+    <div class="form-container">
+      <div class="photo-edit-container">
+        <img src="/Projeto-Planner/Project/img/image.png" alt="Foto de Perfil" class="profile-photo" id="profile-photo-preview" />
+        <div class="photo-edit-actions">
+          <div class="file-input-wrapper">
+            <button type="button" class="photo-btn photo-btn-upload">
+              <i class='bx bx-upload'></i> Carregar foto
+            </button>
+            <input type="file" id="photo-upload" name="foto" accept="image/*" />
+          </div>
+          <button type="button" class="photo-btn photo-btn-remove" id="remove-photo">
+            <i class='bx bx-trash'></i> Remover
+          </button>
+        </div>
+      </div>
+
+      <form id="profile-form" action="salvar_perfil.php" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="nome" class="form-label">Nome</label>
+          <input type="text" id="nome" name="nome" class="form-input" placeholder="Seu nome completo" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" name="email" class="form-input" placeholder="Seu email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="senha" class="form-label">Senha (deixe em branco para não alterar)</label>
+          <input type="password" id="senha" name="senha" class="form-input" placeholder="••••••••" />
+        </div>
+
+        <div class="button-container">
+          <button type="button" class="btn btn-secondary" id="cancel-btn">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="save-btn">Salvar alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="notification" id="notification"></div>
+
+  <script src="/Projeto-Planner/Project/js/perfil.js"></script>
+  
+</body>
+</html>

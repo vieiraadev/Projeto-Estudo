@@ -79,17 +79,28 @@ function adicionarTarefaNoDOM(tarefa) {
   const div = document.createElement("div");
   div.className = `tarefa ${tarefa.prioridade}`;
 
+  const info = document.createElement("div");
+  info.className = "info-tarefa";
+
   const nomeTarefa = document.createElement("span");
   nomeTarefa.className = "nome-tarefa";
   nomeTarefa.textContent = tarefa.nome_tarefa;
+
+  const descricaoTarefa = document.createElement("div");
+  descricaoTarefa.className = "descricao-tarefa";
+  descricaoTarefa.textContent = tarefa.descricao;
+
+  info.appendChild(nomeTarefa);
+  info.appendChild(descricaoTarefa);
 
   const acoes = document.createElement("div");
   acoes.className = "acoes";
 
   const botao = document.createElement("button");
   botao.className = "botao-acao";
-  botao.innerHTML = "x";
-  botao.addEventListener("click", () => {
+  botao.textContent = "Excluir";
+  botao.addEventListener("click", (event) => {
+    event.stopPropagation();
     if (!confirm("Tem certeza que deseja excluir esta tarefa?")) return;
 
     fetch("/Projeto-Planner/Project/php/remover_tarefa.php", {
@@ -117,8 +128,29 @@ function adicionarTarefaNoDOM(tarefa) {
   acoes.appendChild(botao);
   acoes.appendChild(horaSpan);
 
-  div.appendChild(nomeTarefa);
+  div.appendChild(info);
   div.appendChild(acoes);
+
+  div.addEventListener("click", () => {
+    const jaExiste = div.querySelector(".detalhes-tarefa");
+    if (jaExiste) {
+      jaExiste.remove();
+      return;
+    }
+
+    fetch(`/Projeto-Planner/Project/php/detalhes_tarefa.php?id_tarefa=${tarefa.id_tarefa}`)
+      .then((res) => res.text())
+      .then((html) => {
+        const detalhes = document.createElement("div");
+        detalhes.className = "detalhes-tarefa";
+        detalhes.innerHTML = html;
+        div.appendChild(detalhes);
+      })
+      .catch(() => {
+        alert("Erro ao carregar detalhes da tarefa.");
+      });
+  });
 
   document.getElementById("lista-tarefas").appendChild(div);
 }
+
