@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Estudo+ | Cadastro</title>
+    <title>Estudo+ | Login</title>
     <meta name="description" content="Plataforma de estudos online" />
-    <link rel="stylesheet" href="/Projeto-Planner/Project/css/cadastro.css">
+    <link rel="stylesheet" href="/Projeto-Planner/Project/css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
   </head>
@@ -20,100 +20,61 @@
           <span>Estudo+</span>
         </div>
         <div class="header-actions">
-          <span class="signup-text">Ja tem uma conta?</span> 
-          <button class="signup-btn" onclick="window.location.href='login.html'">Entre</button>
-          
+          <span class="signup-text">Não tem uma conta?</span> 
+          <button class="signup-btn" onclick="window.location.href='cadastro.html'">Criar uma conta</button>
         </div>
       </header>
 
       <main>
         <div class="login-card">
-          <h1>Você pode criar uma conta em segundos!</h1>  
-          
-          <button class="google-btn" onclick="window.location.href='/Projeto-Planner/Project/html/cadastro_anunciante.html'">
-            <span>Sou anunciante!</span>
-          </button>
+          <h1>Seja bem-vindo! Entre e divulgue seu produto em segundos.</h1>  
           
           <div class="separator">
             <hr>
-            <span>OU</span>
             <hr>
           </div>
-          
-          <form id="loginForm" action="/Projeto-Planner/Project/php/cadastro.php" method="POST">
+          <form id="loginForm" action="/Projeto-Planner/Project/php/login_anunciante.php" method="post">
             <div class="form-group">
-              <label for="name">Nome Completo</label>
-              <div class="input-wrapper">
-                <i class='bx bx-user input-icon'></i>
-                <input
-                  id="name"
-                  name="nome_aluno"
-                  type="text"
-                  placeholder="Insira seu nome completo"
-                  required
-                />
-              </div>
-            </div>
-          
-            <div class="form-group">
-              <label for="email">E-mail profissional</label>
+              <label for="email">E-mail da empresa</label>
               <div class="input-wrapper">
                 <i class='bx bx-envelope input-icon'></i>
                 <input
                   id="email"
-                  name="email"
+                  name="email_empresa"
                   type="email"
-                  placeholder="Insira o seu e-mail de trabalho"
+                  placeholder="Insira o e-mail da empresa"
                   required
                 />
               </div>
             </div>
-          
+            
             <div class="form-group">
               <label for="password">Senha</label>
               <div class="input-wrapper">
                 <i class='bx bx-lock input-icon'></i>
                 <input
                   id="password"
+                  name="senha"
                   type="password"
-                  name="senha_aluno"
-                  placeholder="Insira a senha"
+                  placeholder="Insira sua senha"
                   required
                 />
-                <button type="button" class="password-toggle" data-target="password">
-                  <i class='bx bx-show'></i>
-                </button>                
-              </div>
-            </div>
-          
-
-            <div class="form-group">
-              <label for="confirm-password">Confirme a Senha</label>
-              <div class="input-wrapper">
-                <i class='bx bx-lock-alt input-icon'></i>
-                <input
-                  id="confirm-password"
-                  name="senha_aluno"
-                  type="password"
-                  placeholder="Confirme a senha"
-                  required
-                />
-                <button type="button" class="password-toggle" data-target="confirm-password">
+                <button type="button" id="togglePassword" class="password-toggle">
                   <i class='bx bx-show'></i>
                 </button>
-                
+              </div>
+              <div class="forgot-password">
+                <a href="#">esqueceu a senha?</a>
               </div>
             </div>
-          
             
             <button type="submit" id="loginButton" class="login-btn">
-              <span>Explorar Estudo+</span>
+              <span>Entre</span>
             </button>
           </form>
         </div>
       </main>
 
-      <!--  desenha uma onda azul no fundo da página usando SVG -->
       <div class="wave-background">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -129,7 +90,6 @@
       </div>
     </div>
 
-    <script src="/Projeto-Planner/Project/js/cadastro.js"></script>
-
+    
   </body>
 </html>
