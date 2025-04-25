@@ -21,6 +21,7 @@ aside {
     align-items: center;
     position: fixed;
 }
+
 aside nav {
     display: flex;
     flex-direction: column;
