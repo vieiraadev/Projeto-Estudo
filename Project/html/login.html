@@ -89,7 +89,64 @@
         </svg>
       </div>
     </div>
+    <div class="modal-container" id="forgotPasswordModal">
+      <div class="modal">
+        <h2>Esqueceu sua senha?</h2>
+        <p>Confirme seu e-mail cadastrado para alterar sua senha.</p>
+        
+        <div class="form-group">
+          <label for="reset-email">Email</label>
+          <div class="input-wrapper">
+            <input 
+              type="email" 
+              id="reset-email" 
+              placeholder="Insira seu e-mail" 
+            >
+          </div>
+        </div>
+        
+        <div class="button-group">
+          <button class="btn btn-cancel" id="cancelBtn">Cancelar</button>
+          <button class="btn btn-send" id="sendBtn">Confirmar</button>
+        </div>
+      </div>
+    </div>
 
-    
+    <div class="modal-container" id="resetPasswordModal">
+      <div class="modal">
+        <h2>Reset your password</h2>
+        
+        <form id="resetPasswordForm">
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <input 
+                type="password" 
+                id="password" 
+                placeholder="••••••••••"
+              >
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="confirmPassword">Confirm password</label>
+            <div class="input-wrapper">
+              <input 
+                type="password" 
+                id="confirmPassword" 
+                placeholder="••••••••"
+              >
+            </div>
+          </div>
+          
+          <div class="button-group">
+            <button type="button" class="btn btn-cancel" id="cancelResetBtn">Cancel</button>
+            <button type="submit" class="btn btn-reset" id="resetBtn">Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="/Projeto-Planner/Project/js/login.js"></script>
   </body>
 </html>
