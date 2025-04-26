@@ -32,10 +32,9 @@ if ($stmt->num_rows === 1) {
     $stmt->fetch();
 
     if (password_verify($senhaRaw, $senhaHash)) {
-        $_SESSION['anunciante_id']    = $id;
+        $_SESSION['id_anunciante']    = $id;
         $_SESSION['anunciante_nome']  = $nomeEmpresa;
         $_SESSION['anunciante_email'] = $email;
-
         header("Location: /Projeto-Planner/Project/html/anunciante.html");
         exit;
     }
@@ -46,3 +45,4 @@ $conn->close();
 
 header("Location: login_anunciante.html?error=1");
 exit;
+?>
