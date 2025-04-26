@@ -61,11 +61,6 @@
     margin-left: -120px;
     margin-top: 40px;
   }
-
-  .logo img {
-    width: 32px;
-    height: auto; 
-  }
   
   .header-actions {
     display: flex;
