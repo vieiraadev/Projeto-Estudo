@@ -55,6 +55,23 @@ $sql = "INSERT INTO $tabela (nome_tarefa, descricao, prioridade, hora_validade, 
         VALUES (?, ?, ?, ?, NOW(), ?)";
 
 $stmt = $conexao->prepare($sql);
+$limites = [
+    'nome_tarefa' => 50,
+    'descricao' => 300,
+];
+
+// Verifica tamanho de cada campo
+if (strlen($nome) > $limites['nome_tarefa']) {
+    http_response_code(400);
+    echo json_encode(["erro" => "O nome da tarefa é muito grande (máximo {$limites['nome_tarefa']} caracteres)."]);
+    exit;
+}
+
+if (strlen($desc) > $limites['descricao']) {
+    http_response_code(400);
+    echo json_encode(["erro" => "A descrição da tarefa é muito grande (máximo {$limites['descricao']} caracteres)."]);
+    exit;
+}
 if (!$stmt) {
     http_response_code(500);
     echo json_encode(["erro" => "Erro no prepare: " . $conexao->error]);

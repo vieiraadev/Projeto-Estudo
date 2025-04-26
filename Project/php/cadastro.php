@@ -1,12 +1,11 @@
 <?php
-// ver se deu certo o comando
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $host = "localhost:3306";
-$usuario = "root"; // Usuário do MySQL
-$senha = ""; // Senha do MySQL
+$usuario = "root";
+$senha = "";
 $database = "estudomais";
 
 // Conexão com o banco de dados
@@ -14,58 +13,90 @@ $conexao = new mysqli($host, $usuario, $senha, $database);
 
 // Verifica a conexão
 if ($conexao->connect_error) {
-    die("Falha na conexão: " . $conexao->connect_error);
+    http_response_code(500);
+    echo json_encode(["erro" => "Falha na conexão: " . $conexao->connect_error]);
+    exit;
 }
+
 // Verifica se o formulário foi submetido
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome_aluno = trim($_POST['nome_aluno']);
     $senha_aluno = $_POST['senha_aluno'];
-    $email_aluno= trim($_POST['email']);
+    $email_aluno = trim($_POST['email']);
+    $senha_confirmacao = trim($_POST['senha_confirmacao']);
+
+    // Verifica limites de tamanho
+    if (strlen($nome_aluno) > 50) {
+        http_response_code(400);
+        echo json_encode(["erro" => "O nome do aluno deve ter no máximo 50 caracteres."]);
+        exit;
+    }
+
+    if (strlen($email_aluno) > 50) {
+        http_response_code(400);
+        echo json_encode(["erro" => "O email deve ter no máximo 50 caracteres."]);
+        exit;
+    }
+
+    if (strlen($senha_aluno) > 255) {
+        http_response_code(400);
+        echo json_encode(["erro" => "A senha deve ter no máximo 255 caracteres."]);
+        exit;
+    }
+    if ($senha_aluno !== $senha_confirmacao) {
+        http_response_code(400);
+        echo json_encode(["erro" => "As senhas não coincidem."]);
+        exit;
+    }
+    
 
     // Verifica se o nome de usuário ou o email já existem
     $query = "SELECT nome_aluno, email FROM aluno WHERE nome_aluno = ? OR email = ?";
     $stmt = $conexao->prepare($query);
     if (!$stmt) {
-        die("Erro ao preparar a consulta: " . $conexao->error);
+        http_response_code(500);
+        echo json_encode(["erro" => "Erro ao preparar a consulta: " . $conexao->error]);
+        exit;
     }
 
-
-    $stmt->bind_param("ss", $nome_aluno, $email);
+    $stmt->bind_param("ss", $nome_aluno, $email_aluno);
     $stmt->execute();
     $resultado = $stmt->get_result();
 
     if ($resultado->num_rows > 0) {
-        // Verifica se o conflito é de nome de usuário ou email
         $linha = $resultado->fetch_assoc();
-        if ($linha['nome_aluno'] === $usuario) {
-            echo "Erro: O nome de usuário já está em uso.";
-        } elseif ($linha['email'] === $email) {
-            echo "Erro: O email já está em uso.";
+        http_response_code(409); // Código 409: conflito
+        if ($linha['nome_aluno'] === $nome_aluno) {
+            echo json_encode(["erro" => "O nome de usuário já está em uso."]);
+        } elseif ($linha['email'] === $email_aluno) {
+            echo json_encode(["erro" => "O email já está em uso."]);
         }
+        exit;
+    }
+
+    // Prepara e executa a inserção na tabela
+    $stmt->close();
+
+    $stmt = $conexao->prepare("INSERT INTO aluno (nome_aluno, senha_aluno, email) VALUES (?, ?, ?)");
+    if (!$stmt) {
+        http_response_code(500);
+        echo json_encode(["erro" => "Erro ao preparar a inserção: " . $conexao->error]);
+        exit;
+    }
+
+    $senha_hash = password_hash($senha_aluno, PASSWORD_DEFAULT);
+    $stmt->bind_param("sss", $nome_aluno, $senha_hash, $email_aluno);
+
+    if ($stmt->execute()) {
+        http_response_code(201); // Criado com sucesso
+        echo json_encode(["sucesso" => "Cadastro realizado com sucesso!"]);
     } else {
-        // Prepara e executa a inserção na tabela correspondente
-        $stmt->close();
-
-        $stmt = $conexao->prepare("INSERT INTO aluno (nome_aluno, senha_aluno, email) VALUES (?, ?, ?)");
-        if (!$stmt) {
-            die("Erro ao preparar a inserção: " . $conexao->error);
-        }
-
-        $senha_hash = password_hash($senha_aluno, PASSWORD_DEFAULT); // Hash da senha
-        $stmt->bind_param("sss", $nome_aluno, $senha_hash, $email_aluno);
-
-        if ($stmt->execute()) {
-            // Redireciona para a página de login após cadastro
-            header("Location: /Projeto-Planner/Project/html/login.html");
-            exit(); // Certifica-se de que o script será encerrado
-        } else {
-            echo "Erro ao realizar o cadastro: " . $stmt->error;
-        }
+        http_response_code(500);
+        echo json_encode(["erro" => "Erro ao realizar o cadastro: " . $stmt->error]);
     }
 
     $stmt->close();
 }
 
 $conexao->close();
-
 ?>

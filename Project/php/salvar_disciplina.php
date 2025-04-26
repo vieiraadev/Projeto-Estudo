@@ -39,7 +39,23 @@ if (empty($nome)) {
 $sql = "INSERT INTO disciplina (nome_disciplina, descricao_disciplina, id_aluno) VALUES (?, ?, ?)";
 $stmt = $conexao->prepare($sql);
 $stmt->bind_param("ssi", $nome, $descricao, $id_aluno);
+$limites = [
+    'nome_disciplina' => 100,
+    'descricao' => 1000,
+];
 
+
+if (strlen($nome) > $limites['nome_disciplina']) {
+    http_response_code(400);
+    echo json_encode(["erro" => "O nome da tarefa é muito grande (máximo {$limites['nome_disciplina']} caracteres)."]);
+    exit;
+}
+
+if (strlen($desc) > $limites['descricao']) {
+    http_response_code(400);
+    echo json_encode(["erro" => "A descrição da tarefa é muito grande (máximo {$limites['descricao']} caracteres)."]);
+    exit;
+}
 if ($stmt->execute()) {
     $id = $conexao->insert_id;
 
