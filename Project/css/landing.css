@@ -29,19 +29,24 @@ header {
 }
 
 nav {
-position: relative;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    padding: 0 20px; 
+    background: #fff; 
+  }
+  
+  .logo img {
+    height: 150px; 
+    width: auto; 
+  }
 
 .logo {
 display: flex;
 align-items: center;
-}
-
-.logo img {
-height: 40px;
+margin-left: -150px;
 }
 
 .nav-links {

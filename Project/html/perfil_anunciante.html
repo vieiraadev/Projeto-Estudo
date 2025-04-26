@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Perfil</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/Projeto-Planner/Project/css/perfil.css" />
+</head>
+<body>
+  <aside>
+    <nav>
+      <a href="/Projeto-Planner/Project/html/home.html"><i class='bx bx-home'></i></a>
+      <a href="/Projeto-Planner/Project/html/inbox.html"><i class='bx bxs-inbox'></i></a>
+      <a href="#"><i class='bx bx-bar-chart'></i></a>
+      <a href="#"><i class='bx bx-image'></i></a>
+      <a href="/Projeto-Planner/Project/html/disciplinas.html"><i class='bx bx-book'></i></a>
+      <a href="/Projeto-Planner/Project/html/ia.html"><i class='bx bx-brain'></i></a>
+      <a href="/Projeto-Planner/Project/html/suporte.html"><i class='bx bx-cog'></i></a>
+    </nav>
+    <div class="perfil-sidebar">
+      <div class="profile-photo-iniciais" id="profile-initials-sidebar"></div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <h1 class="page-title">Editar Perfil</h1>
+    <p class="page-subtitle">Revise e atualize suas informações cadastrais</p>
+
+    <div class="form-container">
+      <div class="photo-edit-container">
+        <div class="profile-photo-iniciais" id="profile-initials"></div>
+      </div>
+
+      <form id="profile-form">
+        <div class="form-group">
+          <label class="form-label">Nome:</label>
+          <div class="info-row">
+            <p id="nome-atual" class="info-text">Nome do usuário</p>
+            <button type="button" class="btn-editar-campo" data-campo="nome">Editar</button>
+          </div>
+          <input type="text" id="nome" name="nome" class="form-input campo-editavel" style="display:none;" />
+        </div>
+      
+        <div class="form-group">
+          <label class="form-label">Email:</label>
+          <div class="info-row">
+            <p id="email-atual" class="info-text">email@email.com</p>
+            <button type="button" class="btn-editar-campo" data-campo="email">Editar</button>
+          </div>
+          <input type="email" id="email" name="email" class="form-input campo-editavel" style="display:none;" />
+        </div>
+      
+        <div class="form-group">
+          <label class="form-label">CPF ou CNPJ:</label>
+          <div class="info-row">
+            <p id="cpf-cnpj-atual" class="info-text">000.000.000-00</p>
+            <button type="button" class="btn-editar-campo" data-campo="cpf-cnpj">Editar</button>
+          </div>
+          <input type="text" id="cpf-cnpj" name="cpf_cnpj" class="form-input campo-editavel" style="display:none;" />
+        </div>
+      
+        <div class="form-group">
+          <label class="form-label">Senha (deixe em branco para não alterar)</label>
+          <div class="info-row">
+            <p id="senha-atual" class="info-text">••••••••</p>
+            <button type="button" class="btn-editar-campo" data-campo="senha">Editar</button>
+          </div>
+          <input type="password" id="senha" name="senha" class="form-input campo-editavel" placeholder="Nova senha" style="display:none;" />
+        </div>
+      
+        <div class="button-container" id="botoes-acoes" style="display: none;">
+          <button type="button" class="btn btn-secondary" id="cancel-btn">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar alterações</button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+
+  <div class="notification" id="notification"></div>
+
+  <script src="/Projeto-Planner/Project/js/perfil.js"></script>
+</body>
+</html>

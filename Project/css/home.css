@@ -344,8 +344,8 @@ aside-sidebar {
 }
 
 .perfil-sidebar {
-  margin-top: auto; /* empurra a foto para o final do aside */
-  margin-bottom: 10px; /* distância da base da sidebar */
+  margin-top: auto; 
+  margin-bottom: 10px; 
 }
 
 .perfil-sidebar .profile-photo-iniciais {
@@ -363,15 +363,15 @@ aside-sidebar {
 }
 
 .perfil-sidebar a {
-  text-decoration: none;  /* Remove o sublinhado */
-  border: none;           /* Remove qualquer borda */
-  outline: none;          /* Remove o contorno */
-  box-shadow: none;       /* Remove qualquer sombra */
+  text-decoration: none; 
+  border: none;         
+  outline: none;       
+  box-shadow: none;       
 }
 
 a {
-  text-decoration: none;  /* Remove o sublinhado */
-  border: none;           /* Remove qualquer borda */
-  outline: none;          /* Remove o contorno */
-  box-shadow: none;       /* Remove qualquer sombra */
+  text-decoration: none;  
+  border: none;           
+  outline: none;         
+  box-shadow: none;       
 }

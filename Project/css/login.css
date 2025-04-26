@@ -59,15 +59,12 @@
     animation: slideIn 0.5s ease-out;
     position: fixed;
     margin-left: -120px;
-    margin-top: 20px;
+    margin-top: 40px;
   }
-  
-  .logo-icon {
-    background-color: var(--color-teal);
-    color: var(--color-white);
-    padding: 0.25rem;
-    border-radius: var(--radius-sm);
-    margin-right: 0.5rem;
+
+  .logo img {
+    width: 32px;
+    height: auto; 
   }
   
   .header-actions {
