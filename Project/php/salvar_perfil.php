@@ -3,10 +3,13 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
+header('Content-Type: application/json');
+
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['id_aluno'])) {
-    die("Acesso negado. Faça login primeiro.");
+    echo json_encode(["erro" => "Acesso negado. Faça login primeiro."]);
+    exit;
 }
 
 $id_aluno = $_SESSION['id_aluno'];
@@ -21,7 +24,9 @@ $conexao = new mysqli($host, $usuario, $senha, $database);
 
 // Verificação da conexão
 if ($conexao->connect_error) {
-    die("Erro na conexão: " . $conexao->connect_error);
+    header('Content-Type: application/json');
+    echo json_encode(["erro" => "Erro na conexão: " . $conexao->connect_error]);
+    exit;
 }
 
 // Pegando os dados do formulário
@@ -31,7 +36,27 @@ $senha = $_POST['senha'] ?? '';
 
 // Validação simples
 if (empty($nome) || empty($email)) {
-    die("Nome e email são obrigatórios.");
+    echo json_encode(["erro" => "Nome e email são obrigatórios."]);
+    exit;
+}
+
+$limites = [
+    'nome' => 50,
+    'email' => 50,
+    'senha' => 255,
+];
+
+if (strlen($nome) > $limites['nome']) {
+    echo json_encode(["erro" => "O nome de usuário é muito grande (máximo {$limites['nome']} caracteres)."]);
+    exit; // <-- ESSENCIAL
+}
+if (strlen($email) > $limites['email']) {
+    echo json_encode(["erro" => "O email informado é muito grande (máximo {$limites['nome']} caracteres)."]);
+    exit; // <-- ESSENCIAL
+}
+if (strlen($senha) > $limites['senha']) {
+    echo json_encode(["erro" => "A senha informada é muito grande (máximo {$limites['senha']} caracteres)."]);
+    exit; // <-- ESSENCIAL
 }
 
 // Atualiza com ou sem alteração de senha
@@ -47,12 +72,11 @@ if (!empty($senha)) {
 }
 
 if ($stmt->execute()) {
-    echo "Perfil atualizado com sucesso!";
+    echo json_encode(["sucesso" => "Perfil atualizado com sucesso!"]);
 } else {
-    echo "Erro ao atualizar o perfil: " . $stmt->error;
+    echo json_encode(["erro" => "Erro ao atualizar perfil."]);
 }
 
-// Fecha a conexão
 $stmt->close();
 $conexao->close();
 ?>

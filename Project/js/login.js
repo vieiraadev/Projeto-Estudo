@@ -1,50 +1,31 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const forgotPasswordModal = document.getElementById('forgotPasswordModal');
-    const resetPasswordModal = document.getElementById('resetPasswordModal');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const sendBtn = document.getElementById('sendBtn');
-    const cancelResetBtn = document.getElementById('cancelResetBtn');
-  
-    function closeModal(modal) {
-      modal.classList.add('hidden');
-      modal.classList.remove('show');
-    }
-  
-    function openModal(modal) {
-      modal.classList.remove('hidden');
-      modal.classList.add('show');
-    }
-  
-    function sendResetEmail() {
-      const email = document.getElementById('reset-email').value;
-      if (email) {
-        alert(`Instruções de recuperação enviadas para: ${email}`);
-        closeModal(forgotPasswordModal);
-        openModal(resetPasswordModal);
-      } else {
-        alert('Por favor, insira um email válido.');
-      }
-    }
-  
-    cancelBtn.addEventListener('click', () => closeModal(forgotPasswordModal));
-    cancelResetBtn.addEventListener('click', () => closeModal(resetPasswordModal));
-    sendBtn.addEventListener('click', sendResetEmail);
-  
-    forgotPasswordModal.addEventListener('click', function (event) {
-      if (event.target === forgotPasswordModal) {
-        closeModal(forgotPasswordModal);
-      }
+  // Lógica do formulário de login
+  const loginForm = document.getElementById('loginForm'); // Certifique-se de que o id do formulário está correto
+  if (loginForm) {
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();  // Previne o envio padrão do formulário
+
+      const formData = new FormData(loginForm);
+
+      fetch('/Projeto-Planner/Project/php/login.php', {
+        method: 'POST',
+        body: formData,
+      })
+        .then(response => response.json())  // Espera resposta em JSON
+        .then(data => {
+          if (data.sucesso) {
+            // Se o login for bem-sucedido, redireciona para a home
+            window.location.href = '/Projeto-Planner/Project/html/home.html';
+          } else if (data.erro) {
+            alert(data.erro); // Exibe o alerta "Email e/ou senha incorretos."
+          } else {
+            alert('Erro inesperado.');
+          }
+        })
+        .catch(error => {
+          console.error('Erro:', error);
+          alert('Erro ao tentar logar.');
+        });
     });
-  
-    resetPasswordModal.addEventListener('click', function (event) {
-      if (event.target === resetPasswordModal) {
-        closeModal(resetPasswordModal);
-      }
-    });
-  
-    document.querySelector('.forgot-password a').addEventListener('click', function (e) {
-      e.preventDefault();
-      openModal(forgotPasswordModal);
-    });
-  });
-  
+  }
+});
