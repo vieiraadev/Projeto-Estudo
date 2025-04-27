@@ -36,7 +36,6 @@ if (!isset($_GET['dia'])) {
     exit;
 }
 
-// Lista segura de dias permitidos
 $diasPermitidos = ['segunda', 'terca', 'quarta', 'quinta', 'sexta'];
 
 $dia = strtolower($_GET['dia']);
@@ -79,7 +78,7 @@ while ($row = $resultado->fetch_assoc()) {
         "hora" => $hora_formatada
     ];
 }
-error_log(json_encode($tarefas)); // Isso vai escrever no log do PHP
+error_log(json_encode($tarefas));
 
 echo json_encode($tarefas);
 

@@ -23,7 +23,7 @@ function mostrarNotificacao(mensagem, erro = false) {
         document.getElementById("email").value = dados.email;
         document.getElementById("cpf-cnpj").value = dados.documento;
   
-        atualizarIniciais(dados.nome); // Se você quiser usar essa função como no aluno
+        atualizarIniciais(dados.nome);
       })
       .catch(err => console.error("Erro ao carregar dados:", err));
   

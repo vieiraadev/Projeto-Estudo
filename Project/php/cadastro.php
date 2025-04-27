@@ -8,24 +8,20 @@ $usuario = "root";
 $senha = "";
 $database = "estudomais";
 
-// Conexão com o banco de dados
 $conexao = new mysqli($host, $usuario, $senha, $database);
 
-// Verifica a conexão
 if ($conexao->connect_error) {
     http_response_code(500);
     echo json_encode(["erro" => "Falha na conexão: " . $conexao->connect_error]);
     exit;
 }
 
-// Verifica se o formulário foi submetido
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome_aluno = trim($_POST['nome_aluno']);
     $senha_aluno = $_POST['senha_aluno'];
     $email_aluno = trim($_POST['email']);
     $senha_confirmacao = trim($_POST['senha_confirmacao']);
 
-    // Verifica limites de tamanho
     if (strlen($nome_aluno) > 50) {
         http_response_code(400);
         echo json_encode(["erro" => "O nome do aluno deve ter no máximo 50 caracteres."]);
@@ -50,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
 
-    // Verifica se o nome de usuário ou o email já existem
     $query = "SELECT nome_aluno, email FROM aluno WHERE nome_aluno = ? OR email = ?";
     $stmt = $conexao->prepare($query);
     if (!$stmt) {
@@ -74,7 +69,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Prepara e executa a inserção na tabela
     $stmt->close();
 
     $stmt = $conexao->prepare("INSERT INTO aluno (nome_aluno, senha_aluno, email) VALUES (?, ?, ?)");
@@ -88,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("sss", $nome_aluno, $senha_hash, $email_aluno);
 
     if ($stmt->execute()) {
-        http_response_code(201); // Criado com sucesso
+        http_response_code(201);
         echo json_encode(["sucesso" => "Cadastro realizado com sucesso!"]);
     } else {
         http_response_code(500);

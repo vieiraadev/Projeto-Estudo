@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Lógica do formulário de login
-  const loginForm = document.getElementById('loginForm'); // Certifique-se de que o id do formulário está correto
+  const loginForm = document.getElementById('loginForm');
   if (loginForm) {
     loginForm.addEventListener('submit', function (e) {
-      e.preventDefault();  // Previne o envio padrão do formulário
+      e.preventDefault();
 
       const formData = new FormData(loginForm);
 
@@ -11,13 +11,12 @@ document.addEventListener('DOMContentLoaded', function () {
         method: 'POST',
         body: formData,
       })
-        .then(response => response.json())  // Espera resposta em JSON
+        .then(response => response.json())
         .then(data => {
           if (data.sucesso) {
-            // Se o login for bem-sucedido, redireciona para a home
             window.location.href = '/Projeto-Planner/Project/html/home.html';
           } else if (data.erro) {
-            alert(data.erro); // Exibe o alerta "Email e/ou senha incorretos."
+            alert(data.erro);
           } else {
             alert('Erro inesperado.');
           }

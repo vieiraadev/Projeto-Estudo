@@ -2,23 +2,19 @@ function abrirPopup(tarefa = null) {
   const popup = document.getElementById("popup");
   popup.style.display = "flex";
   
-  // Se tiver uma tarefa, preenche o formulário para edição
   if (tarefa) {
     document.querySelector(".popup-header h3").textContent = "Editar Tarefa";
     document.querySelector("form").setAttribute("data-modo", "editar");
     document.querySelector("form").setAttribute("data-id", tarefa.id_tarefa);
     document.querySelector("form").setAttribute("data-dia", tarefa.dia);
     
-    // Preencher os campos com os dados da tarefa
     document.querySelector('input[name="nome_tarefa"]').value = tarefa.nome_tarefa;
     document.querySelector('textarea[name="descricao"]').value = tarefa.descricao || "";
     document.querySelector('select[name="prioridade"]').value = tarefa.prioridade;
     document.querySelector('input[name="hora_validade"]').value = tarefa.hora_validade || tarefa.hora;
     
-    // Mudar o texto do botão
     document.querySelector(".criar-btn").textContent = "Atualizar tarefa";
   } else {
-    // Modo criação
     document.querySelector(".popup-header h3").textContent = "Nova Tarefa";
     document.querySelector("form").setAttribute("data-modo", "criar");
     document.querySelector("form").removeAttribute("data-id");
@@ -42,12 +38,10 @@ document.querySelector(".criar-btn").addEventListener("click", function (e) {
   // Normalizar a prioridade para garantir consistência
   const prioridade = formData.get("prioridade");
   if (prioridade) {
-    // Certifique-se que a primeira letra é maiúscula e o resto minúsculo
     const prioridadeNormalizada = prioridade.charAt(0).toUpperCase() + prioridade.slice(1).toLowerCase();
     formData.set("prioridade", prioridadeNormalizada);
   }
 
-  // Obter o dia da página ou do formulário para edição
   let dia;
   if (modo === "editar") {
     dia = form.getAttribute("data-dia");
@@ -60,11 +54,8 @@ document.querySelector(".criar-btn").addEventListener("click", function (e) {
     return;
   }
   formData.append("dia", dia);
-
-  // URL diferente dependendo se é criação ou edição
   let url = "/Projeto-Planner/Project/php/adicionar_tarefa.php";
-  
-  // Se for edição, adiciona o ID da tarefa e muda a URL
+
   if (modo === "editar") {
     const id_tarefa = form.getAttribute("data-id");
     formData.append("id_tarefa", id_tarefa);
@@ -82,12 +73,10 @@ document.querySelector(".criar-btn").addEventListener("click", function (e) {
         return;
       }
 
-      // Se for edição, atualiza a tarefa na tela
       if (modo === "editar") {
         atualizarTarefaNoDOM(resposta);
         window.location.reload();
       } else {
-        // Se for criação, adiciona nova tarefa
         resposta.dia = dia;
         adicionarTarefaNoDOM(resposta);
       }
@@ -130,7 +119,7 @@ window.addEventListener("DOMContentLoaded", () => {
         return;
       }
       tarefas.forEach((tarefa) => {
-        tarefa.dia = dia; // Adiciona o dia dinamicamente
+        tarefa.dia = dia;
         adicionarTarefaNoDOM(tarefa);
       });
     })
@@ -155,7 +144,7 @@ function adicionarTarefaNoDOM(tarefa) {
   const descricaoTarefa = document.createElement("div");
   descricaoTarefa.className = "descricao-tarefa";
   descricaoTarefa.textContent = tarefa.descricao || "";
-  descricaoTarefa.style.display = "none"; // Ocultar a descrição por padrão
+  descricaoTarefa.style.display = "none";
 
   info.appendChild(nomeTarefa);
   info.appendChild(descricaoTarefa);
@@ -163,14 +152,12 @@ function adicionarTarefaNoDOM(tarefa) {
   const acoes = document.createElement("div");
   acoes.className = "acoes";
 
-  // Botão de editar
   const botaoEditar = document.createElement("button");
   botaoEditar.className = "botao-acao editar";
   botaoEditar.textContent = "Editar";
   botaoEditar.addEventListener("click", (event) => {
     event.stopPropagation();
     
-    // Buscar detalhes completos da tarefa para edição
     fetch(`/Projeto-Planner/Project/php/detalhes_tarefa.php?id_tarefa=${tarefa.id_tarefa}&dia=${tarefa.dia}&format=json`)
       .then((res) => res.json())
       .then((detalhes) => {
@@ -186,7 +173,6 @@ function adicionarTarefaNoDOM(tarefa) {
       });
   });
 
-  // Botão de excluir
   const botaoExcluir = document.createElement("button");
   botaoExcluir.className = "botao-acao excluir";
   botaoExcluir.textContent = "Excluir";
@@ -250,33 +236,28 @@ function atualizarTarefaNoDOM(tarefa) {
   const tarefaElement = document.querySelector(`.tarefa[data-id="${tarefa.id_tarefa}"][data-dia="${tarefa.dia}"]`);
   if (!tarefaElement) return;
   
-  // Atualizar classe de prioridade
   const prioridadeAtual = tarefaElement.className.split(' ')
     .filter(cls => !['Alta', 'Media', 'Baixa'].includes(cls))
     .join(' ');
   
   tarefaElement.className = `${prioridadeAtual} ${tarefa.prioridade}`;
   
-  // Atualizar apenas o nome da tarefa, sem mostrar a descrição
   const nomeTarefaElement = tarefaElement.querySelector(".nome-tarefa");
   if (nomeTarefaElement) {
     nomeTarefaElement.textContent = tarefa.nome_tarefa;
   }
   
-  // Manter a descrição oculta, apenas atualizando seu conteúdo
   const descricaoTarefaElement = tarefaElement.querySelector(".descricao-tarefa");
   if (descricaoTarefaElement) {
     descricaoTarefaElement.textContent = tarefa.descricao || "";
     descricaoTarefaElement.style.display = "none";
   }
   
-  // Atualizar a hora
   const horaElement = tarefaElement.querySelector(".hora");
   if (horaElement) {
     horaElement.textContent = tarefa.hora_validade || tarefa.hora;
   }
   
-  // Remover detalhes expandidos se estiverem abertos
   const detalhes = tarefaElement.querySelector(".detalhes-tarefa");
   if (detalhes) {
     detalhes.remove();

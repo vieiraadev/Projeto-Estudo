@@ -38,7 +38,6 @@ $dia_requisitado = isset($_GET['dia']) ? $_GET['dia'] : null;
 $tarefaEncontrada = false;
 $tarefaData = [];
 
-// Se um dia específico foi solicitado, verifique apenas esse dia
 if ($dia_requisitado && in_array($dia_requisitado, $diasPermitidos)) {
     $diasParaVerificar = [$dia_requisitado];
 } else {
@@ -63,18 +62,16 @@ foreach ($diasParaVerificar as $dia) {
             'nome_tarefa' => $row['nome_tarefa'],
             'descricao' => $row['descricao'],
             'prioridade' => $row['prioridade'],
-            'hora' => $row['hora_validade'], // Mantido 'hora' para compatibilidade com JS
+            'hora' => $row['hora_validade'],
             'hora_validade' => $row['hora_validade'],
             'data_criacao_tarefa' => $row['data_criacao_tarefa'],
-            'dia' => $dia // Adicionamos o dia para referência
+            'dia' => $dia
         ];
 
-        // Verificar se a resposta deve ser em JSON (para edição)
         if (isset($_GET['format']) && $_GET['format'] == 'json') {
             header('Content-Type: application/json');
             echo json_encode($tarefaData);
         } else {
-            // Formato HTML para visualização
             echo "<div><strong>Nome:</strong> " . htmlspecialchars($row['nome_tarefa']) . "</div>";
             echo "<div><strong>Descrição:</strong> " . nl2br(htmlspecialchars($row['descricao'])) . "</div>";
             echo "<div><strong>Prioridade:</strong> " . htmlspecialchars($row['prioridade']) . "</div>";

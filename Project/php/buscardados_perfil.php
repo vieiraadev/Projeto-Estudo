@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['id_aluno'])) {
-    http_response_code(401); // Não autorizado
+    http_response_code(401);
     echo json_encode(['erro' => 'Usuário não autenticado.']);
     exit;
 }

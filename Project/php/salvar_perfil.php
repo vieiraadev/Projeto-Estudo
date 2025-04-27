@@ -6,7 +6,6 @@ session_start();
 header('Content-Type: application/json');
 
 
-// Verifica se o usuário está logado
 if (!isset($_SESSION['id_aluno'])) {
     echo json_encode(["erro" => "Acesso negado. Faça login primeiro."]);
     exit;
@@ -14,7 +13,6 @@ if (!isset($_SESSION['id_aluno'])) {
 
 $id_aluno = $_SESSION['id_aluno'];
 
-// Conexão com o banco
 $host = "localhost:3306";
 $usuario = "root";
 $senha = "";
@@ -22,19 +20,16 @@ $database = "estudomais";
 
 $conexao = new mysqli($host, $usuario, $senha, $database);
 
-// Verificação da conexão
 if ($conexao->connect_error) {
     header('Content-Type: application/json');
     echo json_encode(["erro" => "Erro na conexão: " . $conexao->connect_error]);
     exit;
 }
 
-// Pegando os dados do formulário
 $nome = $_POST['nome'] ?? '';
 $email = $_POST['email'] ?? '';
 $senha = $_POST['senha'] ?? '';
 
-// Validação simples
 if (empty($nome) || empty($email)) {
     echo json_encode(["erro" => "Nome e email são obrigatórios."]);
     exit;
@@ -48,15 +43,15 @@ $limites = [
 
 if (strlen($nome) > $limites['nome']) {
     echo json_encode(["erro" => "O nome de usuário é muito grande (máximo {$limites['nome']} caracteres)."]);
-    exit; // <-- ESSENCIAL
+    exit; 
 }
 if (strlen($email) > $limites['email']) {
     echo json_encode(["erro" => "O email informado é muito grande (máximo {$limites['nome']} caracteres)."]);
-    exit; // <-- ESSENCIAL
+    exit;
 }
 if (strlen($senha) > $limites['senha']) {
     echo json_encode(["erro" => "A senha informada é muito grande (máximo {$limites['senha']} caracteres)."]);
-    exit; // <-- ESSENCIAL
+    exit;
 }
 
 // Atualiza com ou sem alteração de senha

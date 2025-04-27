@@ -12,7 +12,6 @@ function atualizarIniciais(nomeCompleto) {
         iniciais = partes[0].charAt(0).toUpperCase();
     }
 
-    // Atualiza o conteúdo das iniciais nas divs
     const fotoTopo = document.getElementById("profile-initials");
     const fotoSidebar = document.getElementById("profile-initials-sidebar");
 
@@ -36,7 +35,7 @@ function getNomeUsuario() {
         .then(data => {
             console.log("Dados do usuário:", data);  // Log para verificar os dados recebidos
             if (data.nome) {
-                atualizarIniciais(data.nome);  // Atualiza as iniciais com o nome recebido
+                atualizarIniciais(data.nome);
             } else {
                 console.error("Erro ao buscar o nome:", data.erro);
             }
@@ -46,7 +45,6 @@ function getNomeUsuario() {
         });
 }
 
-// Quando o conteúdo da página for carregado
 document.addEventListener("DOMContentLoaded", function () {
     // Chama a função para buscar o nome do banco e atualizar as iniciais
     getNomeUsuario();

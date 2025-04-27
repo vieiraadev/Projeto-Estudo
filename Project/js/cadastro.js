@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const confirmPassword = document.getElementById('confirm-password');
 
   form.addEventListener('submit', function (event) {
-      event.preventDefault(); // Impede envio normal
+      event.preventDefault();
 
       if (password.value !== confirmPassword.value) {
           alert('As senhas não coincidem. Por favor, verifique.');

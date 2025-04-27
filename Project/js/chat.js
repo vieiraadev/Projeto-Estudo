@@ -7,12 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Configurações
     const API_URL = '/Projeto-Planner/Project/php/chatgpt.php';
-    const SYSTEM_PROMPT = `Você é um assistente de estudos especializado...`; // Seu prompt completo aqui
+    const SYSTEM_PROMPT = `Você é um assistente de estudos especializado...`;
     
-    // Estado do chat
     let isProcessing = false;
 
-    // Event listeners
     chatForm.addEventListener('submit', handleFormSubmit);
     userInput.addEventListener('keydown', handleKeyDown);
 
@@ -85,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
         messageDiv.className = `message ${sender}-message`;
         messageDiv.textContent = text;
         
-        // Animação
         messageDiv.style.opacity = '0';
         messageDiv.style.transform = 'translateY(10px)';
         messageDiv.style.transition = 'all 0.3s ease';

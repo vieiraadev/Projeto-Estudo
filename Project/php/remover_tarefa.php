@@ -38,7 +38,6 @@ if (!isset($_POST['id_tarefa'], $_POST['dia'])) {
 $id_tarefa = intval($_POST['id_tarefa']);
 $dia = $_POST['dia'];
 
-// Protege contra nomes inválidos de tabela
 $dias_validos = [
     "segunda" => "tarefa_segunda",
     "terca"   => "tarefa_terca",

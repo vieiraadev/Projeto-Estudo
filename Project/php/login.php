@@ -1,20 +1,17 @@
 <?php
 session_start();
 
-// Habilitar exibição de erros para depuração
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $host = "localhost:3306";
-$usuario = "root"; // Usuário do MySQL
-$senha = ""; // Senha do MySQL
+$usuario = "root";
+$senha = "";
 $database = "estudomais";
 
-// Conexão com o banco de dados
 $conexao = new mysqli($host, $usuario, $senha, $database);
 
-// Verifica a conexão
 if ($conexao->connect_error) {
     die(json_encode(['erro' => 'Falha na conexão: ' . $conexao->connect_error]));
 }
@@ -37,20 +34,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Verifica a senha
         if (password_verify($senha_digitada, $aluno['senha_aluno'])) {
-            // Login bem-sucedido, cria sessão
             $_SESSION['id_aluno'] = $aluno['id_aluno'];
             $_SESSION['nome_aluno'] = $aluno['nome_aluno'];
-
-            // Resposta JSON de sucesso
             echo json_encode(['sucesso' => 'Login bem-sucedido']);
             exit();
         } else {
-            // Senha incorreta
             echo json_encode(['erro' => 'Email e/ou senha incorretos.']);
             exit();
         }
     } else {
-        // Email não encontrado
         echo json_encode(['erro' => 'Email e/ou senha incorretos.']);
         exit();
     }

@@ -22,7 +22,7 @@ function mostrarNotificacao(mensagem, erro = false) {
   notif.textContent = mensagem;
   notif.style.backgroundColor = erro ? "#e74c3c" : "#2ecc71";
   notif.classList.add("show");
-  setTimeout(() => notif.classList.remove("show"), 2500); // coloquei 2.5s normal aqui
+  setTimeout(() => notif.classList.remove("show"), 2500);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -64,14 +64,14 @@ document.addEventListener("DOMContentLoaded", () => {
       method: "POST",
       body: formData,
     })
-      .then(res => res.json()) // aqui troquei para json
+      .then(res => res.json()) 
       .then(data => {
         console.log("Resposta do servidor:", data);
 
         if (data.erro) {
-          mostrarNotificacao(data.erro, true); // erro = true -> vermelho
+          mostrarNotificacao(data.erro, true);
         } else if (data.sucesso) {
-          mostrarNotificacao(data.sucesso, false); // sucesso = false -> verde
+          mostrarNotificacao(data.sucesso, false); 
           setTimeout(() => location.reload(), 1500);
         } else {
           mostrarNotificacao("Resposta inesperada.", true);

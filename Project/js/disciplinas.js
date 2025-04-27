@@ -4,8 +4,6 @@ const closeModalButton = document.getElementById('closeModalButton');
 const cancelButton = document.getElementById('cancelButton');
 const disciplinaForm = document.getElementById('disciplinaForm');
 const disciplinasList = document.getElementById('disciplinasList');
-
-// Modal de descrição
 const descricaoModal = document.getElementById("descricaoModal");
 const modalDisciplinaNome = document.getElementById("modalDisciplinaNome");
 const modalDisciplinaDescricao = document.getElementById("modalDisciplinaDescricao");
@@ -18,9 +16,9 @@ let disciplinaAtual = null;
 
 function openModal() {
     modalOverlay.classList.add('active');
-    disciplinaForm.reset(); // Reseta o formulário para evitar dados de edições anteriores
-    editarButton.style.display = 'none'; // Esconde o botão de editar até que uma disciplina seja carregada para edição
-    excluirButton.style.display = 'none'; // Esconde o botão de excluir até que uma disciplina seja carregada para exclusão
+    disciplinaForm.reset();
+    editarButton.style.display = 'none';
+    excluirButton.style.display = 'none';
 }
 
 function closeModal() {
@@ -29,21 +27,19 @@ function closeModal() {
 }
 
 function abrirDescricaoModal(nome, descricao, id_disciplina) {
-    console.log('Abrindo modal de descrição para a disciplina:', nome, descricao); // Depuração
+    console.log('Abrindo modal de descrição para a disciplina:', nome, descricao);
     modalDisciplinaNome.textContent = nome;
     modalDisciplinaDescricao.textContent = descricao || "Sem descrição.";
 
     descricaoModal.style.display = "flex";
     descricaoModal.classList.add("active");
 
-    // Habilita os botões de edição e exclusão no modal
     editarButton.style.display = 'inline-block';
     excluirButton.style.display = 'inline-block';
 
-    // Define as funções dos botões
     editarButton.onclick = () => {
-        editarDisciplina(id_disciplina, nome, descricao); // Chama a função para editar
-        fecharDescricaoModal(); // Fecha o modal de descrição imediatamente após editar
+        editarDisciplina(id_disciplina, nome, descricao);
+        fecharDescricaoModal();
     };
     excluirButton.onclick = () => excluirDisciplina(id_disciplina);
 }
@@ -60,27 +56,25 @@ function addDisciplina(nome, descricao, id_disciplina) {
         <span>${nome}</span>
     `;
 
-    // Evento para abrir o modal de descrição
     disciplinaItem.addEventListener('click', (e) => {
-        e.stopPropagation(); // Impede a propagação do clique
-        abrirDescricaoModal(nome, descricao, id_disciplina); // Abre o modal de descrição
+        e.stopPropagation();
+        abrirDescricaoModal(nome, descricao, id_disciplina);
     });
 
     disciplinasList.appendChild(disciplinaItem);
 }
 
 function editarDisciplina(id_disciplina, nome, descricao) {
-    openModal();  // Abre o modal de edição
+    openModal();
 
-    editandoDisciplina = true;  // Marca que estamos editando uma disciplina
-    disciplinaAtual = { id: id_disciplina, nome, descricao }; // Armazena a disciplina para futuras edições
+    editandoDisciplina = true;
+    disciplinaAtual = { id: id_disciplina, nome, descricao };
 
-    // Preenche os campos do formulário com os dados da disciplina
     document.getElementById('nome_disciplina').value = nome;
     document.getElementById('descricao_disciplina').value = descricao;
 
-    editarButton.style.display = 'inline-block'; // Exibe o botão de editar
-    excluirButton.style.display = 'inline-block'; // Exibe o botão de excluir
+    editarButton.style.display = 'inline-block';
+    excluirButton.style.display = 'inline-block';
 }
 
 
@@ -98,7 +92,7 @@ function excluirDisciplina(id_disciplina) {
         .then(data => {
             if (data.status === 'sucesso') {
                 fecharDescricaoModal();
-                carregarDisciplinas(); // Recarrega as disciplinas após exclusão
+                carregarDisciplinas();
             } else {
                 alert('Erro ao excluir a disciplina: ' + (data.erro || 'Erro desconhecido'));
             }
@@ -115,7 +109,7 @@ function carregarDisciplinas() {
         .then(response => response.json())
         .then(data => {
             if (data.sucesso) {
-                disciplinasList.innerHTML = ''; // Limpa lista antes de carregar novamente
+                disciplinasList.innerHTML = '';
                 data.disciplinas.forEach(d => {
                     addDisciplina(d.nome_disciplina, d.descricao_disciplina, d.id_disciplina);
                 });
@@ -140,7 +134,7 @@ disciplinaForm.addEventListener('submit', function(event) {
           ? '/Projeto-Planner/Project/php/editar_disciplina.php'
           : '/Projeto-Planner/Project/php/salvar_disciplina.php';
 
-        const metodo = 'POST'; // << CORRIGIDO
+        const metodo = 'POST';
         const id = editandoDisciplina ? `&id_disciplina=${encodeURIComponent(disciplinaAtual?.id || '')}` : '';
 
 
@@ -175,8 +169,6 @@ disciplinaForm.addEventListener('submit', function(event) {
     }
 });
 
-
-// Eventos de Modal
 addDisciplinaButton.addEventListener('click', openModal);
 closeModalButton.addEventListener('click', closeModal);
 cancelButton.addEventListener('click', closeModal);
@@ -193,5 +185,4 @@ descricaoModal.addEventListener('click', function(event) {
     }
 });
 
-// Iniciar carregamento
 window.addEventListener('DOMContentLoaded', carregarDisciplinas);

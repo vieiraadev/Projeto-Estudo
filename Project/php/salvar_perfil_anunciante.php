@@ -21,17 +21,14 @@ if ($conexao->connect_error) {
     die("Erro na conexão: " . $conexao->connect_error);
 }
 
-// Recebe os campos
 $nome = $_POST['nome'] ?? null;
 $email = $_POST['email'] ?? null;
 $documento = $_POST['documento'] ?? null;
 $senha = $_POST['senha'] ?? null;
 
-// Monta dinamicamente a atualização
 $campos = [];
 $valores = [];
 
-// Só adiciona o campo se tiver valor
 if (!empty($nome)) {
     $campos[] = "nome_empresa = ?";
     $valores[] = $nome;
@@ -50,20 +47,16 @@ if (!empty($senha)) {
     $valores[] = $senhaHash;
 }
 
-// Se nenhum campo for enviado
 if (empty($campos)) {
     die("Nenhum dado enviado para atualizar.");
 }
 
-// Monta a query
 $sql = "UPDATE anunciante SET " . implode(", ", $campos) . " WHERE id_anunciante = ?";
 $stmt = $conexao->prepare($sql);
 
-// Monta dinamicamente os tipos
 $tipos = str_repeat("s", count($valores)) . "i"; // 's' para strings, 'i' para id
 $valores[] = $id_anunciante;
 
-// Usa ... para passar o array como argumentos
 $stmt->bind_param($tipos, ...$valores);
 
 if ($stmt->execute()) {
