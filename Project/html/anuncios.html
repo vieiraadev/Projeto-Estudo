@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudo+ | Anúncios</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/Projeto-Planner/Project/css/anuncios.css">
+</head>
+<body>
+    <aside>
+        <nav>
+            <a href="/Projeto-Planner/Project/html/anunciante.html" class="active"><i class='bx bx-home'></i></a>
+            <a href="/Projeto-Planner/Project/html/anuncios.html"><i class='bx bx-image'></i></a>
+        </nav>
+        <div class="perfil-sidebar">
+            <a href="/Projeto-Planner/Project/html/perfil_anunciante.html">
+              <div class="profile-photo-iniciais" id="profile-initials-sidebar"></div>
+            </a>
+          </div>
+    </aside>
+
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="header">
+                <div>
+                    <h1 class="title">Aqui estão todos os anúncios postados</h1>
+                    <p class="subtitle">Edite e visualize todas as informações</p>
+                </div>
+            </div>
+            
+            <div class="search-bar">
+                <i class='bx bx-search search-icon'></i>
+                <input type="text" class="search-input" placeholder="Pesquisar anúncios...">
+            </div>
+            
+            <div class="ad-cards">
+                <div class="ad-card">
+                    <div class="ad-image">
+                        <img src="/Projeto-Planner/Project/img/kalunga.png" alt="Kalunga Logo">
+                    </div>
+                    <div class="ad-details">
+                        <h3 class="ad-title">Kalunga papelaria</h3>
+                        <p class="ad-info"><i class='bx bx-link'></i> https://www.kalunga.com.br</p>
+                        <p class="ad-info"><i class='bx bx-tag'></i> Categoria: outros</p>
+                        <p class="ad-info"><i class='bx bx-time'></i> Duração: 7 dias</p>
+                        <p class="ad-info">
+                            <span class="status-badge status-active">Ativo</span>
+                        </p>
+                        <div class="ad-actions">
+                            <a href="#" class="btn btn-edit">Editar</a>
+                            <a href="#" class="btn btn-delete">Excluir</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ad-card">
+                    <div class="ad-image">
+                        <img src="/Projeto-Planner/Project/img/bic.png" alt="Grupo Bic Logo">
+                    </div>
+                    <div class="ad-details">
+                        <h3 class="ad-title">Grupo Bic</h3>
+                        <p class="ad-info"><i class='bx bx-link'></i> https://corporate.bic.com/pt-pt</p>
+                        <p class="ad-info"><i class='bx bx-tag'></i> Categoria: Outros</p>
+                        <p class="ad-info"><i class='bx bx-time'></i> Duração: 30 dias</p>
+                        <p class="ad-info">
+                            <span class="status-badge status-expired">Expirado</span>
+                        </p>
+                        <div class="ad-actions">
+                            <a href="#" class="btn btn-edit">Editar</a>
+                            <a href="#" class="btn btn-delete">Excluir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
