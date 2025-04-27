@@ -141,9 +141,8 @@ disciplinaForm.addEventListener('submit', function(event) {
           : '/Projeto-Planner/Project/php/salvar_disciplina.php';
 
         const metodo = 'POST'; // << CORRIGIDO
-        const id = editandoDisciplina
-          ? `&id_disciplina=${encodeURIComponent(disciplinaAtual.id)}`
-          : '';
+        const id = editandoDisciplina ? `&id_disciplina=${encodeURIComponent(disciplinaAtual?.id || '')}` : '';
+
 
         fetch(url, {
             method: metodo,
@@ -171,7 +170,7 @@ disciplinaForm.addEventListener('submit', function(event) {
         })
         .catch(error => {
             console.error('Erro:', error);
-            alert('Erro ao conectar com o servidor.');
+            window.location.reload();
         });
     }
 });

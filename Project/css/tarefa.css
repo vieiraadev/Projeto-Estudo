@@ -369,3 +369,22 @@ a {
   outline: none;          /* Remove o contorno */
   box-shadow: none;       /* Remove qualquer sombra */
 }
+/* Estilo para o botão de editar */
+.botao-acao.editar {
+  background-color:#2e86de; /* Cor de fundo (verde, por exemplo) */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+
+.botao-acao.editar:hover {
+  background-color: #0d63b8; /* Cor de fundo ao passar o mouse */
+}
