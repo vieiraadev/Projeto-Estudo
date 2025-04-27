@@ -15,7 +15,7 @@
       <header>
         <div class="logo">
           <img src="/Projeto-Planner/Project/img/logo.png" alt="Logo Estudo+" style="width: 180px; height: 180px;">
-      </div>
+        </div>
         <div class="header-actions">
           <span class="signup-text">Não tem uma conta?</span> 
           <button class="signup-btn" onclick="window.location.href='cadastro.html'">Criar uma conta</button>
@@ -84,6 +84,13 @@
       </div>
     </div>
 
-    
   </body>
+
+  <script>
+    // Verifica se a URL contém o parâmetro 'error=1' e exibe o alerta
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error') === '1') {
+        alert('Email e/ou senha incorretos');
+    }
+  </script>
 </html>

@@ -1,10 +1,8 @@
 <?php
 session_start();
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: login_anunciante.html");
+    header("Location: /Projeto-Planner/Project/html/login_anunciante.html");
     exit;
 }
 
@@ -43,6 +41,6 @@ if ($stmt->num_rows === 1) {
 $stmt->close();
 $conn->close();
 
-header("Location: login_anunciante.html?error=1");
+header("Location: /Projeto-Planner/Project/html/login_anunciante.html?error=1");
 exit;
 ?>
