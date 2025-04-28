@@ -30,15 +30,14 @@ $email = $_POST['email'] ?? '';
 $documento = $_POST['documento'] ?? '';
 $senha = $_POST['senha'] ?? '';
 
-
 $limites = [
     'nome_empresa' => 50,
     'email_empresa' => 50,
-    'documento' => 20,
-    'senha' => 255, 
+    'documento' => 14,
+    'senha' => 255,
 ];
 
-// Validações
+// Validações de tamanho
 if (!empty($nome) && strlen($nome) > $limites['nome_empresa']) {
     echo json_encode(["erro" => "O nome da empresa é muito grande (máximo {$limites['nome_empresa']} caracteres)."], JSON_UNESCAPED_UNICODE);
     exit;
@@ -58,6 +57,26 @@ if (!empty($senha) && strlen($senha) > $limites['senha']) {
     echo json_encode(["erro" => "A senha informada é muito grande (máximo {$limites['senha']} caracteres)."], JSON_UNESCAPED_UNICODE);
     exit;
 }
+
+// Verificação se o documento já existe no banco (caso tenha sido enviado)
+if (!empty($documento)) {
+    $stmt_check = $conexao->prepare("SELECT id_anunciante FROM anunciante WHERE documento = ? AND id_anunciante != ?");
+    if (!$stmt_check) {
+        echo json_encode(["erro" => "Erro ao preparar a verificação de documento: " . $conexao->error], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+    $stmt_check->bind_param("si", $documento, $id_anunciante);
+    $stmt_check->execute();
+    $stmt_check->store_result();
+
+    if ($stmt_check->num_rows > 0) {
+        echo json_encode(["erro" => "O CPF/CNPJ informado já está cadastrado."], JSON_UNESCAPED_UNICODE);
+        $stmt_check->close();
+        exit;
+    }
+    $stmt_check->close();
+}
+
 
 $campos = [];
 $valores = [];
@@ -85,7 +104,6 @@ if (empty($campos)) {
     exit;
 }
 
-// Executa o update
 $sql = "UPDATE anunciante SET " . implode(", ", $campos) . " WHERE id_anunciante = ?";
 $stmt = $conexao->prepare($sql);
 

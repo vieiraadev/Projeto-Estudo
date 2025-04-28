@@ -7,6 +7,15 @@ function mostrarNotificacao(mensagem, erro = false) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const cpfCnpjInput = document.getElementById("cpf-cnpj");
+
+  cpfCnpjInput.addEventListener("input", () => {
+    cpfCnpjInput.value = cpfCnpjInput.value.replace(/\D/g, ''); 
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
   fetch("/Projeto-Planner/Project/php/buscardados_anunciante.php")
     .then(res => res.json())
     .then(dados => {
