@@ -21,7 +21,7 @@ if ($conexao->connect_error) {
     echo json_encode(["erro" => "Erro na conexão: " . $conexao->connect_error]);
     exit;
 }
-
+// Prepara a consulta SQL para buscar nome e e-mail do aluno
 $sql = "SELECT nome_aluno, email FROM aluno WHERE id_aluno = ?";
 $stmt = $conexao->prepare($sql); 
 $stmt->bind_param("i", $idAluno);

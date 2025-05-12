@@ -21,7 +21,7 @@ if ($conexao->connect_error) {
     echo json_encode(["erro" => "Erro na conexão: " . $conexao->connect_error]);
     exit;
 }
-
+// Prepara a query para buscar o anunciante
 $sql = "SELECT nome_empresa, email_empresa, documento FROM anunciante WHERE id_anunciante = ?";
 $stmt = $conexao->prepare($sql);
 
@@ -30,7 +30,7 @@ if (!$stmt) {
     echo json_encode(["erro" => "Erro na preparação da consulta: " . $conexao->error]);
     exit;
 }
-
+// Liga o ID do anunciante como parâmetro na query
 $stmt->bind_param("i", $idAnunciante);
 $stmt->execute();
 $result = $stmt->get_result();

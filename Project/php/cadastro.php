@@ -46,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
 
+    // Prepara uma consulta para verificar se já existe aluno com o mesmo nome ou email
     $query = "SELECT nome_aluno, email FROM aluno WHERE nome_aluno = ? OR email = ?";
     $stmt = $conexao->prepare($query);
     if (!$stmt) {
@@ -54,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    // Associa os parâmetros à consulta
     $stmt->bind_param("ss", $nome_aluno, $email_aluno);
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -71,6 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt->close();
 
+    // Prepara a inserção dos dados na tabela aluno
     $stmt = $conexao->prepare("INSERT INTO aluno (nome_aluno, senha_aluno, email) VALUES (?, ?, ?)");
     if (!$stmt) {
         http_response_code(500);

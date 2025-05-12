@@ -1,6 +1,4 @@
 <?php
-
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -49,18 +47,12 @@ if (!in_array($dia, $diasPermitidos)) {
     exit;
 }
 
-$tabela = "tarefa_" . $dia;
-
-$sql = "INSERT INTO $tabela (nome_tarefa, descricao, prioridade, hora_validade, data_criacao_tarefa, fk_id_aluno)
-        VALUES (?, ?, ?, ?, NOW(), ?)";
-
-$stmt = $conexao->prepare($sql);
+// Limites de tamanho
 $limites = [
     'nome_tarefa' => 50,
     'descricao' => 300,
 ];
 
-// Verifica tamanho de cada campo
 if (strlen($nome) > $limites['nome_tarefa']) {
     http_response_code(400);
     echo json_encode(["erro" => "O nome da tarefa é muito grande (máximo {$limites['nome_tarefa']} caracteres)."]);
@@ -72,13 +64,19 @@ if (strlen($desc) > $limites['descricao']) {
     echo json_encode(["erro" => "A descrição da tarefa é muito grande (máximo {$limites['descricao']} caracteres)."]);
     exit;
 }
+
+// Query usando tabela única 'tarefa'
+$sql = "INSERT INTO tarefa (nome_tarefa, descricao, prioridade, hora_validade, data_criacao_tarefa, dia_da_semana, fk_id_aluno)
+        VALUES (?, ?, ?, ?, NOW(), ?, ?)";
+
+$stmt = $conexao->prepare($sql);
 if (!$stmt) {
     http_response_code(500);
     echo json_encode(["erro" => "Erro no prepare: " . $conexao->error]);
     exit;
 }
 
-$stmt->bind_param("ssssi", $nome, $desc, $prioridade, $hora, $id_aluno);
+$stmt->bind_param("sssssi", $nome, $desc, $prioridade, $hora, $dia, $id_aluno);
 
 if ($stmt->execute()) {
     echo json_encode([
@@ -86,7 +84,8 @@ if ($stmt->execute()) {
         "id_tarefa" => $stmt->insert_id,
         "nome_tarefa" => $nome,
         "prioridade" => strtolower($prioridade),
-        "hora" => $hora
+        "hora" => $hora,
+        "dia" => $dia
     ]);
 } else {
     http_response_code(500);

@@ -38,16 +38,18 @@ if (!isset($_GET['dia'])) {
 
 $diasPermitidos = ['segunda', 'terca', 'quarta', 'quinta', 'sexta'];
 
-$dia = strtolower($_GET['dia']);
+$dia = strtolower($_GET['dia']); // Corrigido aqui
 if (!in_array($dia, $diasPermitidos)) {
     http_response_code(400);
     echo json_encode(["erro" => "Dia inválido."]);
     exit;
 }
 
-$tabela = "tarefa_" . $dia;
+// Prepara a query para buscar tarefas do aluno para o dia especificado
+$sql = "SELECT id_tarefa, nome_tarefa, prioridade, hora_validade 
+        FROM tarefa 
+        WHERE fk_id_aluno = ? AND dia_da_semana = ?";
 
-$sql = "SELECT id_tarefa, nome_tarefa, prioridade, hora_validade FROM $tabela WHERE fk_id_aluno = ?";
 $stmt = $conexao->prepare($sql);
 if (!$stmt) {
     http_response_code(500);
@@ -55,13 +57,13 @@ if (!$stmt) {
     exit;
 }
 
-
-$stmt->bind_param("i", $id_aluno);
+$stmt->bind_param("is", $id_aluno, $dia);
 $stmt->execute();
 
 $resultado = $stmt->get_result();
 $tarefas = [];
 
+// Loop por cada linha de resultado
 while ($row = $resultado->fetch_assoc()) {
     $hora_original = $row["hora_validade"] ?? "";
 
@@ -78,10 +80,8 @@ while ($row = $resultado->fetch_assoc()) {
         "hora" => $hora_formatada
     ];
 }
-error_log(json_encode($tarefas));
 
 echo json_encode($tarefas);
-
 
 $stmt->close();
 $conexao->close();

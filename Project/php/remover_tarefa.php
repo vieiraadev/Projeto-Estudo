@@ -29,33 +29,17 @@ if (!isset($_SESSION['id_aluno'])) {
 
 $id_aluno = $_SESSION['id_aluno'];
 
-if (!isset($_POST['id_tarefa'], $_POST['dia'])) {
+if (!isset($_POST['id_tarefa'])) {
     http_response_code(400);
-    echo json_encode(["erro" => "ID da tarefa ou dia não fornecido."]);
+    echo json_encode(["erro" => "ID da tarefa não fornecido."]);
     exit;
 }
 
 $id_tarefa = intval($_POST['id_tarefa']);
-$dia = $_POST['dia'];
 
-$dias_validos = [
-    "segunda" => "tarefa_segunda",
-    "terca"   => "tarefa_terca",
-    "quarta"  => "tarefa_quarta",
-    "quinta"  => "tarefa_quinta",
-    "sexta"   => "tarefa_sexta"
-];
-
-if (!array_key_exists($dia, $dias_validos)) {
-    http_response_code(400);
-    echo json_encode(["erro" => "Dia inválido."]);
-    exit;
-}
-
-$tabela = $dias_validos[$dia];
-
-$sql = "DELETE FROM $tabela WHERE id_tarefa = ? AND fk_id_aluno = ?";
+$sql = "DELETE FROM tarefa WHERE id_tarefa = ? AND fk_id_aluno = ?";
 $stmt = $conexao->prepare($sql);
+
 if (!$stmt) {
     http_response_code(500);
     echo json_encode(["erro" => "Erro no prepare: " . $conexao->error]);

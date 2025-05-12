@@ -43,8 +43,7 @@ if (!in_array($dia, $diasPermitidos)) {
     exit;
 }
 
-$tabela = "tarefa_" . $dia;
-$sql = "UPDATE $tabela SET nome_tarefa = ?, descricao = ?, prioridade = ?, hora_validade = ? 
+$sql = "UPDATE tarefa SET nome_tarefa = ?, descricao = ?, prioridade = ?, hora_validade = ?, dia_da_semana = ?
         WHERE id_tarefa = ? AND fk_id_aluno = ?";
 
 $stmt = $conexao->prepare($sql);
@@ -54,7 +53,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("ssssii", $nome_tarefa, $descricao, $prioridade, $hora_validade, $id_tarefa, $id_aluno);
+$stmt->bind_param("ssssssi", $nome_tarefa, $descricao, $prioridade, $hora_validade, $dia, $id_tarefa, $id_aluno);
 $resultado = $stmt->execute();
 
 if ($resultado) {
@@ -67,7 +66,6 @@ if ($resultado) {
         'hora_validade' => $hora_validade,
         'dia' => $dia
     ];
-    
     echo json_encode($tarefaAtualizada);
 } else {
     http_response_code(500);
