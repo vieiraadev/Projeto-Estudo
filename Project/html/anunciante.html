@@ -24,7 +24,7 @@
         <div class="header">
             <h1>Nova Publicação</h1>
         </div>
-        <form action="/Projeto-Planner/Project/php/anunciante.php" method="POST"  method="POST" enctype="multipart/form-data">
+        <form id="form-anuncio" enctype="multipart/form-data">
             <div class="card">
                 <h2 class="section-title">Informações Básicas</h2>
                 <div class="form-group">
@@ -39,7 +39,7 @@
                         <p>Arraste imagens ou clique para fazer upload</p>
                     </label>
                 
-                    <input type="file" id="imagem_anuncio" name="imagem_anuncio[]" class="upload-input" multiple accept="image/*" style="display: none;">
+                    <input type="file" id="imagem_anuncio" name="imagem_anuncio" class="upload-input" accept="image/*" style="display: none;">
                 </div>
                 
                 
@@ -60,7 +60,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="category">URL do site</label>
-                    <input type="text" name="URL" placeholder="URL" class="form-control" id="site_empresa">
+                    <input type="text" name="site_empresa" placeholder="URL" class="form-control" id="site_empresa">
                     
                 </div>
                 <div class="form-group">
@@ -75,12 +75,13 @@
                 </div>
                 
                 <div class="footer-actions">
-                    <button class="btn-secondary">Salvar como rascunho</button>
-                    <button class="btn-primary">Publicar agora</button>
+                    <button class="btn-primary" type="submit">Publicar agora</button>
                 </div>
             </div>
         </form>
     </div>
-    <script src="/Projeto-Planner/Project/js/atualizarperfil_anunciante.js"></script>
+    <script src="/Projeto-Planner/Project/js/anuncio.js"></script>   
+    <script src="/Projeto-Planner/Project/js/atualizarperfil_anunciante.js"></script>   
+        
 </body>
 </html>
