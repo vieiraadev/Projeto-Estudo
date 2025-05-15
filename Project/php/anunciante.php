@@ -1,4 +1,6 @@
 <?php
+session_start(); // Inicia a sessão
+
 $host = "localhost:3306";
 $usuario = "root";
 $senha = "";
@@ -11,6 +13,16 @@ if ($conexao->connect_error) {
     echo json_encode(["erro" => "Erro na conexão: " . $conexao->connect_error]);
     exit;
 }
+
+// Verifica se o ID do anunciante está na sessão
+if (!isset($_SESSION['id_anunciante'])) {
+    http_response_code(401); // Não autorizado
+    echo json_encode(["erro" => "Usuário não está autenticado."]);
+    exit;
+}
+
+// Obtém o ID do anunciante da sessão
+$idAnunciante = $_SESSION['id_anunciante'];
 
 // Verifica campos obrigatórios
 $campos = ['titulo', 'site_empresa', 'categoria', 'duracao'];
@@ -29,8 +41,8 @@ if (!isset($_FILES['imagem_anuncio']) || $_FILES['imagem_anuncio']['error'] !== 
     exit;
 }
 
-// Diretório onde as imagens serão salvas
-$diretorioUpload = "/Applications/XAMPP/xamppfiles/htdocs/Projeto-Planner/Project/uploads/";
+// Diretório onde as imagens serão salvas (usando caminho relativo)
+$diretorioUpload = __DIR__ . "/uploads/";
 if (!is_dir($diretorioUpload)) {
     mkdir($diretorioUpload, 0777, true);
 }
@@ -57,8 +69,8 @@ $duracao = $_POST['duracao'];
 $dataCriacao = date("H:i:s");
 
 // Insere no banco de dados
-$sql = "INSERT INTO anuncio (titulo, imagem_anuncio, site_empresa, categoria, duracao, data_de_criacao_anuncio)
-        VALUES (?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO anuncio (titulo, imagem_anuncio, site_empresa, categoria, duracao, situacao, data_de_criacao_anuncio, fk_id_anunciante)
+        VALUES (?, ?, ?, ?, ?, 'pendente', ?, ?)";
 
 $stmt = $conexao->prepare($sql);
 if (!$stmt) {
@@ -67,7 +79,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("ssssis", $titulo, $imagem, $site, $categoria, $duracao, $dataCriacao);
+$stmt->bind_param("ssssisi", $titulo, $imagem, $site, $categoria, $duracao, $dataCriacao, $idAnunciante);
 
 if ($stmt->execute()) {
     echo json_encode(["sucesso" => true, "mensagem" => "Anúncio cadastrado com sucesso!"]);
