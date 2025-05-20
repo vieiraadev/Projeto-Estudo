@@ -26,7 +26,7 @@
             <div class="header">
                 <div>
                     <h1 class="title">Aqui estão todos os anúncios pendentes</h1>
-                    <p class="subtitle">AAprove ou recuse os anúncios publicados pelos anunciantes.</p>
+                    <p class="subtitle">Aprove ou recuse os anúncios publicados pelos anunciantes.</p>
                 </div>
             </div>
             
@@ -38,40 +38,39 @@
             <div class="ad-cards">
                 <div class="ad-card">
                     <div class="ad-image">
-                        <img src="/Projeto-Planner/Project/img/kalunga.png" alt="Kalunga Logo">
                     </div>
                     <div class="ad-details">
-                        <h3 class="ad-title">Kalunga papelaria</h3>
-                        <p class="ad-info"><i class='bx bx-link'></i> https://www.kalunga.com.br</p>
-                        <p class="ad-info"><i class='bx bx-tag'></i> Categoria: outros</p>
-                        <p class="ad-info"><i class='bx bx-time'></i> Duração: 7 dias</p>
+                        
                         <div class="ad-actions">
-                            <a href="#" class="btn btn-edit">Aprovar</a>
-                            <a href="#" class="btn btn-delete">Excluir</a>
+                           
                         </div>
                     </div>
                 </div>
                 
                 <div class="ad-card">
                     <div class="ad-image">
-                        <img src="/Projeto-Planner/Project/img/bic.png" alt="Grupo Bic Logo">
                     </div>
                     <div class="ad-details">
-                        <h3 class="ad-title">Grupo Bic</h3>
-                        <p class="ad-info"><i class='bx bx-link'></i> https://corporate.bic.com/pt-pt</p>
-                        <p class="ad-info"><i class='bx bx-tag'></i> Categoria: Outros</p>
-                        <p class="ad-info"><i class='bx bx-time'></i> Duração: 30 dias</p>
+                        
                         <div class="ad-actions">
-                            <a href="#" class="btn btn-edit">Aprovar</a>
-                            <a href="#" class="btn btn-delete">Recusar</a>
+                            
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="script.js"></script>
-    <script src="/Projeto-Planner/Project/js/atualizarperfil_anunciante.js"></script>
+    <div id="modal-recusar" class="modal hidden">
+        <div class="modal-content">
+          <h3>Recusar Anúncio</h3>
+          <textarea id="comentario-recusa" placeholder="Digite o motivo da recusa..."></textarea>
+          <div class="modal-actions">
+            <button id="confirmar-recusa">Confirmar</button>
+            <button id="cancelar-recusa">Cancelar</button>
+          </div>
+        </div>
+      </div>
+      
+    <script src="/Projeto-Planner/Project/js/anuncio_suporte.js"></script>
 </body>
 </html>

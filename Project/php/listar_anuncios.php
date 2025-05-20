@@ -33,6 +33,7 @@ if (mysqli_num_rows($result) > 0) {
             'categoria' => htmlspecialchars($row['categoria']),
             'duracao' => (int) $row['duracao'],
             'situacao' => $row['situacao'],
+            'comentario_recusa' => $row['comentario_recusa'],
             'imagem_anuncio' => htmlspecialchars($urlImagem),
             'id_anuncio' => (int) $row['id_anuncio']
         ];
