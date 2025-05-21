@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Sistema de Cálculo de Notas</title>
+    <link rel="stylesheet" href="/Projeto-Planner/Project/css/notas.css">
+</head>
+<body>
+    <aside>
+        <nav>
+          <a href="/Projeto-Planner/Project/html/home.html"><i class='bx bx-home'></i></a>
+          <a href="/Projeto-Planner/Project/html/inbox.html"><i class='bx bxs-inbox'></i></a>
+          <a href="/Projeto-Planner/Project/html/disciplinas.html"><i class='bx bx-book'></i></a>
+          <a href="/Projeto-Planner/Project/html/ia.html"><i class='bx bx-brain'></i></a>
+          <a href="/Projeto-Planner/Project/html/suporte.html"><i class='bx bx-cog'></i></a>
+        </nav>
+        <div class="perfil-sidebar">
+          <a href="/Projeto-Planner/Project/html/perfil.html">
+            <div class="profile-photo-iniciais" id="profile-initials-sidebar"></div>
+          </a>
+        </div>
+    </aside>
+
+    <div class="container">
+        <div class="header">
+            <h1>Cadastre suas disciplinas aqui!</h1>
+            <p>Insira suas disciplinas para monitorar seu desempenho acadêmico</p>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">Calculadora de Notas</h2>
+            <div class="desempenho">
+                <h3 class="card-title">Desempenho</h3>
+                <div class="desempenho-flex">
+                    <div>
+                        <p class="media-label">Média Final</p>
+                        <p class="media-valor" id="media-final">0.00</p>
+                    </div>
+                    <div class="status status-reprovado" id="status-aluno">Reprovado</div>
+                </div>
+            </div>
+            <div>
+                <h3 class="card-title">Registros de Avaliação (RAs)</h3>
+                <div id="lista-ras"></div>
+            </div>
+            <div class="desempenho" style="margin-top: 20px;">
+                <h3 class="card-title">Adicionar novo RA</h3>
+                <div class="form-flex">
+                    <input type="text" id="novo-ra-nome" placeholder="Nome do RA" class="input input-grande">
+                    <input type="number" id="novo-ra-peso" placeholder="Porcentagem" min="1" max="100" value="10" class="input input-pequeno">
+                    <span style="align-self: center;">%</span>
+                    <button id="btn-adicionar-ra" class="btn btn-azul">Adicionar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="card-title" id="modal-titulo">Lançar Notas</h2>
+            </div>
+            <div class="modal-section">
+                <h3>Adicionar Prova</h3>
+                <div class="form-flex">
+                    <input type="text" id="nova-prova-nome" placeholder="Nome da prova" class="input input-grande">
+                    <input type="number" id="nova-prova-valor" placeholder="Nota" min="0" max="10" step="0.1" class="input input-pequeno">
+                    <input type="number" id="nova-prova-peso" placeholder="Peso" min="1" value="1" class="input input-pequeno">
+                    <button id="btn-adicionar-prova" class="btn btn-azul">+</button>
+                </div>
+                <div id="provas-adicionadas" class="itens-adicionados" style="display: none;">
+                    <h4>Provas adicionadas:</h4>
+                    <ul id="lista-provas"></ul>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h3>Adicionar Trabalho</h3>
+                <div class="form-flex">
+                    <input type="text" id="novo-trabalho-nome" placeholder="Nome do trabalho" class="input input-grande">
+                    <input type="number" id="novo-trabalho-valor" placeholder="Nota" min="0" max="10" step="0.1" class="input input-pequeno">
+                    <input type="number" id="novo-trabalho-peso" placeholder="Peso" min="1" value="1" class="input input-pequeno">
+                    <button id="btn-adicionar-trabalho" class="btn btn-azul">+</button>
+                </div>
+                <div id="trabalhos-adicionados" class="itens-adicionados" style="display: none;">
+                    <h4>Trabalhos adicionados:</h4>
+                    <ul id="lista-trabalhos"></ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-cancelar" class="btn btn-cinza">Cancelar</button>
+                <button id="btn-salvar" class="btn btn-azul">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/Projeto-Planner/Project/js/notas.js"></script>
+</body>
+</html>
