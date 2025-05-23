@@ -315,3 +315,12 @@ nav a i {
     margin-top: 10px;
     font-weight: 600;
 }
+
+.form-flex .sufixo {
+    display: inline-flex;
+    align-items: center;
+    height: 38px; /* igual à altura do input, ajuste se necessário */
+    padding-top: 2px; /* pequeno ajuste para alinhar com botão */
+    font-size: 14px;
+    color: black;
+  }
