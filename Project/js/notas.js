@@ -1,325 +1,269 @@
-let ras = [
-    { id: 1, nome: 'RA1 - Avaliação Conceitual', porcentagem: 20, notas: [] },
-    { id: 2, nome: 'RA2 - Avaliação Prática', porcentagem: 30, notas: [] },
-    { id: 3, nome: 'RA3 - Projeto Final', porcentagem: 50, notas: [] }
-];
+// === Mapeamento de RA ===
+let idRaSelecionado = null;
+let idRaMap = {}; // mapeia ra_nome -> id_ra
 
-let proximoIdRa = 4;
-let raAtual = null;
-let provasTemp = [];
-let trabalhosTemp = [];
+// === Adicionar novo RA e exibir na tela ===
+document.getElementById("btn-adicionar-ra").addEventListener("click", () => {
+    const raNome = document.getElementById("novo-ra-nome").value.trim();
+    const raPeso = document.getElementById("novo-ra-peso").value;
 
-// Elementos do DOM
-const listaRas = document.getElementById('lista-ras');
-const mediaFinalElement = document.getElementById('media-final');
-const statusAlunoElement = document.getElementById('status-aluno');
-const modalOverlay = document.getElementById('modal-overlay');
-const modalTitulo = document.getElementById('modal-titulo');
-
-// Botões e campos do formulário
-const btnAdicionarRa = document.getElementById('btn-adicionar-ra');
-const novoRaNome = document.getElementById('novo-ra-nome');
-const novoRaPeso = document.getElementById('novo-ra-peso');
-
-const btnAdicionarProva = document.getElementById('btn-adicionar-prova');
-const novaProvaNome = document.getElementById('nova-prova-nome');
-const novaProvaValor = document.getElementById('nova-prova-valor');
-const provasAdicionadas = document.getElementById('provas-adicionadas');
-const listaProvas = document.getElementById('lista-provas');
-
-const btnAdicionarTrabalho = document.getElementById('btn-adicionar-trabalho');
-const novoTrabalhoNome = document.getElementById('novo-trabalho-nome');
-const novoTrabalhoValor = document.getElementById('novo-trabalho-valor');
-const trabalhosAdicionados = document.getElementById('trabalhos-adicionados');
-const listaTrabalhos = document.getElementById('lista-trabalhos');
-
-const btnCancelar = document.getElementById('btn-cancelar');
-const btnSalvar = document.getElementById('btn-salvar');
-
-const novaProvaPeso = document.getElementById('nova-prova-peso');
-const novoTrabalhoPeso = document.getElementById('novo-trabalho-peso');
-
-// Funções
-function calcularMediaRa(ra) {
-    if (!ra.notas || ra.notas.length === 0) return 0;
-    
-    let somaPesos = 0;
-    let somaNotasPonderadas = 0;
-    
-    ra.notas.forEach(nota => {
-        somaNotasPonderadas += nota.valor * nota.peso;
-        somaPesos += nota.peso;
-    });
-    
-    return somaPesos > 0 ? somaNotasPonderadas / somaPesos : 0;
-}
-
-function calcularMediaFinal() {
-    let somaPorcentagens = 0;
-    let somaNotas = 0;
-    
-    ras.forEach(ra => {
-        const mediaRa = calcularMediaRa(ra);
-        somaNotas += mediaRa * (ra.porcentagem / 100);
-        somaPorcentagens += ra.porcentagem / 100;
-    });
-    
-    return somaPorcentagens > 0 ? somaNotas / somaPorcentagens : 0;
-}
-
-function atualizarInterface() {
-    // Atualizar lista de RAs
-    listaRas.innerHTML = '';
-    
-    ras.forEach(ra => {
-        const mediaRa = calcularMediaRa(ra);
-        
-        const raElement = document.createElement('div');
-        raElement.className = 'ra-item';
-        
-        let raHTML = `
-            <div class="ra-header">
-                <div class="ra-info">
-                    <h3>${ra.nome}</h3>
-                    <p>Porcentagem: ${ra.porcentagem}%</p>
-                </div>
-                <div class="ra-acoes">
-                    <button class="btn btn-azul btn-lancar-notas" data-id="${ra.id}">Lançar Notas</button>
-                    <button class="btn btn-vermelho btn-remover-ra" data-id="${ra.id}">Remover</button>
-                </div>
-            </div>
-        `;
-        
-        if (ra.notas.length > 0) {
-            raHTML += `
-                <div class="notas-container">
-                    <h4>Notas:</h4>
-                    <div class="notas-grid">
-            `;
-            
-            ra.notas.forEach((nota, index) => {
-                raHTML += `
-                    <div class="nota-item">
-                        <span>${nota.nome}: ${nota.valor.toFixed(2)} (Peso: ${nota.peso})</span>
-                        <button class="remover-nota" data-ra-id="${ra.id}" data-nota-index="${index}">×</button>
-                    </div>
-                `;
-            });
-            
-            raHTML += `
-                    </div>
-                    <p class="ra-media">Média do RA: ${mediaRa.toFixed(2)}</p>
-                </div>
-            `;
-        }
-        
-        raElement.innerHTML = raHTML;
-        listaRas.appendChild(raElement);
-    });
-    
-    // Atualizar média final e status
-    const mediaFinal = calcularMediaFinal();
-    mediaFinalElement.textContent = mediaFinal.toFixed(2);
-    
-    if (mediaFinal >= 7) {
-        statusAlunoElement.textContent = 'Aprovado';
-        statusAlunoElement.className = 'status status-aprovado';
-    } else if (mediaFinal >= 5) {
-        statusAlunoElement.textContent = 'Recuperação';
-        statusAlunoElement.className = 'status status-recuperacao';
-    } else {
-        statusAlunoElement.textContent = 'Reprovado';
-        statusAlunoElement.className = 'status status-reprovado';
-    }
-    
-    // Adicionar event listeners para botões
-    document.querySelectorAll('.btn-lancar-notas').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const raId = parseInt(this.getAttribute('data-id'));
-            abrirModal(raId);
-        });
-    });
-    
-    document.querySelectorAll('.btn-remover-ra').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const raId = parseInt(this.getAttribute('data-id'));
-            removerRa(raId);
-        });
-    });
-    
-    document.querySelectorAll('.remover-nota').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const raId = parseInt(this.getAttribute('data-ra-id'));
-            const notaIndex = parseInt(this.getAttribute('data-nota-index'));
-            removerNota(raId, notaIndex);
-        });
-    });
-}
-
-function abrirModal(raId) {
-    raAtual = ras.find(ra => ra.id === raId);
-    if (!raAtual) return;
-    
-    modalTitulo.textContent = `Lançar Notas para ${raAtual.nome}`;
-    modalOverlay.style.display = 'flex';
-    
-    // Limpar dados temporários
-    provasTemp = [];
-    trabalhosTemp = [];
-    atualizarListasModal();
-    
-    // Limpar campos
-    novaProvaNome.value = '';
-    novaProvaValor.value = '';
-    novoTrabalhoNome.value = '';
-    novoTrabalhoValor.value = '';
-}
-
-function fecharModal() {
-    modalOverlay.style.display = 'none';
-    raAtual = null;
-}
-
-function atualizarListasModal() {
-    // Atualizar lista de provas
-    if (provasTemp.length > 0) {
-        listaProvas.innerHTML = '';
-        provasTemp.forEach(prova => {
-            const li = document.createElement('li');
-            li.textContent = `${prova.nome}: ${prova.valor.toFixed(2)} (Peso: ${prova.peso})`;
-            listaProvas.appendChild(li);
-        });
-        provasAdicionadas.style.display = 'block';
-    } else {
-        provasAdicionadas.style.display = 'none';
-    }
-    
-    // Atualizar lista de trabalhos
-    if (trabalhosTemp.length > 0) {
-        listaTrabalhos.innerHTML = '';
-        trabalhosTemp.forEach(trabalho => {
-            const li = document.createElement('li');
-            li.textContent = `${trabalho.nome}: ${trabalho.valor.toFixed(2)} (Peso: ${trabalho.peso})`;
-            listaTrabalhos.appendChild(li);
-        });
-        trabalhosAdicionados.style.display = 'block';
-    } else {
-        trabalhosAdicionados.style.display = 'none';
-    }
-}
-
-function adicionarProva() {
-    const nome = novaProvaNome.value.trim();
-    const valorStr = novaProvaValor.value;
-    const pesoStr = novaProvaPeso.value;
-    
-    if (nome && valorStr && pesoStr) {
-        const valor = parseFloat(valorStr);
-        const peso = parseInt(pesoStr);
-        if (peso <= 0) return;
-        
-        provasTemp.push({ nome, valor, peso });
-        
-        // Limpar campos
-        novaProvaNome.value = '';
-        novaProvaValor.value = '';
-        novaProvaPeso.value = '1';
-        
-        atualizarListasModal();
-    }
-}
-
-function adicionarTrabalho() {
-    const nome = novoTrabalhoNome.value.trim();
-    const valorStr = novoTrabalhoValor.value;
-    const pesoStr = novoTrabalhoPeso.value;
-    
-    if (nome && valorStr && pesoStr) {
-        const valor = parseFloat(valorStr);
-        const peso = parseInt(pesoStr);
-        if (peso <= 0) return;
-        
-        trabalhosTemp.push({ nome, valor, peso });
-        
-        // Limpar campos
-        novoTrabalhoNome.value = '';
-        novoTrabalhoValor.value = '';
-        novoTrabalhoPeso.value = '1';
-        
-        atualizarListasModal();
-    }
-}
-
-function salvarNotas() {
-    if (!raAtual) return;
-    
-    const novasNotas = [...provasTemp, ...trabalhosTemp];
-    if (novasNotas.length === 0) {
-        fecharModal();
+    if (!raNome || !raPeso) {
+        alert("Preencha o nome e o peso do RA.");
         return;
     }
-    
-    // Encontrar o RA e adicionar as novas notas
-    for (let i = 0; i < ras.length; i++) {
-        if (ras[i].id === raAtual.id) {
-            ras[i].notas = [...ras[i].notas, ...novasNotas];
-            break;
+
+    fetch("/Projeto-Planner/Project/php/salvar_ra.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+            ra_nome: raNome,
+            ra_peso: raPeso
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            adicionarRAnaInterface(raNome, raPeso, [], [], data.id_ra);
+            document.getElementById("novo-ra-nome").value = "";
+            document.getElementById("novo-ra-peso").value = 10;
         }
-    }
-    
-    fecharModal();
-    atualizarInterface();
-}
+    })
+    .catch(error => {
+        console.error("Erro ao salvar RA:", error);
+        alert("Erro ao salvar RA.");
+    });
+});
 
-function adicionarRa() {
-    const nome = novoRaNome.value.trim();
-    const porcentagemStr = novoRaPeso.value;
-    
-    if (nome && porcentagemStr) {
-        const porcentagem = parseInt(porcentagemStr);
-        if (porcentagem <= 0 || porcentagem > 100) return;
-        
-        const novoRa = {
-            id: proximoIdRa,
-            nome: nome,
-            porcentagem: porcentagem,
-            notas: []
-        };
-        
-        ras.push(novoRa);
-        proximoIdRa++;
-        
-        // Limpar campos
-        novoRaNome.value = '';
-        novoRaPeso.value = '10';
-        
-        atualizarInterface();
-    }
-}
+function adicionarRAnaInterface(nome, peso, provas = [], trabalhos = [], id_ra = null) {
+    const listaRAs = document.getElementById("lista-ras");
 
-function removerRa(raId) {
-    ras = ras.filter(ra => ra.id !== raId);
-    atualizarInterface();
-}
+    const raContainer = document.createElement("div");
+    raContainer.className = "ra-item";
+    raContainer.style.backgroundColor = "#edf6ff";
+    raContainer.style.padding = "16px";
+    raContainer.style.marginBottom = "10px";
+    raContainer.style.borderRadius = "12px";
+    raContainer.style.display = "flex";
+    raContainer.style.flexDirection = "column";
 
-function removerNota(raId, notaIndex) {
-    for (let i = 0; i < ras.length; i++) {
-        if (ras[i].id === raId) {
-            ras[i].notas.splice(notaIndex, 1);
-            break;
+    const header = document.createElement("div");
+    header.style.display = "flex";
+    header.style.justifyContent = "space-between";
+    header.style.alignItems = "center";
+    header.style.width = "100%";
+
+    const infoDiv = document.createElement("div");
+    const raTitulo = document.createElement("h4");
+    raTitulo.textContent = nome;
+    const raPeso = document.createElement("p");
+    raPeso.textContent = `Porcentagem: ${peso}%`;
+    infoDiv.appendChild(raTitulo);
+    infoDiv.appendChild(raPeso);
+
+    const btnsDiv = document.createElement("div");
+
+    const btnNotas = document.createElement("button");
+    btnNotas.textContent = "Lançar Notas";
+    btnNotas.className = "btn btn-azul";
+    btnNotas.style.marginRight = "10px";
+    btnNotas.onclick = () => abrirModalNotas(nome);
+
+    const btnRemover = document.createElement("button");
+    btnRemover.textContent = "Remover";
+    btnRemover.className = "btn btn-vermelho";
+    btnRemover.onclick = () => {
+        if (confirm("Tem certeza que deseja remover este RA?")) {
+            fetch("/Projeto-Planner/Project/php/remover_ra.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({ id_ra: id_ra })
+            })
+            .then(res => res.text())
+            .then(data => {
+                alert(data);
+                if (data.includes("sucesso")) {
+                    raContainer.remove();
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao remover RA:", error);
+                alert("Erro ao remover RA.");
+            });
         }
+    };
+    
+
+    btnsDiv.appendChild(btnNotas);
+    btnsDiv.appendChild(btnRemover);
+
+    header.appendChild(infoDiv);
+    header.appendChild(btnsDiv);
+    raContainer.appendChild(header);
+
+    // Mapeia nome para ID
+    if (id_ra) idRaMap[nome] = id_ra;
+
+    const renderNotas = (items, tipo) => {
+        const list = document.createElement("ul");
+        list.style.marginTop = "5px";
+        list.style.listStyle = "none";
+        items.forEach(item => {
+            const nota = parseFloat(item.nota);
+            const peso = parseFloat(item.peso || 1);
+            const notaCorrigida = nota > 10 ? nota / 10 : nota;
+            const notaFormatada = notaCorrigida.toFixed(2);
+            const cor = notaCorrigida >= 7 ? "green" : "red";
+
+            const li = document.createElement("li");
+            li.innerHTML = `${tipo}: ${item.nome_prova || item.nome_trabalho} - Nota: <span style="color:${cor}">${notaFormatada}</span>`;
+            list.appendChild(li);
+        });
+        return list;
+    };
+
+    if (provas.length) raContainer.appendChild(renderNotas(provas, "Prova"));
+    if (trabalhos.length) raContainer.appendChild(renderNotas(trabalhos, "Trabalho"));
+
+    let somaNotasPonderadas = 0, somaPesos = 0;
+    [...provas, ...trabalhos].forEach(item => {
+        const nota = parseFloat(item.nota);
+        const peso = parseFloat(item.peso || 1);
+        const notaCorrigida = nota > 10 ? nota / 10 : nota;
+        somaNotasPonderadas += notaCorrigida * peso;
+        somaPesos += peso;
+    });
+
+    if (somaPesos > 0) {
+        const mediaRA = somaNotasPonderadas / somaPesos;
+        const mediaFormatada = mediaRA.toFixed(2);
+        const cor = mediaRA >= 7 ? "green" : "red";
+        const mediaEl = document.createElement("p");
+        mediaEl.innerHTML = `Média Final do RA: <strong style="color:${cor}">${mediaFormatada}</strong>`;
+        mediaEl.style.marginTop = "10px";
+        raContainer.appendChild(mediaEl);
     }
-    atualizarInterface();
+
+    listaRAs.appendChild(raContainer);
 }
 
-// Event Listeners
-btnAdicionarRa.addEventListener('click', adicionarRa);
-btnAdicionarProva.addEventListener('click', adicionarProva);
-btnAdicionarTrabalho.addEventListener('click', adicionarTrabalho);
-btnCancelar.addEventListener('click', fecharModal);
-btnSalvar.addEventListener('click', salvarNotas);
+function abrirModalNotas(raNome) {
+    document.getElementById("modal-overlay").style.display = "block";
+    document.getElementById("modal-titulo").textContent = raNome;
+    idRaSelecionado = raNome;
+}
 
-// Verificar se as porcentagens somam 100%
-// Inicializar interface
-atualizarInterface();
-verificarPorcentagens();
+document.getElementById("btn-cancelar").addEventListener("click", () => {
+    document.getElementById("modal-overlay").style.display = "none";
+    document.getElementById("lista-provas").innerHTML = "";
+    document.getElementById("lista-trabalhos").innerHTML = "";
+    document.getElementById("provas-adicionadas").style.display = "none";
+    document.getElementById("trabalhos-adicionados").style.display = "none";
+});
+
+document.getElementById("btn-adicionar-prova").addEventListener("click", () => {
+    const nome = document.getElementById("nova-prova-nome").value;
+    const nota = document.getElementById("nova-prova-valor").value;
+    const peso = document.getElementById("nova-prova-peso").value;
+
+    if (!nome || nota === "" || peso === "") {
+        alert("Preencha todos os campos da prova.");
+        return;
+    }
+
+    const li = document.createElement("li");
+    li.textContent = `${nome} - Nota: ${nota} - Peso: ${peso}`;
+    li.dataset.nome = nome;
+    li.dataset.nota = nota;
+    li.dataset.peso = peso;
+
+    document.getElementById("lista-provas").appendChild(li);
+    document.getElementById("provas-adicionadas").style.display = "block";
+
+    document.getElementById("nova-prova-nome").value = "";
+    document.getElementById("nova-prova-valor").value = "";
+    document.getElementById("nova-prova-peso").value = 1;
+});
+
+document.getElementById("btn-adicionar-trabalho").addEventListener("click", () => {
+    const nome = document.getElementById("novo-trabalho-nome").value;
+    const nota = document.getElementById("novo-trabalho-valor").value;
+    const peso = document.getElementById("novo-trabalho-peso").value;
+
+    if (!nome || nota === "" || peso === "") {
+        alert("Preencha todos os campos do trabalho.");
+        return;
+    }
+
+    const li = document.createElement("li");
+    li.textContent = `${nome} - Nota: ${nota} - Peso: ${peso}`;
+    li.dataset.nome = nome;
+    li.dataset.nota = nota;
+    li.dataset.peso = peso;
+
+    document.getElementById("lista-trabalhos").appendChild(li);
+    document.getElementById("trabalhos-adicionados").style.display = "block";
+
+    document.getElementById("novo-trabalho-nome").value = "";
+    document.getElementById("novo-trabalho-valor").value = "";
+    document.getElementById("novo-trabalho-peso").value = 1;
+});
+
+document.getElementById("btn-salvar").addEventListener("click", () => {
+    const provas = [], trabalhos = [];
+
+    document.querySelectorAll("#lista-provas li").forEach(li => {
+        provas.push({
+            nome: li.dataset.nome,
+            nota: parseFloat(li.dataset.nota),
+            peso: parseInt(li.dataset.peso)
+        });
+    });
+
+    document.querySelectorAll("#lista-trabalhos li").forEach(li => {
+        trabalhos.push({
+            nome: li.dataset.nome,
+            nota: parseFloat(li.dataset.nota),
+            peso: parseInt(li.dataset.peso)
+        });
+    });
+
+    const id_ra = idRaMap[idRaSelecionado];
+    if (!id_ra) {
+        alert("Erro: ID do RA não encontrado.");
+        return;
+    }
+
+    fetch("/Projeto-Planner/Project/php/salvar_avaliacoes.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+            id_ra,
+            provas: JSON.stringify(provas),
+            trabalhos: JSON.stringify(trabalhos)
+        })
+    })
+    .then(res => res.text())
+    .then(data => {
+        alert(data);
+        document.getElementById("modal-overlay").style.display = "none";
+    })
+    .catch(error => {
+        console.error("Erro ao salvar avaliações:", error);
+        alert("Erro ao salvar provas/trabalhos.");
+    });
+});
+
+
+window.addEventListener("DOMContentLoaded", () => {
+    fetch("/Projeto-Planner/Project/php/listar_ras.php")
+        .then(res => res.json())
+        .then(ras => {
+            ras.forEach(ra => {
+                adicionarRAnaInterface(ra.nome_ra, ra.peso_ra, ra.provas, ra.trabalhos, ra.id_ra);
+            });
+        })
+        .catch(error => {
+            console.error("Erro ao carregar RAs:", error);
+        });
+});
