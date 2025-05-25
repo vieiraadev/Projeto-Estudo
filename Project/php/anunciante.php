@@ -66,7 +66,8 @@ $imagem = $caminhoImagem;
 $site = $_POST['site_empresa'];
 $categoria = $_POST['categoria'];
 $duracao = $_POST['duracao'];
-$dataCriacao = date("H:i:s");
+$dataCriacao = date("Y-m-d H:i:s"); 
+
 
 // Insere no banco de dados
 $sql = "INSERT INTO anuncio (titulo, imagem_anuncio, site_empresa, categoria, duracao, situacao, data_de_criacao_anuncio, fk_id_anunciante)

@@ -49,9 +49,7 @@ if (empty($input['message'])) {
     exit;
 }
 
-// Configuração da API OpenAI
-$apiKey = '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'; // Use a mesma chave do test-api.php // ← Substitua pela sua chave real!
-$apiUrl = 'https://api.openai.com/v1/chat/completions';
+
 
 // Preparar mensagens para a OpenAI
 $messages = [
