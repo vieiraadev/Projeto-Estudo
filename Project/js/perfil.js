@@ -17,12 +17,13 @@ function atualizarIniciais(nomeCompleto) {
   if (fotoSidebar) fotoSidebar.textContent = iniciais;
 }
 
-function mostrarNotificacao(mensagem, erro = false) {
-  const notif = document.getElementById("notification");
-  notif.textContent = mensagem;
-  notif.style.backgroundColor = erro ? "#e74c3c" : "#2ecc71";
-  notif.classList.add("show");
-  setTimeout(() => notif.classList.remove("show"), 2500);
+function mostrarSweetAlert(mensagem, tipo = "success") {
+  Swal.fire({
+    icon: tipo,
+    title: tipo === "success" ? "Sucesso!" : "Erro",
+    text: mensagem,
+    confirmButtonColor: tipo === "success" ? "#28a745" : "#d33"
+  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -31,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(dados => {
       if (dados.erro) {
         console.error(dados.erro);
+        mostrarSweetAlert("Erro ao carregar dados: " + dados.erro, "error");
         return;
       }
 
@@ -41,7 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       atualizarIniciais(dados.nome);
     })
-    .catch(err => console.error("Erro ao carregar dados:", err));
+    .catch(err => {
+      console.error("Erro ao carregar dados:", err);
+      mostrarSweetAlert("Erro ao carregar dados: " + err.message, "error");
+    });
 
   document.querySelectorAll(".btn-editar-campo").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -64,22 +69,22 @@ document.addEventListener("DOMContentLoaded", () => {
       method: "POST",
       body: formData,
     })
-      .then(res => res.json()) 
+      .then(res => res.json())
       .then(data => {
         console.log("Resposta do servidor:", data);
 
         if (data.erro) {
-          mostrarNotificacao(data.erro, true);
+          mostrarSweetAlert(data.erro, "error");
         } else if (data.sucesso) {
-          mostrarNotificacao(data.sucesso, false); 
+          mostrarSweetAlert(data.sucesso, "success");
           setTimeout(() => location.reload(), 1500);
         } else {
-          mostrarNotificacao("Resposta inesperada.", true);
+          mostrarSweetAlert("Resposta inesperada.", "error");
         }
       })
       .catch(err => {
         console.error("Erro ao salvar:", err);
-        mostrarNotificacao("Erro ao salvar: " + err, true);
+        mostrarSweetAlert("Erro ao salvar: " + err.message, "error");
       });
   });
 });
