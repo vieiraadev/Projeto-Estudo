@@ -84,6 +84,7 @@ function adicionarRAnaInterface(nome, peso, provas = [], trabalhos = [], id_ra =
                 alert(data);
                 if (data.includes("sucesso")) {
                     raContainer.remove();
+                    window.location.reload();
                 }
             })
             .catch(error => {
@@ -116,7 +117,7 @@ function adicionarRAnaInterface(nome, peso, provas = [], trabalhos = [], id_ra =
             const cor = notaCorrigida >= 7 ? "green" : "red";
 
             const li = document.createElement("li");
-            li.innerHTML = `${tipo}: ${item.nome_prova || item.nome_trabalho} - Nota: <span style="color:${cor}">${notaFormatada}</span>`;
+            li.innerHTML = `${tipo}: ${item.nome_prova || item.nome_trabalho} - Nota: <span style="color:${cor}">${notaFormatada} - Peso: ${item.peso}%</span>`;
             list.appendChild(li);
         });
         return list;
@@ -139,12 +140,15 @@ function adicionarRAnaInterface(nome, peso, provas = [], trabalhos = [], id_ra =
         const mediaFormatada = mediaRA.toFixed(2);
         const cor = mediaRA >= 7 ? "green" : "red";
         const mediaEl = document.createElement("p");
-        mediaEl.innerHTML = `Média Final do RA: <strong style="color:${cor}">${mediaFormatada}</strong>`;
+        mediaEl.innerHTML = `Média Final do RA: <strong class="media-ra" style="color:${cor}">${mediaFormatada}</strong>`;
         mediaEl.style.marginTop = "10px";
         raContainer.appendChild(mediaEl);
     }
 
     listaRAs.appendChild(raContainer);
+    atualizarMediaFinal();
+
+
 }
 
 function abrirModalNotas(raNome) {
@@ -247,6 +251,7 @@ document.getElementById("btn-salvar").addEventListener("click", () => {
     .then(data => {
         alert(data);
         document.getElementById("modal-overlay").style.display = "none";
+        window.location.reload()
     })
     .catch(error => {
         console.error("Erro ao salvar avaliações:", error);
@@ -267,3 +272,39 @@ window.addEventListener("DOMContentLoaded", () => {
             console.error("Erro ao carregar RAs:", error);
         });
 });
+function atualizarMediaFinal() {
+    let somaMediasPonderadas = 0;
+    let somaPesos = 0;
+
+    document.querySelectorAll(".ra-item").forEach(raItem => {
+        const mediaText = raItem.querySelector("strong.media-ra");
+        if (!mediaText) return;
+
+        const media = parseFloat(mediaText.textContent.replace(",", "."));
+        const pesoText = raItem.querySelector("p").textContent;
+        const peso = parseInt(pesoText.match(/\d+/)[0]);
+
+        somaMediasPonderadas += media * peso;
+        somaPesos += peso;
+    });
+
+    let mediaFinal = 0;
+    if (somaPesos > 0) {
+        mediaFinal = somaMediasPonderadas / somaPesos;
+    }
+
+    const mediaFinalEl = document.getElementById("media-final");
+    const statusEl = document.getElementById("status-aluno");
+
+    mediaFinalEl.textContent = mediaFinal.toFixed(2);
+
+    if (mediaFinal >= 7) {
+        statusEl.textContent = "Aprovado";
+        statusEl.classList.remove("status-reprovado");
+        statusEl.classList.add("status-aprovado");
+    } else {
+        statusEl.textContent = "Reprovado";
+        statusEl.classList.remove("status-aprovado");
+        statusEl.classList.add("status-reprovado");
+    }
+}
