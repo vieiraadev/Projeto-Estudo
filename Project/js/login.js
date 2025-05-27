@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Lógica do formulário de login
   const loginForm = document.getElementById('loginForm');
   if (loginForm) {
     loginForm.addEventListener('submit', function (e) {
@@ -14,16 +13,35 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
           if (data.sucesso) {
-            window.location.href = '/Projeto-Planner/Project/html/home.html';
+            Swal.fire({
+              icon: 'success',
+              title: 'Login realizado com sucesso!',
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              window.location.href = '/Projeto-Planner/Project/html/home.html';
+            });
           } else if (data.erro) {
-            alert(data.erro);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erro no login',
+              text: data.erro
+            });
           } else {
-            alert('Erro inesperado.');
+            Swal.fire({
+              icon: 'error',
+              title: 'Erro inesperado',
+              text: 'Tente novamente mais tarde.'
+            });
           }
         })
         .catch(error => {
           console.error('Erro:', error);
-          alert('Erro ao tentar logar.');
+          Swal.fire({
+            icon: 'error',
+            title: 'Erro de conexão',
+            text: 'Erro ao tentar logar. Verifique sua conexão.'
+          });
         });
     });
   }
