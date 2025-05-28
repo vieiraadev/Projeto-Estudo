@@ -1,8 +1,10 @@
 <?php
 session_start();
 
+header('Content-Type: application/json');
+
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: /Projeto-Planner/Project/html/login_anunciante.html");
+    echo json_encode(['sucesso' => false, 'erro' => 'Método inválido.']);
     exit;
 }
 
@@ -13,7 +15,8 @@ $database = "estudomais";
 
 $conn = new mysqli($host, $usuario, $senha, $database);
 if ($conn->connect_error) {
-    die("Erro de conexão: " . $conn->connect_error);
+    echo json_encode(['sucesso' => false, 'erro' => 'Erro de conexão com o banco de dados.']);
+    exit;
 }
 
 $email    = trim($_POST['email_empresa']);
@@ -33,14 +36,17 @@ if ($stmt->num_rows === 1) {
         $_SESSION['id_anunciante']    = $id;
         $_SESSION['anunciante_nome']  = $nomeEmpresa;
         $_SESSION['anunciante_email'] = $email;
-        header("Location: /Projeto-Planner/Project/html/anunciante.html");
+
+        echo json_encode(['sucesso' => true]);
+        exit;
+    } else {
+        echo json_encode(['sucesso' => false, 'erro' => 'Senha incorreta.']);
         exit;
     }
+} else {
+    echo json_encode(['sucesso' => false, 'erro' => 'E-mail não encontrado.']);
+    exit;
 }
 
 $stmt->close();
 $conn->close();
-
-header("Location: /Projeto-Planner/Project/html/login_anunciante.html?error=1");
-exit;
-?>

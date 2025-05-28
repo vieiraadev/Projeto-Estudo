@@ -1,11 +1,3 @@
-function mostrarNotificacao(mensagem, erro = false) {
-  const notif = document.getElementById("notification");
-  notif.textContent = mensagem;
-  notif.style.backgroundColor = erro ? "#e74c3c" : "#2ecc71"; // vermelho para erro, verde para sucesso
-  notif.classList.add("show");
-  setTimeout(() => notif.classList.remove("show"), 2500);
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   const cpfCnpjInput = document.getElementById("cpf-cnpj");
 
@@ -14,13 +6,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
 document.addEventListener("DOMContentLoaded", () => {
   fetch("/Projeto-Planner/Project/php/buscardados_anunciante.php")
     .then(res => res.json())
     .then(dados => {
       if (dados.erro) {
         console.error(dados.erro);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro',
+          text: dados.erro,
+          confirmButtonColor: '#d33'
+        });
         return;
       }
 
@@ -34,7 +31,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       atualizarIniciais(dados.nome);
     })
-    .catch(err => console.error("Erro ao carregar dados:", err));
+    .catch(err => {
+      console.error("Erro ao carregar dados:", err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro',
+        text: 'Erro ao carregar dados: ' + err.message,
+        confirmButtonColor: '#d33'
+      });
+    });
 
   document.querySelectorAll(".btn-editar-campo").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -60,17 +65,38 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(res => res.json())
       .then(data => {
         if (data.erro) {
-          mostrarNotificacao(data.erro, true); // Exibe erro em vermelho
+          Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            text: data.erro,
+            confirmButtonColor: '#d33'
+          });
         } else if (data.sucesso) {
-          mostrarNotificacao(data.sucesso, false); // Exibe sucesso em verde
-          setTimeout(() => location.reload(), 1500);
+          Swal.fire({
+            icon: 'success',
+            title: 'Sucesso',
+            text: data.sucesso,
+            confirmButtonColor: '#28a745'
+          }).then(() => {
+            location.reload();
+          });
         } else {
-          mostrarNotificacao("Resposta inesperada do servidor.", true);
+          Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            text: 'Resposta inesperada do servidor.',
+            confirmButtonColor: '#d33'
+          });
         }
       })
       .catch(err => {
         console.error("Erro ao salvar:", err);
-        mostrarNotificacao("Erro ao salvar: " + err, true);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro',
+          text: 'Erro ao salvar: ' + err.message,
+          confirmButtonColor: '#d33'
+        });
       });
   });
 });

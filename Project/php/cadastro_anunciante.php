@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -11,7 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $conn = new mysqli($host, $usuario, $senha_db, $database);
 
     if ($conn->connect_error) {
-        die("Erro de conexão: " . $conn->connect_error);
+        echo json_encode(['sucesso' => false, 'erros' => ['Erro de conexão: ' . $conn->connect_error]]);
+        exit;
     }
 
     $nome = trim($_POST['nome_empresa']);
@@ -23,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $erros = [];
 
+    // Validações
     if (empty($nome)) $erros[] = "Nome da empresa é obrigatório.";
     if (empty($email)) $erros[] = "E-mail é obrigatório.";
     if (empty($documento)) $erros[] = "CPF ou CNPJ é obrigatório.";
@@ -52,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $erros[] = "CPF ou CNPJ deve ter 11 ou 14 dígitos.";
     }
 
+    // Verifica duplicidade de e-mail
     $stmt = $conn->prepare("SELECT id_anunciante FROM anunciante WHERE email_empresa = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -61,6 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     $stmt->close();
 
+    // Verifica duplicidade de CPF/CNPJ
     $stmt = $conn->prepare("SELECT id_anunciante FROM anunciante WHERE documento = ?");
     $stmt->bind_param("s", $documento);
     $stmt->execute();
@@ -71,35 +76,35 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->close();
 
     if (!empty($erros)) {
-        foreach ($erros as $erro) {
-            echo "<p style='color: red;'>$erro</p>";
-        }
+        echo json_encode(['sucesso' => false, 'erros' => $erros]);
         exit;
     }
 
+    // Cadastro
     $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
     $sql = "INSERT INTO anunciante (nome_empresa, email_empresa, documento, senha, data_de_criacao_anunciante)
             VALUES (?, ?, ?, ?, ?)";
-
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssss", $nome, $email, $documento, $senha_hash, $data_criacao);
 
     if ($stmt->execute()) {
-        header("Location: /Projeto-Planner/Project/html/login_anunciante.html");
-        exit;
+        echo json_encode(['sucesso' => true, 'mensagem' => 'Cadastro realizado com sucesso!']);
     } else {
-        echo "Erro ao cadastrar: " . $stmt->error;
+        echo json_encode(['sucesso' => false, 'erros' => ['Erro ao cadastrar: ' . $stmt->error]]);
     }
 
     $stmt->close();
     $conn->close();
 } else {
-    echo "Método inválido.";
+    echo json_encode(['sucesso' => false, 'erros' => ['Método inválido.']]);
+    exit;
 }
 
+// Funções de validação CPF e CNPJ (como você já tem, vou deixar aqui resumido)
+
 function validarCPF($cpf) {
-    if (strlen($cpf) != 11 || preg_match('/(\d)\1{10}/', $cpf)) return false;
+    if (preg_match('/(\d)\1{10}/', $cpf)) return false;
     for ($t = 9; $t < 11; $t++) {
         for ($d = 0, $c = 0; $c < $t; $c++) {
             $d += $cpf[$c] * (($t + 1) - $c);
@@ -111,15 +116,21 @@ function validarCPF($cpf) {
 }
 
 function validarCNPJ($cnpj) {
-    if (strlen($cnpj) != 14 || preg_match('/(\d)\1{13}/', $cnpj)) return false;
-    for ($t = 12; $t < 14; $t++) {
-        for ($d = 0, $p = 2, $c = $t - 7; $c >= 0; $c--) {
-            $d += $cnpj[$c] * $p++;
-            if ($p > 9) $p = 2;
-        }
-        $d = ((10 * $d) % 11) % 10;
-        if ($cnpj[$c] != $d) return false;
+    if (preg_match('/(\d)\1{13}/', $cnpj)) return false;
+    $s = 0;
+    $m = 2;
+    for ($i = 11; $i >= 0; $i--) {
+        $s += $cnpj[$i] * $m;
+        $m = ($m < 9) ? $m + 1 : 2;
     }
-    return true;
+    $d1 = ($s % 11 < 2) ? 0 : 11 - ($s % 11);
+    if ($cnpj[12] != $d1) return false;
+    $s = 0;
+    $m = 2;
+    for ($i = 12; $i >= 0; $i--) {
+        $s += $cnpj[$i] * $m;
+        $m = ($m < 9) ? $m + 1 : 2;
+    }
+    $d2 = ($s % 11 < 2) ? 0 : 11 - ($s % 11);
+    return $cnpj[13] == $d2;
 }
-?>
