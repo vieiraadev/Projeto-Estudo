@@ -1,6 +1,8 @@
 // === Mapeamento de RA ===
 let idRaSelecionado = null;
 let idRaMap = {}; // mapeia ra_nome -> id_ra
+const urlParams = new URLSearchParams(window.location.search);
+const idDisciplinaSelecionada = urlParams.get("id_disciplina");
 
 // === Adicionar novo RA e exibir na tela ===
 document.getElementById("btn-adicionar-ra").addEventListener("click", () => {
@@ -17,7 +19,8 @@ document.getElementById("btn-adicionar-ra").addEventListener("click", () => {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
             ra_nome: raNome,
-            ra_peso: raPeso
+            ra_peso: raPeso,
+            id_disciplina: idDisciplinaSelecionada
         })
     })
     .then(res => res.json())
@@ -261,17 +264,28 @@ document.getElementById("btn-salvar").addEventListener("click", () => {
 
 
 window.addEventListener("DOMContentLoaded", () => {
-    fetch("/Projeto-Planner/Project/php/listar_ras.php")
-        .then(res => res.json())
-        .then(ras => {
-            ras.forEach(ra => {
-                adicionarRAnaInterface(ra.nome_ra, ra.peso_ra, ra.provas, ra.trabalhos, ra.id_ra);
-            });
-        })
-        .catch(error => {
-            console.error("Erro ao carregar RAs:", error);
+    const urlParams = new URLSearchParams(window.location.search);
+    const idDisciplinaSelecionada = urlParams.get("id_disciplina");
+
+    fetch(`/Projeto-Planner/Project/php/listar_ras.php?id_disciplina=${idDisciplinaSelecionada}`)
+    .then(res => res.json())
+    .then(ras => {
+        if (!Array.isArray(ras)) {
+            console.error("Erro ao carregar RAs: resposta não é uma lista", ras);
+            return;
+        }
+
+        ras.forEach(ra => {
+            adicionarRAnaInterface(ra.nome_ra, ra.peso_ra, ra.provas, ra.trabalhos, ra.id_ra);
         });
+    })
+    .catch(error => {
+        console.error("Erro ao carregar RAs:", error);
+    });
+
 });
+
+
 function atualizarMediaFinal() {
     let somaMediasPonderadas = 0;
     let somaPesos = 0;
