@@ -1,14 +1,65 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Minhas Disciplinas</title>
-  <link rel="stylesheet" href="/Projeto-Planner/Project/css/disciplinas.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesse suas notas</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/Projeto-Planner/Project/css/disciplinas_notas.css">
+
 </head>
 <body>
-  <h1>Minhas Disciplinas</h1>
-  <ul id="lista-disciplinas"></ul>
+    <aside>
+        <nav>
+            <a href="/Projeto-Planner/Project/html/home.html"><i class='bx bx-home'></i></a>
+            <a href="/Projeto-Planner/Project/html/inbox.html"><i class='bx bxs-inbox'></i></a>
+            <a href="/Projeto-Planner/Project/html/disciplinas.html"><i class='bx bx-book'></i></a>
+            <a href="/Projeto-Planner/Project/html/ia.html"><i class='bx bx-brain'></i></a>
+            <a href="/Projeto-Planner/Project/html/suporte.html"><i class='bx bx-cog'></i></a>
+        </nav>
+        <div class="perfil-sidebar">
+            <a href="/Projeto-Planner/Project/html/perfil.html">
+                <div class="profile-photo-iniciais" id="profile-initials-sidebar"></div>
+            </a>
+        </div>
+    </aside>
 
-    <script src="/Projeto-Planner/Project/js/disciplinas_notas.js"></script>
+    <div class="main-content">
+        <div class="header">
+            <h1>Acesse suas notas</h1>
+            <p>Calcule seu desempenho acadêmico</p>
+        </div>
+
+        <div class="section-title">Minhas Disciplinas</div>
+        
+        <div class="disciplines-grid" id="disciplinesGrid">
+            <div class="discipline-card" data-discipline="Análise de Dados">
+                <div class="discipline-name">Análise de Dados</div>
+                <button class="view-grades-btn">Lançar Notas</button>
+            </div>
+            
+            <div class="discipline-card" data-discipline="Desenvolvimento Web">
+                <div class="discipline-name">Desenvolvimento Web</div>
+                <button class="view-grades-btn" >Lançar Notas</button>
+            </div>
+            
+            <div class="discipline-card" data-discipline="Banco de Dados">
+                <div class="discipline-name">Banco de Dados</div>
+                <button class="view-grades-btn">Lançar Notas</button>
+            </div>
+            
+            <div class="discipline-card" data-discipline="Algoritmos">
+                <div class="discipline-name">Algoritmos</div>
+                <button class="view-grades-btn">Lançar Notas</button>
+            </div>
+            
+            <div class="discipline-card" data-discipline="Matemática Aplicada">
+                <div class="discipline-name">Matemática Aplicada</div>
+                <button class="view-grades-btn">Lançar Notas</button>
+            </div>
+        </div>
+    </div>
+
+    
 </body>
 </html>
