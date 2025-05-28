@@ -72,8 +72,9 @@ main {
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin-top: 20px;
+    margin: 20px 0; /* Topo e base com 20px de espaçamento */
 }
+
 
 .card-header {
     font-size: 18px;
@@ -102,18 +103,49 @@ main {
     color: #888;
     font-size: 1.5rem;
 }
+.ver-notas-container {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.ver-notas-botao {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.ver-notas-botao:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.ver-notas-botao:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 
 .disciplina-item {
-    background-color: #1896BC;
-    opacity: 0.7;
-    border-radius: 4px;
-    padding: 10px;
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    border-radius: 12px;
+    padding: 20px;
     display: flex;
+    margin-bottom: 15px;
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    box-shadow: 0 4px 20px rgba(116, 185, 255, 0.3);
+    transition: all 0.3s ease;
     cursor: pointer;
-    transition: background-color 0.3s;
-    transition: all 0.2s ease;
 }
 .disciplina-item span {
     color: white;
@@ -289,8 +321,8 @@ main {
   }
   
   .perfil-sidebar {
-    margin-top: auto; /* empurra a foto para o final do aside */
-    margin-bottom: 10px; /* distância da base da sidebar */
+    margin-top: auto; 
+    margin-bottom: 10px; 
   }
   
   .perfil-sidebar .profile-photo-iniciais {
@@ -308,17 +340,17 @@ main {
   }
   
   .perfil-sidebar a {
-    text-decoration: none;  /* Remove o sublinhado */
-    border: none;           /* Remove qualquer borda */
-    outline: none;          /* Remove o contorno */
-    box-shadow: none;       /* Remove qualquer sombra */
+    text-decoration: none;  
+    border: none;          
+    outline: none;        
+    box-shadow: none;  
   }
   
   a {
-    text-decoration: none;  /* Remove o sublinhado */
-    border: none;           /* Remove qualquer borda */
-    outline: none;          /* Remove o contorno */
-    box-shadow: none;       /* Remove qualquer sombra */
+    text-decoration: none; 
+    border: none;          
+    outline: none;         
+    box-shadow: none;      
   }
   * {
     margin: 0;
@@ -383,7 +415,7 @@ aside {
     border: 3px solid #2e86de;
     object-fit: cover;
   }
-/* Área principal */
+
 .main-content {
     margin-left: 60px;
     flex: 1;
@@ -391,7 +423,6 @@ aside {
     background-color: #ffffff;
 }
 
-/* Cabeçalho */
 .header {
     display: flex;
     justify-content: space-between;
@@ -413,7 +444,6 @@ aside {
     font-weight: 400;
 }
 
-/* Botão de ação */
 .action-button {
     background: linear-gradient(135deg, #4ade80, #22c55e);
     color: white;
@@ -522,7 +552,6 @@ aside {
     }
 }
 
-/* Estados vazios */
 .empty-state {
     text-align: center;
     padding: 60px 20px;
