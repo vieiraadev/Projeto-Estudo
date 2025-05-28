@@ -11,40 +11,36 @@
 <body>
     <aside>
         <nav>
-          <a href="/Projeto-Planner/Project/html/home.html"><i class='bx bx-home'></i></a>
-          <a href="/Projeto-Planner/Project/html/inbox.html"><i class='bx bxs-inbox'></i></a>
-          <a href="/Projeto-Planner/Project/html/disciplinas.html"><i class='bx bx-book'></i></a>
-          <a href="/Projeto-Planner/Project/html/ia.html"><i class='bx bx-brain'></i></a>
-          <a href="/Projeto-Planner/Project/html/suporte.html"><i class='bx bx-cog'></i></a>
+          <a href="#"><i class='bx bx-home'></i></a>
+          <a href="#"><i class='bx bxs-inbox'></i></a>
+          <a href="#"><i class='bx bx-book'></i></a>
+          <a href="#"><i class='bx bx-brain'></i></a>
+          <a href="#"><i class='bx bx-cog'></i></a>
         </nav>
         <div class="perfil-sidebar">
-          <div class="profile-photo-iniciais" id="profile-initials-sidebar"></div>
-        </div>
-            <a href="/Projeto-Planner/Project/html/perfil.html">
-              <div class="profile-photo-iniciais" id="profile-initials-sidebar"></div>
+            <a href="#">
+                <div class="profile-photo-iniciais" id="profile-initials-sidebar"></div>
             </a>
-          </div>
-      </aside>
+        </div>
+    </aside>
 
     <div class="main-content">
         <div class="header">
             <h1>Assistente de Estudos com IA</h1>
             <p>Converse com nossa IA para criar um plano de estudos personalizado.</p>
         </div>
-        <form id="chatForm" class="card chat-container" onsubmit="return false;">
+        <form id="chatForm" class="card chat-container" method="POST">
             <div class="chat-box" id="chatBox">
                 <div class="message bot-message">
                     Olá! Sou seu assistente de estudos inteligente. Me conte sobre sua rotina e objetivos que vou te ajudar a criar um plano personalizado.
                 </div>
             </div>
             <div class="input-area">
-                <input type="text" id="userInput" placeholder="Digite sua mensagem..." autocomplete="off">
+                <input type="text" id="userInput" name="mensagem" placeholder="Digite sua mensagem..." autocomplete="off">
                 <button type="submit" id="sendButton" class="btn">Enviar</button>
             </div>
         </form>
     </div>
     <script src="/Projeto-Planner/Project/js/chat.js"></script>
-    <script src="/Projeto-Planner/Project/js/atualizar_perfil.js"></script>
-
 </body>
 </html>
