@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home | Estudo+</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="/PROJETO-PLANNER/Project/css/home.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Estudo+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="/Projeto-Planner/Project/css/home.css">
+    <style>
+       
+    </style>
 </head>
 <body>
   <aside>
@@ -43,52 +47,157 @@
         </a>
     </div>
 </aside>
-  <main>
-     <h1 id="mensagem">Olá,...</h1>
-    
-    <div class="subheader">Tarefas semanais</div>
 
-    <div class="semana">
-      <div class="dia">
-        <span>Seg</span>
-        <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_segunda.html'">Ver tarefas</button>
-      </div>
-      <div class="dia">
-        <span>Ter</span>
-        <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_terca.html'">Ver tarefas</button>
-      </div>
-      
-      <div class="dia">
-        <span>Qua</span>
-        <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quarta.html'">Ver tarefas</button>
-      </div>
-      
-      <div class="dia">
-        <span>Qui</span>
-        <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quinta.html'">Ver tarefas</button>
-      </div>
-      
-      <div class="dia">
-        <span>Sex</span>
-        <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_sexta.html'">Ver tarefas</button>
-      </div>
-      
-      <div class="dia">
-        <span>Sab</span>
-        <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_sabado.html'">Ver tarefas</button>
-      </div>
-      
-    </div>
-    
-    <div class="subheader">Anúncios em destaque</div>
-      <div class="carousel-wrapper">
-        <div class="carousel" id="carousel">
-          <!-- Os anúncios serão carregados aqui -->
+    <main>
+        <h1 class="header">Olá, Estudante!</h1>
+        
+        <div class="subheader">Tarefas semanais</div>
+        <div class="semana">
+          <div class="dia">
+            <span>Seg</span>
+            <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_segunda.html'">Ver tarefas</button>
+          </div>
+          <div class="dia">
+            <span>Ter</span>
+            <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_terca.html'">Ver tarefas</button>
+          </div>
+          
+          <div class="dia">
+            <span>Qua</span>
+            <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quarta.html'">Ver tarefas</button>
+          </div>
+          
+          <div class="dia">
+            <span>Qui</span>
+            <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quinta.html'">Ver tarefas</button>
+          </div>
+          
+          <div class="dia">
+            <span>Sex</span>
+            <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_sexta.html'">Ver tarefas</button>
+          </div>
+          
+          <div class="dia">
+            <span>Sab</span>
+            <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_sabado.html'">Ver tarefas</button>
+          </div>
+          
         </div>
-    </div>
 
+        <!-- Cards Section -->
+        <div class="cards-section">
+            <!-- Card de Desempenho Acadêmico -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class='bx bx-chart'></i>
+                    </div>
+                    <h3 class="card-title">Desempenho Acadêmico</h3>
+                </div>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+                <div class="subject-list">
+                    <div class="subject-item">
+                        <span class="subject-name">Matemática</span>
+                        <span class="subject-grade">8.5</span>
+                    </div>
+                    <div class="subject-item">
+                        <span class="subject-name">Português</span>
+                        <span class="subject-grade">9.2</span>
+                    </div>
+                    <div class="subject-item">
+                        <span class="subject-name">História</span>
+                        <span class="subject-grade">7.8</span>
+                    </div>
+                </div>
+                <button class="btn-view-all">
+                    Ver Todas as Notas
+                </button>
+            </div>
 
-  </main>
+            <!-- Card de Tarefas -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class='bx bx-task'></i>
+                    </div>
+                    <h3 class="card-title">Tarefas Recentes</h3>
+                </div>
+                <div class="task-list">
+                    <div class="task-item">
+                        <div class="task-info">
+                            <div class="task-title">Resolver exercícios de Álgebra</div>
+                            <div class="task-date">Vence em 2 dias</div>
+                        </div>
+                        <span class="task-priority priority-high">Alta</span>
+                    </div>
+                    <div class="task-item">
+                        <div class="task-info">
+                            <div class="task-title">Leitura do Capítulo 5</div>
+                            <div class="task-date">Vence em 5 dias</div>
+                        </div>
+                        <span class="task-priority priority-medium">Média</span>
+                    </div>
+                    <div class="task-item">
+                        <div class="task-info">
+                            <div class="task-title">Pesquisa sobre História do Brasil</div>
+                            <div class="task-date">Vence em 1 semana</div>
+                        </div>
+                        <span class="task-priority priority-low">Baixa</span>
+                    </div>
+                </div>
+                <button class="btn-view-all-tarefas">
+                    Ver Todas as Tarefas
+                </button>
+            </div>
+
+            <!-- Card de Mensagens -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class='bx bx-envelope'></i>
+                    </div>
+                    <h3 class="card-title">Caixa de Entrada</h3>
+                </div>
+                <div class="message-list">
+                    <div class="message-item">
+                        <div class="message-info">
+                            <div class="message-title">Lembrete: Prova de Matemática</div>
+                            <div class="message-date">Há 2 horas</div>
+                        </div>
+                        <span class="message-status status-unread">Nova</span>
+                    </div>
+                    <div class="message-item">
+                        <div class="message-info">
+                            <div class="message-title">Resultado da avaliação</div>
+                            <div class="message-date">Ontem</div>
+                        </div>
+                        <span class="message-status status-read">Lida</span>
+                    </div>
+                    <div class="message-item">
+                        <div class="message-info">
+                            <div class="message-title">Nova atividade disponível</div>
+                            <div class="message-date">2 dias atrás</div>
+                        </div>
+                        <span class="message-status status-unread">Nova</span>
+                    </div>
+                </div>
+                <button class="btn-view-all-caixa">
+                    Ver Todas as Mensagens
+                </button>
+            </div>
+        </div>
+
+        <div class="header-Anuncios">Anúncios em destaque</div>
+        <div class="carousel-wrapper">
+          <div class="carousel" id="carousel">
+            <!-- Os anúncios serão carregados aqui -->
+          </div>
+      </div>
+  
+    </main>
+
 <script src="/Projeto-Planner/Project/js/home.js"></script>
 <script src="/Projeto-Planner/Project/js/atualizar_perfil.js"></script>
 </body>
