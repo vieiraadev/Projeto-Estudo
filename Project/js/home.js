@@ -92,3 +92,38 @@ document.addEventListener("DOMContentLoaded", () => {
           document.getElementById('listaTarefas').innerHTML = "<p style='padding: 1rem;'>Erro ao carregar tarefas.</p>";
       });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  fetch('/Projeto-Planner/Project/php/respostas_recentes.php')
+      .then(response => response.json())
+      .then(data => {
+          const container = document.getElementById('mensagens-suporte');
+          container.innerHTML = '';
+
+          const truncate = (text, limit = 60) => {
+              return text.length > limit ? text.substring(0, limit) + '...' : text;
+          };
+
+          data.forEach(item => {
+              const messageDiv = document.createElement('div');
+              messageDiv.classList.add('message-item');
+
+              messageDiv.innerHTML = `
+                  <div class="message-info">
+                      <div class="message-title">${truncate(item.resposta)}</div>
+                      <div class="message-date">${new Date(item.data_envio).toLocaleString()}</div>
+                  </div>
+                  <span class="message-status status-read">Respondido</span>
+              `;
+
+              container.appendChild(messageDiv);
+          });
+
+          if (data.length === 0) {
+              container.innerHTML = '<p>Nenhuma resposta disponível.</p>';
+          }
+      })
+      .catch(error => {
+          console.error('Erro ao carregar mensagens:', error);
+      });
+});
