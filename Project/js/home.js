@@ -61,3 +61,34 @@ const performanceChart = new Chart(ctx, {
         cutout: '60%'
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetch('/Projeto-Planner/Project/php/tarefas_recentes.php')
+      .then(response => response.json())
+      .then(tarefas => {
+          const lista = document.getElementById('listaTarefas');
+          lista.innerHTML = '';
+
+          if (tarefas.length === 0) {
+              lista.innerHTML = "<p style='padding: 1rem;'>Nenhuma tarefa encontrada.</p>";
+              return;
+          }
+
+          tarefas.forEach(tarefa => {
+              const item = document.createElement('div');
+              item.className = 'task-item';
+
+              item.innerHTML = `
+                  <div class="task-info">
+                      <div class="task-title">${tarefa.titulo}</div>
+                      <div class="task-date">${tarefa.data}</div>
+                  </div>
+                  <span class="task-priority priority-${tarefa.prioridade}">${tarefa.prioridade.charAt(0).toUpperCase() + tarefa.prioridade.slice(1)}</span>
+              `;
+              lista.appendChild(item);
+          });
+      })
+      .catch(() => {
+          document.getElementById('listaTarefas').innerHTML = "<p style='padding: 1rem;'>Erro ao carregar tarefas.</p>";
+      });
+});

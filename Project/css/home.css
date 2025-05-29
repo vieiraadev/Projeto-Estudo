@@ -214,6 +214,9 @@ main {
 }
 
 .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -414,9 +417,10 @@ main {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 12.3rem;
+  margin-top: auto; 
   width: 100%;
 }
+
 .btn-view-all-caixa {
   background-color: #3a7ca5;
   color: white;
@@ -426,7 +430,7 @@ main {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 12.3rem;
+  margin-top: auto; 
   width: 100%;
 }
 
