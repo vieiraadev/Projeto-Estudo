@@ -1,20 +1,8 @@
 <?php
+require_once 'conexao.php';
+
 header('Content-Type: application/json');
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $host = "localhost:3306";
-    $usuario = "root";
-    $senha_db = "";
-    $database = "estudomais";
-
-    $conn = new mysqli($host, $usuario, $senha_db, $database);
-
-    if ($conn->connect_error) {
-        echo json_encode(['sucesso' => false, 'erros' => ['Erro de conexão: ' . $conn->connect_error]]);
-        exit;
-    }
 
     $nome = trim($_POST['nome_empresa']);
     $email = trim($_POST['email_empresa']);

@@ -28,7 +28,7 @@ if (!isset($_SESSION['id_aluno'])) {
 
 $id_aluno = $_SESSION['id_aluno'];
 
-$sql = "SELECT id_disciplina, nome_disciplina, descricao_disciplina FROM disciplina WHERE id_aluno = ?";
+$sql = "SELECT id_disciplina, nome_disciplina, descricao_disciplina, nota FROM disciplina WHERE id_aluno = ?";
 $stmt = $conexao->prepare($sql);
 
 $stmt->bind_param("i", $id_aluno);

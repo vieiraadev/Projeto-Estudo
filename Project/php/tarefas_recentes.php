@@ -12,7 +12,7 @@ if (!isset($_SESSION['id_aluno'])) {
 $idAluno = $_SESSION['id_aluno'];
 
 // Conexão com o banco
-$conn = new mysqli("localhost", "root", "", "estudomais");
+$conn = new mysqli("localhost:3306", "root", "", "estudomais");
 if ($conn->connect_error) {
     http_response_code(500);
     echo json_encode(["erro" => "Erro na conexão com o banco"]);

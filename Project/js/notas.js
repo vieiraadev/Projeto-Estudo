@@ -321,4 +321,24 @@ function atualizarMediaFinal() {
         statusEl.classList.remove("status-aprovado");
         statusEl.classList.add("status-reprovado");
     }
+    
+    // 🆕 Enviar média final para o servidor
+    fetch('/Projeto-Planner/Project/php/atualizar_nota_disciplina.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id_disciplina: idDisciplinaSelecionada,
+            nota: mediaFinal.toFixed(2)
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Nota atualizada com sucesso:", data);
+    })
+    .catch(error => {
+        console.error("Erro ao atualizar nota:", error);
+    });
 }
+

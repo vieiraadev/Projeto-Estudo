@@ -25,42 +25,75 @@ fetch('/Projeto-Planner/Project/php/home.php')
         });
 
 // Inicializar gráfico de desempenho
-const ctx = document.getElementById('performanceChart').getContext('2d');
-const performanceChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Matemática', 'Português', 'História', 'Ciências', 'Geografia'],
-        datasets: [{
-            data: [8.5, 9.2, 7.8, 8.8, 7.5],
-            backgroundColor: [
-                '#3a7ca5',
-                '#2e86de',
-                '#54a0ff',
-                '#5f27cd',
-                '#00d2d3'
-            ],
-            borderWidth: 0,
-            borderRadius: 4,
-            spacing: 2
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'bottom',
-                labels: {
-                    padding: 15,
-                    font: {
-                        size: 12
+fetch('/Projeto-Planner/Project/php/listar_disciplinas.php')
+    .then(response => response.json())
+    .then(response => {
+    if (!response.sucesso) throw new Error("Falha ao carregar disciplinas");
+    const disciplinas = response.disciplinas;
+
+    const labels = disciplinas.map(d => d.nome_disciplina);
+    const notas = disciplinas.map(d => parseFloat(d.nota));
+
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: notas,
+                backgroundColor: [
+                    '#3a7ca5',
+                    '#2e86de',
+                    '#54a0ff',
+                    '#5f27cd',
+                    '#00d2d3',
+                    '#ff9ff3',
+                    '#feca57',
+                    '#48dbfb',
+                    '#1dd1a1',
+                    '#ff6b6b'
+                ],
+                borderWidth: 0,
+                borderRadius: 4,
+                spacing: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 15,
+                        font: { size: 12 }
                     }
                 }
-            }
-        },
-        cutout: '60%'
+            },
+            cutout: '60%'
+        }
+    });
+
+    // Atualizar a lista de disciplinas com nota (se tiver essa parte também)
+    const subjectList = document.querySelector(".subject-list");
+    if (subjectList) {
+        subjectList.innerHTML = "";
+        disciplinas.forEach(d => {
+            const div = document.createElement("div");
+            div.className = "subject-item";
+            div.innerHTML = `
+                <span class="subject-name">${d.nome_disciplina}</span>
+                <span class="subject-grade">${parseFloat(d.nota).toFixed(1)}</span>
+            `;
+            subjectList.appendChild(div);
+        });
     }
+
+})
+.catch(error => {
+    console.error('Erro ao carregar disciplinas:', error);
 });
+
 
 document.addEventListener("DOMContentLoaded", () => {
   fetch('/Projeto-Planner/Project/php/tarefas_recentes.php')
