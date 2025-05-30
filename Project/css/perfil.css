@@ -27,7 +27,6 @@
     overflow: hidden;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-  
   }
   
   aside:hover {
@@ -52,20 +51,21 @@
     justify-content: center;
     gap: 1rem;
     padding: 0.5rem;
-    border-radius: 5px;
+    border-radius: 12px;
     transition: all 0.3s ease;
     width: 60px;
   }
   
   aside:hover nav a {
     justify-content: flex-start;
-    width: 100%;
+    width: 90%;
     padding-left: 1rem;
   }
   
   aside nav a:hover {
     color: #2e86de;
     background-color: #f0f8ff;
+    transform: translateY(-2px);
   }
   
   nav a i {
@@ -106,7 +106,7 @@
     align-items: center;
     gap: 1rem;
     padding: 0.5rem;
-    border-radius: 5px;
+    border-radius: 12px;
     transition: all 0.3s ease;
     color: #333;
   }
@@ -127,7 +127,6 @@
     font-weight: bold;
     font-size: 0.9rem;
   }
-  
   
   .main-content {
     margin-left: 60px;

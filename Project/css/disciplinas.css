@@ -28,7 +28,6 @@ aside {
     overflow: hidden;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-  
   }
   
   aside:hover {
@@ -53,20 +52,21 @@ aside {
     justify-content: center;
     gap: 1rem;
     padding: 0.5rem;
-    border-radius: 5px;
+    border-radius: 12px;
     transition: all 0.3s ease;
     width: 60px;
   }
   
   aside:hover nav a {
     justify-content: flex-start;
-    width: 100%;
+    width: 90%;
     padding-left: 1rem;
   }
   
   aside nav a:hover {
     color: #2e86de;
     background-color: #f0f8ff;
+    transform: translateY(-2px);
   }
   
   nav a i {
@@ -107,7 +107,7 @@ aside {
     align-items: center;
     gap: 1rem;
     padding: 0.5rem;
-    border-radius: 5px;
+    border-radius: 12px;
     transition: all 0.3s ease;
     color: #333;
   }
@@ -608,6 +608,36 @@ aside {
     font-size: 14px;
     color: #6b7280;
 }
+
+.disciplina-item {
+    background-color: #f5f5f5;
+  padding: 12px 16px;
+  margin: 10px 0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  }
+  
+  .disciplina-acoes {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .editar-btn,
+  .excluir-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+    transition: color 0.2s;
+  }
+  
+  .editar-btn:hover,
+  .excluir-btn:hover {
+    color: #1d4ed8; /* azul para editar e vermelho se quiser para excluir */
+  }
 
 /* Responsividade */
 @media (max-width: 768px) {

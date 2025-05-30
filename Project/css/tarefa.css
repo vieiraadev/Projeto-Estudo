@@ -27,7 +27,6 @@ aside {
   overflow: hidden;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
-
 }
 
 aside:hover {
@@ -52,20 +51,21 @@ aside nav a {
   justify-content: center;
   gap: 1rem;
   padding: 0.5rem;
-  border-radius: 5px;
+  border-radius: 12px;
   transition: all 0.3s ease;
   width: 60px;
 }
 
 aside:hover nav a {
   justify-content: flex-start;
-  width: 100%;
+  width: 90%;
   padding-left: 1rem;
 }
 
 aside nav a:hover {
   color: #2e86de;
   background-color: #f0f8ff;
+  transform: translateY(-2px);
 }
 
 nav a i {
@@ -106,7 +106,7 @@ aside:hover .perfil-sidebar {
   align-items: center;
   gap: 1rem;
   padding: 0.5rem;
-  border-radius: 5px;
+  border-radius: 12px;
   transition: all 0.3s ease;
   color: #333;
 }
@@ -131,9 +131,11 @@ aside:hover .perfil-sidebar {
 
 main {
   flex: 1;
-  padding: 2rem;
+  padding: 2rem 2rem 2rem 3rem;
   position: relative;
+  margin-left: 35px; 
 }
+
 
 h1 {
   font-size: 1.8rem;
@@ -158,6 +160,7 @@ h2 {
   border-radius: 6px;
   width: 100%;
 }
+
 
 .alta {
   border-color: #d9534f;
