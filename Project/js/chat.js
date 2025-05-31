@@ -16,8 +16,8 @@ document.getElementById("chatForm").addEventListener("submit", function (e) {
     loadingMessage.classList.add("message", "bot-message");
     loadingMessage.textContent = "Pensando...";
     chatBox.appendChild(loadingMessage);
-
     chatBox.scrollTop = chatBox.scrollHeight;
+
     input.value = "";
 
     fetch("/Projeto-Planner/Project/php/resposta.php", {
@@ -25,21 +25,50 @@ document.getElementById("chatForm").addEventListener("submit", function (e) {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({ mensagem: userText })
     })
-    .then(response => response.json())
-    .then(data => {
+    .then(response => response.text())
+    .then(text => {
+        console.log("🔍 Resposta bruta da IA:", text);
+
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            throw new Error("Resposta não é JSON válida");
+        }
+
         loadingMessage.remove();
-    
+
         const botMessage = document.createElement("div");
         botMessage.classList.add("message", "bot-message");
-    
-        if (Array.isArray(data) && data[0]?.generated_text) {
-            botMessage.textContent = data[0].generated_text;
-        } else if (data.erro) {
-            botMessage.textContent = "Erro da IA: " + data.erro;
-        } else {
-            botMessage.textContent = "Resposta inválida da IA.";
+
+        let conteudo = data.resposta;
+
+        // Tenta parsear várias vezes até dar certo ou falhar
+        for (let i = 0; i < 3; i++) {
+            try {
+                if (typeof conteudo === "string") conteudo = JSON.parse(conteudo);
+            } catch (e) {
+                break; // se não puder mais parsear, sai do loop
+            }
         }
-    
+
+        // Interpreta a resposta final
+        if (typeof conteudo === "string") {
+            botMessage.textContent = conteudo;
+        } else if (Array.isArray(conteudo)) {
+            botMessage.textContent = conteudo.join(" ");
+        } else if (typeof conteudo === "object") {
+            let respostaTexto = "";
+            for (const key in conteudo) {
+                if (!isNaN(key)) {
+                    respostaTexto += conteudo[key] + " ";
+                }
+            }
+            botMessage.textContent = respostaTexto.trim() || "❓ A IA não retornou resposta legível.";
+        } else {
+            botMessage.textContent = "❌ Estrutura de resposta desconhecida.";
+        }
+
         chatBox.appendChild(botMessage);
         chatBox.scrollTop = chatBox.scrollHeight;
     })
@@ -47,8 +76,7 @@ document.getElementById("chatForm").addEventListener("submit", function (e) {
         loadingMessage.remove();
         const error = document.createElement("div");
         error.classList.add("message", "bot-message");
-        error.textContent = "Erro ao tentar conversar com a IA: " + err;
+        error.textContent = "❌ Erro na requisição: " + err.message;
         chatBox.appendChild(error);
     });
-    
 });

@@ -1,8 +1,20 @@
 <?php
-require_once 'conexao.php';
-
 header('Content-Type: application/json');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $host = "localhost:3306";
+    $usuario = "root";
+    $senha_db = "";
+    $database = "estudomais";
+
+    $conn = new mysqli($host, $usuario, $senha_db, $database);
+
+    if ($conn->connect_error) {
+        echo json_encode(['sucesso' => false, 'erros' => ['Erro de conexão: ' . $conn->connect_error]]);
+        exit;
+    }
 
     $nome = trim($_POST['nome_empresa']);
     $email = trim($_POST['email_empresa']);
@@ -72,7 +84,7 @@ header('Content-Type: application/json');
     $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
     $sql = "INSERT INTO anunciante (nome_empresa, email_empresa, documento, senha, data_de_criacao_anunciante)
-            VALUES (?, ?, ?, ?, ?)";
+             VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssss", $nome, $email, $documento, $senha_hash, $data_criacao);
 
@@ -122,3 +134,4 @@ function validarCNPJ($cnpj) {
     $d2 = ($s % 11 < 2) ? 0 : 11 - ($s % 11);
     return $cnpj[13] == $d2;
 }
+?>

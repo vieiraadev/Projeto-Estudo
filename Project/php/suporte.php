@@ -1,7 +1,7 @@
 <?php
 session_start(); 
 
-$host = "localhost";
+$host = "localhost:3306";
 $user = "root";
 $pass = "";
 $db = "estudomais";
