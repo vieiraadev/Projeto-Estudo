@@ -1,10 +1,9 @@
-// === Mapeamento de RA ===
-let idRaSelecionado = null;
+let idRaSelecionado = null; // nome do RA selecionado
 let idRaMap = {}; // mapeia ra_nome -> id_ra
+let idRaAtivo = null; // guarda o id numérico do RA atualmente em edição
 const urlParams = new URLSearchParams(window.location.search);
 const idDisciplinaSelecionada = urlParams.get("id_disciplina");
 
-// === Adicionar novo RA e exibir na tela ===
 document.getElementById("btn-adicionar-ra").addEventListener("click", () => {
     const raNome = document.getElementById("novo-ra-nome").value.trim();
     const raPeso = document.getElementById("novo-ra-peso").value;
@@ -96,7 +95,6 @@ function adicionarRAnaInterface(nome, peso, provas = [], trabalhos = [], id_ra =
             });
         }
     };
-    
 
     btnsDiv.appendChild(btnNotas);
     btnsDiv.appendChild(btnRemover);
@@ -150,14 +148,49 @@ function adicionarRAnaInterface(nome, peso, provas = [], trabalhos = [], id_ra =
 
     listaRAs.appendChild(raContainer);
     atualizarMediaFinal();
-
-
 }
+
+// === Modal Avaliações ===
 
 function abrirModalNotas(raNome) {
     document.getElementById("modal-overlay").style.display = "block";
     document.getElementById("modal-titulo").textContent = raNome;
     idRaSelecionado = raNome;
+    idRaAtivo = idRaMap[raNome]; // <-- agora SEMPRE define o id do RA que será salvo
+
+    // LIMPA listas ANTES de popular com dados do banco!
+    document.getElementById("lista-provas").innerHTML = "";
+    document.getElementById("lista-trabalhos").innerHTML = "";
+    document.getElementById("provas-adicionadas").style.display = "none";
+    document.getElementById("trabalhos-adicionados").style.display = "none";
+
+    // Busca provas e trabalhos já cadastrados para esse RA e preenche as listas
+    fetch(`/Projeto-Planner/Project/php/get_avaliacoes.php?id_ra=${idRaAtivo}`)
+      .then(res => res.json())
+      .then(data => {
+          if (data.provas && data.provas.length > 0) {
+              data.provas.forEach(p => {
+                  const li = document.createElement("li");
+                  li.textContent = `${p.nome_prova} - Nota: ${p.nota} - Peso: ${p.peso}`;
+                  li.dataset.nome = p.nome_prova;
+                  li.dataset.nota = p.nota;
+                  li.dataset.peso = p.peso;
+                  document.getElementById("lista-provas").appendChild(li);
+                  document.getElementById("provas-adicionadas").style.display = "block";
+              });
+          }
+          if (data.trabalhos && data.trabalhos.length > 0) {
+              data.trabalhos.forEach(t => {
+                  const li = document.createElement("li");
+                  li.textContent = `${t.nome_trabalho} - Nota: ${t.nota} - Peso: ${t.peso}`;
+                  li.dataset.nome = t.nome_trabalho;
+                  li.dataset.nota = t.nota;
+                  li.dataset.peso = t.peso;
+                  document.getElementById("lista-trabalhos").appendChild(li);
+                  document.getElementById("trabalhos-adicionados").style.display = "block";
+              });
+          }
+      });
 }
 
 document.getElementById("btn-cancelar").addEventListener("click", () => {
@@ -178,13 +211,23 @@ document.getElementById("btn-adicionar-prova").addEventListener("click", () => {
         return;
     }
 
+    // Não permite duplicadas pelo nome
+    const lista = document.getElementById("lista-provas");
+    let jaExiste = false;
+    lista.querySelectorAll("li").forEach(li => {
+        if (li.dataset.nome === nome) jaExiste = true;
+    });
+    if (jaExiste) {
+        alert("Já existe uma prova com esse nome.");
+        return;
+    }
+
     const li = document.createElement("li");
     li.textContent = `${nome} - Nota: ${nota} - Peso: ${peso}`;
     li.dataset.nome = nome;
     li.dataset.nota = nota;
     li.dataset.peso = peso;
-
-    document.getElementById("lista-provas").appendChild(li);
+    lista.appendChild(li);
     document.getElementById("provas-adicionadas").style.display = "block";
 
     document.getElementById("nova-prova-nome").value = "";
@@ -202,13 +245,23 @@ document.getElementById("btn-adicionar-trabalho").addEventListener("click", () =
         return;
     }
 
+    // Não permite duplicadas pelo nome
+    const lista = document.getElementById("lista-trabalhos");
+    let jaExiste = false;
+    lista.querySelectorAll("li").forEach(li => {
+        if (li.dataset.nome === nome) jaExiste = true;
+    });
+    if (jaExiste) {
+        alert("Já existe um trabalho com esse nome.");
+        return;
+    }
+
     const li = document.createElement("li");
     li.textContent = `${nome} - Nota: ${nota} - Peso: ${peso}`;
     li.dataset.nome = nome;
     li.dataset.nota = nota;
     li.dataset.peso = peso;
-
-    document.getElementById("lista-trabalhos").appendChild(li);
+    lista.appendChild(li);
     document.getElementById("trabalhos-adicionados").style.display = "block";
 
     document.getElementById("novo-trabalho-nome").value = "";
@@ -235,26 +288,35 @@ document.getElementById("btn-salvar").addEventListener("click", () => {
         });
     });
 
-    const id_ra = idRaMap[idRaSelecionado];
+    // Usa SEMPRE o id numérico global salvo ao abrir o modal
+    const id_ra = idRaAtivo;
     if (!id_ra) {
         alert("Erro: ID do RA não encontrado.");
         return;
     }
 
+    console.log("Provas enviadas:", provas);
+    console.log("Trabalhos enviados:", trabalhos);
+    console.log("ID RA enviado:", id_ra);
+
+
+
     fetch("/Projeto-Planner/Project/php/salvar_avaliacoes.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-            id_ra,
-            provas: JSON.stringify(provas),
-            trabalhos: JSON.stringify(trabalhos)
-        })
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+        id_ra: idRaAtivo,
+        provas: JSON.stringify(provas),
+        trabalhos: JSON.stringify(trabalhos)
     })
-    .then(res => res.text())
+})
+
+    
+    .then(res => res.json())
     .then(data => {
-        alert(data);
+        alert(data.message);
         document.getElementById("modal-overlay").style.display = "none";
-        window.location.reload()
+        // window.location.reload();
     })
     .catch(error => {
         console.error("Erro ao salvar avaliações:", error);
@@ -262,11 +324,7 @@ document.getElementById("btn-salvar").addEventListener("click", () => {
     });
 });
 
-
 window.addEventListener("DOMContentLoaded", () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const idDisciplinaSelecionada = urlParams.get("id_disciplina");
-
     fetch(`/Projeto-Planner/Project/php/listar_ras.php?id_disciplina=${idDisciplinaSelecionada}`)
     .then(res => res.json())
     .then(ras => {
@@ -282,9 +340,7 @@ window.addEventListener("DOMContentLoaded", () => {
     .catch(error => {
         console.error("Erro ao carregar RAs:", error);
     });
-
 });
-
 
 function atualizarMediaFinal() {
     let somaMediasPonderadas = 0;
@@ -321,8 +377,7 @@ function atualizarMediaFinal() {
         statusEl.classList.remove("status-aprovado");
         statusEl.classList.add("status-reprovado");
     }
-    
-    // 🆕 Enviar média final para o servidor
+
     fetch('/Projeto-Planner/Project/php/atualizar_nota_disciplina.php', {
         method: 'POST',
         headers: {
@@ -341,4 +396,3 @@ function atualizarMediaFinal() {
         console.error("Erro ao atualizar nota:", error);
     });
 }
-

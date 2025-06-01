@@ -59,17 +59,8 @@ if (!empty($idsRA)) {
     }
     $stmtDeleteProvas->close();
 
-    // Excluir atividades avaliativas
-    $stmtDeleteAtividades = $conexao->prepare("DELETE FROM atividade_avaliativa WHERE fk_id_ra IN ($in)");
-    $stmtDeleteAtividades->bind_param($types, ...$idsRA);
-    if (!$stmtDeleteAtividades->execute()) {
-        http_response_code(500);
-        echo json_encode(["erro" => "Erro ao excluir atividades avaliativas: " . $stmtDeleteAtividades->error]);
-        $stmtDeleteAtividades->close();
-        $conexao->close();
-        exit;
-    }
-    $stmtDeleteAtividades->close();
+    
+    
 
     // Excluir trabalhos
     $stmtDeleteTrabalhos = $conexao->prepare("DELETE FROM trabalho WHERE fk_id_ra IN ($in)");
