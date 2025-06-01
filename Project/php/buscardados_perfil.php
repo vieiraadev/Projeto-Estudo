@@ -9,19 +9,14 @@ if (!isset($_SESSION['id_aluno'])) {
 
 $idAluno = $_SESSION['id_aluno'];
 
-$host = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$database = "estudomais";
-
-$conexao = new mysqli($host, $usuario, $senha, $database);
+require_once 'conexao.php'; // substitui a conexão manual
 
 if ($conexao->connect_error) {
     http_response_code(500);
     echo json_encode(["erro" => "Erro na conexão: " . $conexao->connect_error]);
     exit;
 }
-// Prepara a consulta SQL para buscar nome e e-mail do aluno
+
 $sql = "SELECT nome_aluno, email FROM aluno WHERE id_aluno = ?";
 $stmt = $conexao->prepare($sql); 
 $stmt->bind_param("i", $idAluno);

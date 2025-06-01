@@ -3,18 +3,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require __DIR__ . '/../vendor/autoload.php';
-
-
-// Configuração do banco
-$host = 'localhost:3306';
-$user = 'root';
-$pass = '';
-$db = 'estudomais';
-
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-    die("Erro na conexão: " . $conn->connect_error);
-}
+require_once 'conexao.php'; // substitui a conexão manual
 
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -25,11 +14,6 @@ $diaSemanaHojeCompleto = strtolower($formatter->format(time())); // ex: "quarta-
 // Remove o "-feira" para combinar com o banco
 $diaSemanaHoje = str_replace('-feira', '', $diaSemanaHojeCompleto); // ex: "quarta"
 
-
-
-
-
-
 $horaAgora = new DateTime();
 
 // Buscar tarefas do dia atual com e-mail do aluno e alerta não enviado
@@ -38,18 +22,15 @@ $sql = "SELECT t.*, a.email, a.nome_aluno
         JOIN aluno a ON t.fk_id_aluno = a.id_aluno
         WHERE t.dia_da_semana = ? AND (t.alerta_enviado IS NULL OR t.alerta_enviado = 0)";
 
-$stmt = $conn->prepare($sql);
+$stmt = $conexao->prepare($sql);
 $stmt->bind_param("s", $diaSemanaHoje);
 $stmt->execute();
 $result = $stmt->get_result();
 
-
 echo "🎯 Verificando tarefas para hoje: $diaSemanaHoje<br>";
 echo "🔍 Total de tarefas encontradas: " . $result->num_rows . "<br>";
 
-
 while ($tarefa = $result->fetch_assoc()) {
-
     $horaValidade = DateTime::createFromFormat('H:i:s', $tarefa['hora_validade']);
     if (!$horaValidade) continue;
 
@@ -68,14 +49,13 @@ while ($tarefa = $result->fetch_assoc()) {
     if ($minutosRestantes >= 0 && $minutosRestantes <= 180) {
         echo "⚠️ Enviando e-mail para {$tarefa['email']}<br>";
 
-
         $mail = new PHPMailer(true);
         try {
             // Configuração do servidor SMTP
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'arthuim@gmail.com'; // Corrigido
+            $mail->Username = 'arthuim@gmail.com';
             $mail->Password = 'sszr psud uufk qsil'; // Senha de app
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
@@ -96,7 +76,7 @@ while ($tarefa = $result->fetch_assoc()) {
             $mail->send();
 
             // Marcar como enviado
-            $update = $conn->prepare("UPDATE tarefa SET alerta_enviado = 1 WHERE id_tarefa = ?");
+            $update = $conexao->prepare("UPDATE tarefa SET alerta_enviado = 1 WHERE id_tarefa = ?");
             $update->bind_param("i", $tarefa['id_tarefa']);
             $update->execute();
 

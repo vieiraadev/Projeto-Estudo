@@ -4,16 +4,12 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 header('Content-Type: application/json');
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$host = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$database = "estudomais";
-
-$conexao = new mysqli($host, $usuario, $senha, $database);
+require_once 'conexao.php'; // substitui a conexão manual
 
 if ($conexao->connect_error) {
     http_response_code(500);

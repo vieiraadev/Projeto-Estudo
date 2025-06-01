@@ -1,4 +1,10 @@
 <?php
+require_once 'conexao.php'; // Conexão como $conexao
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 header('Content-Type: application/json');
 
 $apiKey = trim(file_get_contents(__DIR__ . '/apikey.txt'));
@@ -7,63 +13,39 @@ $endpoint = 'https://api.cloud.llamaindex.ai/api/v1/pipelines/af110ca4-d9a1-466c
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mensagem = $_POST['mensagem'] ?? '';
 
-    $payload = json_encode([
-        "messages" => [
-            ["role" => "user", "content" => $mensagem]
-        ]
-    ]);
+if (empty($mensagem)) {
+    echo json_encode(["erro" => "Mensagem vazia."]);
+    exit;
+}
 
-    $ch = curl_init($endpoint);
-    curl_setopt_array($ch, [
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => $payload,
-        CURLOPT_HTTPHEADER => [
-            "Content-Type: application/json",
-            "Authorization: Bearer $apiKey"
-        ]
-    ]);
+// Configuração da API Hugging Face
+$api_key = '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';
+$model = 'tiiuae/falcon-7b-instruct';
+
+$prompt = "Crie um plano de estudos semanal organizado por dias da semana para o seguinte pedido:\n" . $mensagem;
+
+$ch = curl_init("https://api-inference.huggingface.co/models/$model");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Authorization: Bearer $api_key",
+    "Content-Type: application/json"
+]);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['inputs' => $prompt]));
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
+    exit;
+}
 
-    if ($httpCode === 200 && $response) {
+curl_close($ch);
 
-        // 1. Extrai frases
-        preg_match_all('/0:"(.*?)"/', $response, $matches);
-        $respostaFinal = trim(implode('', $matches[1]));
+// Verifica se o retorno é JSON válido
+$resultado = json_decode($response, true);
 
-        // 2. Remove barras invertidas
-        $respostaFinal = str_replace('\\', '', $respostaFinal);
-        // 3. Remove blocos tipo [citation:...]
-        $respostaFinal = preg_replace('/\s*\[citation:[^\]]+\]/', '', $respostaFinal);
-
-        // 4. Primeiro decode de unicode (\u00e9 -> é)
-        $tmp = json_decode('"' . $respostaFinal . '"');
-        if ($tmp !== null) {
-            $respostaFinal = $tmp;
-        }
-
-        // 5. SE AINDA RESTAR unicode (duplo escapado), força decode manual:
-        if (preg_match('/u[0-9a-fA-F]{4}/', $respostaFinal)) {
-            $respostaFinal = preg_replace('/\\\\u([0-9a-fA-F]{4})/', '&#x$1;', $respostaFinal);
-            $respostaFinal = html_entity_decode($respostaFinal, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        }
-
-        // Fallback se nada funcionar
-        if (!$respostaFinal) {
-            $respostaFinal = "❓ Não foi possível extrair a resposta. Veja o retorno bruto: " . substr($response, 0, 500) . '...';
-        }
-        $respostaFinal = preg_replace('/u([0-9a-fA-F]{4})/', '&#x$1;', $respostaFinal);
-        $respostaFinal = html_entity_decode($respostaFinal, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-
-        echo json_encode(['resposta' => $respostaFinal]);
-
-    } else {
-        echo json_encode([
-            'erro' => "Erro na API LlamaCloud (HTTP $httpCode)",
-            'resposta' => $response
-        ]);
-    }
+if (json_last_error() === JSON_ERROR_NONE) {
+    echo json_encode($resultado);
+} else {
+    echo json_encode(["erro" => "Resposta da IA inválida", "raw" => $response]);
 }

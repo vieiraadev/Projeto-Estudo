@@ -1,28 +1,14 @@
 <?php
-// Cabeçalhos e configuração de erro
 header('Content-Type: application/json');
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// Iniciar sessão se ainda não estiver iniciada
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 // Conexão com o banco
-$host = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$database = "estudomais";
-
-$conexao = new mysqli($host, $usuario, $senha, $database);
-
-// Testar conexão
-if ($conexao->connect_error) {
-    http_response_code(500);
-    echo json_encode(["erro" => "Erro na conexão: " . $conexao->connect_error]);
-    exit;
-}
+require_once 'conexao.php';
 
 // Verifica se o usuário está autenticado
 if (!isset($_SESSION['id_aluno'])) {

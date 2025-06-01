@@ -1,13 +1,5 @@
 <?php
-$host = 'localhost:3306';
-$db = 'estudomais';
-$user = 'root';
-$pass = '';
-
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-    die("Erro na conexão: " . $conn->connect_error);
-}
+require_once 'conexao.php';
 
 $id_ra = $_POST['id_ra'] ?? null;
 $provas = json_decode($_POST['provas'], true);
@@ -20,7 +12,7 @@ if (!$id_ra) {
 
 // 1. Inserir provas
 if (!empty($provas)) {
-    $stmtProva = $conn->prepare("INSERT INTO prova (nome_prova, nota, peso, fk_id_ra) VALUES (?, ?, ?, ?)");
+    $stmtProva = $conexao->prepare("INSERT INTO prova (nome_prova, nota, peso, fk_id_ra) VALUES (?, ?, ?, ?)");
     foreach ($provas as $p) {
         if (isset($p['nome'], $p['nota'], $p['peso'])) {
             $stmtProva->bind_param("sdii", $p['nome'], $p['nota'], $p['peso'], $id_ra);
@@ -32,7 +24,7 @@ if (!empty($provas)) {
 
 // 2. Inserir trabalhos
 if (!empty($trabalhos)) {
-    $stmtTrab = $conn->prepare("INSERT INTO trabalho (nome_trabalho, nota, peso, fk_id_ra) VALUES (?, ?, ?, ?)");
+    $stmtTrab = $conexao->prepare("INSERT INTO trabalho (nome_trabalho, nota, peso, fk_id_ra) VALUES (?, ?, ?, ?)");
     foreach ($trabalhos as $t) {
         if (isset($t['nome'], $t['nota'], $t['peso'])) {
             $stmtTrab->bind_param("sdii", $t['nome'], $t['nota'], $t['peso'], $id_ra);
@@ -43,5 +35,5 @@ if (!empty($trabalhos)) {
 }
 
 echo json_encode(["success" => true, "message" => "Notas salvas com sucesso!"]);
-$conn->close();
+$conexao->close();
 ?>

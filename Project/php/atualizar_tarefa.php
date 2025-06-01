@@ -3,17 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$host = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$database = "estudomais";
-$conexao = new mysqli($host, $usuario, $senha, $database);
-
-if ($conexao->connect_error) {
-    http_response_code(500);
-    echo json_encode(['erro' => "Erro na conexão: " . $conexao->connect_error]);
-    exit;
-}
+require_once 'conexao.php'; // substitui a conexão manual
 
 if (!isset($_SESSION['id_aluno'])) {
     http_response_code(401);

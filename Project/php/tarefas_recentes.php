@@ -3,6 +3,8 @@
 session_start();
 header('Content-Type: application/json');
 
+require_once 'conexao.php'; // Arquivo com a conexão $conexao
+
 // Verifica se o aluno está logado
 if (!isset($_SESSION['id_aluno'])) {
     echo json_encode(["erro" => "Aluno não autenticado"]);
@@ -11,9 +13,8 @@ if (!isset($_SESSION['id_aluno'])) {
 
 $idAluno = $_SESSION['id_aluno'];
 
-// Conexão com o banco
-$conn = new mysqli("localhost:3306", "root", "", "estudomais");
-if ($conn->connect_error) {
+// Verifica erro de conexão
+if ($conexao->connect_error) {
     http_response_code(500);
     echo json_encode(["erro" => "Erro na conexão com o banco"]);
     exit;
@@ -21,7 +22,7 @@ if ($conn->connect_error) {
 
 // Consulta tarefas do aluno logado
 $sql = "SELECT nome_tarefa, data_criacao_tarefa, prioridade FROM tarefa WHERE fk_id_aluno = ? ORDER BY data_criacao_tarefa DESC LIMIT 5";
-$stmt = $conn->prepare($sql);
+$stmt = $conexao->prepare($sql);
 $stmt->bind_param("i", $idAluno);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -49,4 +50,4 @@ while ($row = $result->fetch_assoc()) {
 }
 
 echo json_encode($tarefas);
-$conn->close();
+$conexao->close();

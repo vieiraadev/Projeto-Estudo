@@ -12,17 +12,8 @@ if (!isset($_SESSION['id_anunciante'])) {
 
 $id_anunciante = $_SESSION['id_anunciante'];
 
-$host = "localhost:3306";
-$usuario = "root";
-$senha_db = "";
-$database = "estudomais";
-
-$conexao = new mysqli($host, $usuario, $senha_db, $database);
-
-if ($conexao->connect_error) {
-    echo json_encode(["erro" => "Erro na conexão: " . $conexao->connect_error], JSON_UNESCAPED_UNICODE);
-    exit;
-}
+// Conexão com o banco
+require_once 'conexao.php';
 
 // Captura os dados
 $nome = $_POST['nome'] ?? '';
@@ -42,23 +33,20 @@ if (!empty($nome) && strlen($nome) > $limites['nome_empresa']) {
     echo json_encode(["erro" => "O nome da empresa é muito grande (máximo {$limites['nome_empresa']} caracteres)."], JSON_UNESCAPED_UNICODE);
     exit;
 }
-
 if (!empty($email) && strlen($email) > $limites['email_empresa']) {
     echo json_encode(["erro" => "O email informado é muito grande (máximo {$limites['email_empresa']} caracteres)."], JSON_UNESCAPED_UNICODE);
     exit;
 }
-
 if (!empty($documento) && strlen($documento) > $limites['documento']) {
     echo json_encode(["erro" => "O documento informado é muito grande (máximo {$limites['documento']} caracteres)."], JSON_UNESCAPED_UNICODE);
     exit;
 }
-
 if (!empty($senha) && strlen($senha) > $limites['senha']) {
     echo json_encode(["erro" => "A senha informada é muito grande (máximo {$limites['senha']} caracteres)."], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-// Verificação se o documento já existe no banco (caso tenha sido enviado)
+// Verificação se o documento já existe
 if (!empty($documento)) {
     $stmt_check = $conexao->prepare("SELECT id_anunciante FROM anunciante WHERE documento = ? AND id_anunciante != ?");
     if (!$stmt_check) {
@@ -76,7 +64,6 @@ if (!empty($documento)) {
     }
     $stmt_check->close();
 }
-
 
 $campos = [];
 $valores = [];
@@ -112,9 +99,8 @@ if (!$stmt) {
     exit;
 }
 
-$tipos = str_repeat("s", count($valores)) . "i"; 
+$tipos = str_repeat("s", count($valores)) . "i";
 $valores[] = $id_anunciante;
-
 $stmt->bind_param($tipos, ...$valores);
 
 if ($stmt->execute()) {
@@ -125,4 +111,3 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $conexao->close();
-?>

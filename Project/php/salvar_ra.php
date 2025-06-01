@@ -3,17 +3,9 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
-
-$host = 'localhost:3306';
-$db = 'estudomais';
-$user = 'root';
-$pass = '';
-
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-    die("Erro na conexão: " . $conn->connect_error);
-}
 header('Content-Type: application/json');
+
+require_once 'conexao.php';
 
 if (!isset($_SESSION['id_aluno'])) {
     echo json_encode(["success" => false, "message" => "Aluno não autenticado."]);
@@ -30,14 +22,11 @@ if (!$raNome || !$raPeso || !$id_disciplina) {
     exit;
 }
 
-$id_aluno = $_SESSION['id_aluno'];
-
-$stmt = $conn->prepare("INSERT INTO ra (nome_ra, peso_ra, fk_id_aluno, fk_id_disciplina) VALUES (?, ?, ?, ?)");
+$stmt = $conexao->prepare("INSERT INTO ra (nome_ra, peso_ra, fk_id_aluno, fk_id_disciplina) VALUES (?, ?, ?, ?)");
 $stmt->bind_param("siii", $raNome, $raPeso, $id_aluno, $id_disciplina);
 
-
 if ($stmt->execute()) {
-    $id_ra = $conn->insert_id;
+    $id_ra = $conexao->insert_id;
     echo json_encode([
         "success" => true,
         "message" => "RA salvo com sucesso!",
@@ -49,5 +38,4 @@ if ($stmt->execute()) {
 }
 
 $stmt->close();
-$conn->close();
-?>
+$conexao->close();

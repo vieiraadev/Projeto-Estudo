@@ -1,14 +1,5 @@
 <?php
-$host = "localhost:3306";
-$user = "root";
-$password = "";
-$dbname = "estudomais";
-
-$conn = new mysqli($host, $user, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Erro na conexão: " . $conn->connect_error);
-}
+require_once 'conexao.php'; // Importa a conexão como $conexao
 
 $id_suporte = $_POST['id_suporte'] ?? null;
 $resposta = $_POST['resposta'] ?? null;
@@ -19,7 +10,7 @@ if (!$id_suporte || !$resposta) {
 }
 
 $sql = "UPDATE suporte SET resposta = ? WHERE id = ?";
-$stmt = $conn->prepare($sql);
+$stmt = $conexao->prepare($sql);
 $stmt->bind_param("si", $resposta, $id_suporte);
 
 if ($stmt->execute()) {
@@ -29,5 +20,4 @@ if ($stmt->execute()) {
 }
 
 $stmt->close();
-$conn->close();
-?>
+$conexao->close();

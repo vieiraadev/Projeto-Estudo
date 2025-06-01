@@ -1,13 +1,9 @@
 <?php
 session_start();
 
-$host = 'localhost:3306';
-$db = 'estudomais';
-$user = 'root';
-$pass = '';
+require_once 'conexao.php'; // substitui a conexão manual
 
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
+if ($conexao->connect_error) {
     http_response_code(500);
     echo json_encode([]);
     exit;
@@ -30,7 +26,7 @@ if (!$id_disciplina) {
 
 $ras = [];
 
-$stmtRA = $conn->prepare("SELECT id_ra, nome_ra, peso_ra FROM ra WHERE fk_id_aluno = ? AND fk_id_disciplina = ? ORDER BY id_ra DESC");
+$stmtRA = $conexao->prepare("SELECT id_ra, nome_ra, peso_ra FROM ra WHERE fk_id_aluno = ? AND fk_id_disciplina = ? ORDER BY id_ra DESC");
 $stmtRA->bind_param("ii", $id_aluno, $id_disciplina);
 $stmtRA->execute();
 $resRA = $stmtRA->get_result();
@@ -38,13 +34,13 @@ $resRA = $stmtRA->get_result();
 while ($ra = $resRA->fetch_assoc()) {
     $id_ra = $ra['id_ra'];
 
-    $resProvas = $conn->query("SELECT nome_prova, nota, peso FROM prova WHERE fk_id_ra = $id_ra");
+    $resProvas = $conexao->query("SELECT nome_prova, nota, peso FROM prova WHERE fk_id_ra = $id_ra");
     $provas = [];
     while ($p = $resProvas->fetch_assoc()) {
         $provas[] = $p;
     }
 
-    $resTrabalhos = $conn->query("SELECT nome_trabalho, nota, peso FROM trabalho WHERE fk_id_ra = $id_ra");
+    $resTrabalhos = $conexao->query("SELECT nome_trabalho, nota, peso FROM trabalho WHERE fk_id_ra = $id_ra");
     $trabalhos = [];
     while ($t = $resTrabalhos->fetch_assoc()) {
         $trabalhos[] = $t;
@@ -58,6 +54,5 @@ while ($ra = $resRA->fetch_assoc()) {
 
 header("Content-Type: application/json");
 echo json_encode($ras);
-$conn->close();
-
+$conexao->close();
 ?>

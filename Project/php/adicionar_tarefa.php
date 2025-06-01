@@ -3,18 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$host = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$database = "estudomais";
-
-$conexao = new mysqli($host, $usuario, $senha, $database);
-
-if ($conexao->connect_error) {
-    http_response_code(500);
-    echo json_encode(["erro" => "Erro na conexão: " . $conexao->connect_error]);
-    exit;
-}
+require_once 'conexao.php'; // aqui usamos o include para conectar ao banco
 
 if (!isset($_SESSION['id_aluno'])) {
     http_response_code(401);
@@ -39,7 +28,6 @@ $prioridade = $_POST['prioridade'];
 $hora = $_POST['hora_validade'];
 $dia = strtolower($_POST['dia']);
 
-// Valida o dia
 $diasPermitidos = ['segunda', 'terca', 'quarta', 'quinta', 'sexta'];
 if (!in_array($dia, $diasPermitidos)) {
     http_response_code(400);
@@ -47,7 +35,6 @@ if (!in_array($dia, $diasPermitidos)) {
     exit;
 }
 
-// Limites de tamanho
 $limites = [
     'nome_tarefa' => 50,
     'descricao' => 300,
@@ -65,7 +52,6 @@ if (strlen($desc) > $limites['descricao']) {
     exit;
 }
 
-// Query usando tabela única 'tarefa'
 $sql = "INSERT INTO tarefa (nome_tarefa, descricao, prioridade, hora_validade, data_criacao_tarefa, dia_da_semana, fk_id_aluno)
         VALUES (?, ?, ?, ?, NOW(), ?, ?)";
 

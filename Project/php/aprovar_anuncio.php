@@ -3,24 +3,13 @@ header("Content-Type: application/json");
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['erro' => 'Método não permitido']);
     exit;
 }
 
-$host = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$database = "estudomais";
-$conexao = new mysqli($host, $usuario, $senha, $database);
-
-if ($conexao->connect_error) {
-    http_response_code(500);
-    echo json_encode(['erro' => 'Erro na conexão']);
-    exit;
-}
+require_once 'conexao.php'; // substitui a conexão manual
 
 $data = json_decode(file_get_contents("php://input"), true);
 $id = $data['id_anuncio'] ?? null;

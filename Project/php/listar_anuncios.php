@@ -1,10 +1,5 @@
 <?php
-$host = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$database = "estudomais";
-
-$conexao = new mysqli($host, $usuario, $senha, $database);
+require_once 'conexao.php'; // substitui a conexão manual
 
 if ($conexao->connect_error) {
     die("Erro de conexão: " . $conexao->connect_error);
@@ -41,5 +36,4 @@ if (mysqli_num_rows($result) > 0) {
 }
 
 echo json_encode($anuncios);
-
 ?>

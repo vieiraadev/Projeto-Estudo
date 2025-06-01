@@ -1,18 +1,7 @@
 <?php
 session_start(); // Inicia a sessão
 
-$host = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$database = "estudomais";
-
-$conexao = new mysqli($host, $usuario, $senha, $database);
-
-if ($conexao->connect_error) {
-    http_response_code(500);
-    echo json_encode(["erro" => "Erro na conexão: " . $conexao->connect_error]);
-    exit;
-}
+require_once 'conexao.php'; // substitui a conexão manual
 
 // Verifica se o ID do anunciante está na sessão
 if (!isset($_SESSION['id_anunciante'])) {
@@ -66,8 +55,7 @@ $imagem = $caminhoImagem;
 $site = $_POST['site_empresa'];
 $categoria = $_POST['categoria'];
 $duracao = $_POST['duracao'];
-$dataCriacao = date("Y-m-d H:i:s"); 
-
+$dataCriacao = date("Y-m-d H:i:s");
 
 // Insere no banco de dados
 $sql = "INSERT INTO anuncio (titulo, imagem_anuncio, site_empresa, categoria, duracao, situacao, data_de_criacao_anuncio, fk_id_anunciante)

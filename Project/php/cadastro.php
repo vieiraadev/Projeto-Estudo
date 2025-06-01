@@ -3,12 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$host = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$database = "estudomais";
-
-$conexao = new mysqli($host, $usuario, $senha, $database);
+require_once 'conexao.php'; // Substitui a conexão direta
 
 if ($conexao->connect_error) {
     http_response_code(500);
@@ -39,14 +34,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode(["erro" => "A senha deve ter no máximo 255 caracteres."]);
         exit;
     }
+
     if ($senha_aluno !== $senha_confirmacao) {
         http_response_code(400);
         echo json_encode(["erro" => "As senhas não coincidem."]);
         exit;
     }
-    
 
-    // Prepara uma consulta para verificar se já existe aluno com o mesmo nome ou email
     $query = "SELECT nome_aluno, email FROM aluno WHERE nome_aluno = ? OR email = ?";
     $stmt = $conexao->prepare($query);
     if (!$stmt) {
@@ -55,14 +49,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Associa os parâmetros à consulta
     $stmt->bind_param("ss", $nome_aluno, $email_aluno);
     $stmt->execute();
     $resultado = $stmt->get_result();
 
     if ($resultado->num_rows > 0) {
         $linha = $resultado->fetch_assoc();
-        http_response_code(409); // Código 409: conflito
+        http_response_code(409);
         if ($linha['nome_aluno'] === $nome_aluno) {
             echo json_encode(["erro" => "O nome de usuário já está em uso."]);
         } elseif ($linha['email'] === $email_aluno) {
@@ -73,7 +66,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt->close();
 
-    // Prepara a inserção dos dados na tabela aluno
     $stmt = $conexao->prepare("INSERT INTO aluno (nome_aluno, senha_aluno, email) VALUES (?, ?, ?)");
     if (!$stmt) {
         http_response_code(500);

@@ -1,11 +1,7 @@
 <?php
 session_start();
-$host = "localhost";
-$usuario = "root";
-$senha = "";
-$banco = "estudomais";
 
-$conexao = new mysqli($host, $usuario, $senha, $banco);
+require_once 'conexao.php'; // substitui a conexão manual
 
 if ($conexao->connect_error) {
     http_response_code(500);
@@ -20,7 +16,6 @@ if (!$id_aluno) {
     echo json_encode(["erro" => "Usuário não autenticado"]);
     exit;
 }
-
 
 $sql = "SELECT mensagem, resposta, data_envio FROM suporte WHERE fk_id_aluno = ? AND resposta IS NOT NULL ORDER BY data_envio DESC";
 $stmt = $conexao->prepare($sql);

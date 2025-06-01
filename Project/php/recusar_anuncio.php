@@ -2,13 +2,10 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-header('Content-Type: application/json');
-$host = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$database = "estudomais";
 
-$conexao = new mysqli($host, $usuario, $senha, $database);
+header('Content-Type: application/json');
+
+require_once 'conexao.php'; // conexão reutilizável
 
 if ($conexao->connect_error) {
     http_response_code(500);
@@ -28,11 +25,6 @@ if (!isset($data['id_anuncio']) || !isset($data['comentario'])) {
 $id_anuncio = intval($data['id_anuncio']);
 $comentario = trim($data['comentario']);
 
-if ($conexao->connect_error) {
-    echo json_encode(['sucesso' => false, 'mensagem' => 'Erro na conexão com o banco.']);
-    exit;
-}
-
 // Atualiza o status do anúncio para 'recusado' e salva o comentário
 $stmt = $conexao->prepare("UPDATE anuncio SET situacao = 'recusado', comentario_recusa = ? WHERE id_anuncio = ?");
 $stmt->bind_param('si', $comentario, $id_anuncio);
@@ -45,4 +37,3 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $conexao->close();
-?>

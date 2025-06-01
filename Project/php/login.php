@@ -5,12 +5,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$host = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$database = "estudomais";
-
-$conexao = new mysqli($host, $usuario, $senha, $database);
+require_once 'conexao.php'; // substitui a conexão direta
 
 if ($conexao->connect_error) {
     die(json_encode(['erro' => 'Falha na conexão: ' . $conexao->connect_error]));

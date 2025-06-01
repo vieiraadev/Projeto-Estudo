@@ -9,12 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 header('Content-Type: application/json');
 
-$host = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$database = "estudomais";
-
-$conexao = new mysqli($host, $usuario, $senha, $database);
+require_once 'conexao.php'; // substitui a conexão manual
 
 if ($conexao->connect_error) {
     http_response_code(500);
@@ -38,14 +33,13 @@ if (!isset($_GET['dia'])) {
 
 $diasPermitidos = ['segunda', 'terca', 'quarta', 'quinta', 'sexta'];
 
-$dia = strtolower($_GET['dia']); // Corrigido aqui
+$dia = strtolower($_GET['dia']);
 if (!in_array($dia, $diasPermitidos)) {
     http_response_code(400);
     echo json_encode(["erro" => "Dia inválido."]);
     exit;
 }
 
-// Prepara a query para buscar tarefas do aluno para o dia especificado
 $sql = "SELECT id_tarefa, nome_tarefa, prioridade, hora_validade 
         FROM tarefa 
         WHERE fk_id_aluno = ? AND dia_da_semana = ?";
@@ -63,11 +57,9 @@ $stmt->execute();
 $resultado = $stmt->get_result();
 $tarefas = [];
 
-// Loop por cada linha de resultado
 while ($row = $resultado->fetch_assoc()) {
     $hora_original = $row["hora_validade"] ?? "";
 
-    // Formatar hora: de "HH:MM:SS" para "HH:MM"
     $hora_formatada = "";
     if ($hora_original) {
         $hora_formatada = (new DateTime($hora_original))->format('H:i');

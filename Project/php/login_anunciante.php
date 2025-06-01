@@ -8,13 +8,9 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-$host     = "localhost:3306";
-$usuario  = "root";
-$senha    = "";
-$database = "estudomais";
+require_once 'conexao.php'; // substitui a conexão direta
 
-$conn = new mysqli($host, $usuario, $senha, $database);
-if ($conn->connect_error) {
+if ($conexao->connect_error) {
     echo json_encode(['sucesso' => false, 'erro' => 'Erro de conexão com o banco de dados.']);
     exit;
 }
@@ -23,7 +19,7 @@ $email    = trim($_POST['email_empresa']);
 $senhaRaw = $_POST['senha'];
 
 $sql  = "SELECT id_anunciante, nome_empresa, senha FROM anunciante WHERE email_empresa = ?";
-$stmt = $conn->prepare($sql);
+$stmt = $conexao->prepare($sql);
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $stmt->store_result();
@@ -49,4 +45,4 @@ if ($stmt->num_rows === 1) {
 }
 
 $stmt->close();
-$conn->close();
+$conexao->close();

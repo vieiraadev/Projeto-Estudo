@@ -1,17 +1,7 @@
 <?php
 session_start();
 
-$host = 'localhost:3306';
-$db = 'estudomais';
-$user = 'root';
-$pass = '';
-
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-    http_response_code(500);
-    echo json_encode(["success" => false, "message" => "Erro na conexão: " . $conn->connect_error]);
-    exit;
-}
+require_once 'conexao.php'; // substitui a conexão manual
 
 header("Content-Type: application/json");
 
@@ -24,10 +14,10 @@ if (!isset($_SESSION['id_aluno'])) {
 $id_aluno = $_SESSION['id_aluno'];
 
 $sql = "SELECT id_disciplina, nome_disciplina, descricao_disciplina FROM disciplina WHERE id_aluno = ?";
-$stmt = $conn->prepare($sql);
+$stmt = $conexao->prepare($sql);
 
 if (!$stmt) {
-    echo json_encode(["success" => false, "message" => "Erro na preparação da query: " . $conn->error]);
+    echo json_encode(["success" => false, "message" => "Erro na preparação da query: " . $conexao->error]);
     exit;
 }
 
@@ -43,9 +33,6 @@ while ($row = $result->fetch_assoc()) {
 
 echo json_encode(["success" => true, "disciplinas" => $disciplinas]);
 
-
 $stmt->close();
-$conn->close();
-
-
+$conexao->close();
 ?>

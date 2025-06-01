@@ -7,11 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$host = "localhost:3306";
-$usuario = "root";
-$senha = "";
-$database = "estudomais";
-$conexao = new mysqli($host, $usuario, $senha, $database);
+require_once 'conexao.php'; // Substitui a conexão direta
 
 if ($conexao->connect_error) {
     http_response_code(500);

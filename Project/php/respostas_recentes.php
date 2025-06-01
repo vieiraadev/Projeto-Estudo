@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'conexao.php'; // conexão via $conexao
 
 if (!isset($_SESSION['id_aluno'])) {
     http_response_code(401);
@@ -9,12 +10,6 @@ if (!isset($_SESSION['id_aluno'])) {
 
 $id_aluno = $_SESSION['id_aluno'];
 
-$mysqli = new mysqli("localhost", "root", "", "estudomais");
-
-if ($mysqli->connect_error) {
-    die("Erro na conexão: " . $mysqli->connect_error);
-}
-
 // Considera tanto id_aluno quanto fk_id_aluno
 $sql = "SELECT id, mensagem, resposta, data_envio 
         FROM suporte 
@@ -23,7 +18,7 @@ $sql = "SELECT id, mensagem, resposta, data_envio
         ORDER BY data_envio DESC 
         LIMIT 10";
 
-$stmt = $mysqli->prepare($sql);
+$stmt = $conexao->prepare($sql);
 $stmt->bind_param("ii", $id_aluno, $id_aluno);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -36,4 +31,3 @@ while ($row = $result->fetch_assoc()) {
 
 header('Content-Type: application/json');
 echo json_encode($respostas);
-?>
