@@ -10,7 +10,6 @@ const modalDisciplinaDescricao = document.getElementById("modalDisciplinaDescric
 const editarButton = document.getElementById('editarButton');
 const excluirButton = document.getElementById('excluirButton');
 
-// Variáveis de controle de edição
 let editandoDisciplina = false;
 let disciplinaAtual = null;
 
@@ -92,20 +91,28 @@ function excluirDisciplina(id_disciplina) {
       },
       body: `id_disciplina=${encodeURIComponent(id_disciplina)}`
     })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === 'sucesso') {
-          fecharDescricaoModal();
-          carregarDisciplinas();
-          Swal.fire("Excluído!", "Disciplina removida com sucesso.", "success");
-        } else {
-          Swal.fire("Erro", data.erro || "Erro ao excluir disciplina.", "error");
-        }
-      })
-      .catch(error => {
-        console.error('Erro:', error);
-        Swal.fire("Erro", "Erro ao conectar com o servidor.", "error");
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'sucesso') {
+        fecharDescricaoModal();
+        carregarDisciplinas();
+        Swal.fire("Excluído!", "Disciplina removida com sucesso.", "success");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Erro ao excluir disciplina",
+          text: data.erro || "Erro desconhecido. Tente novamente.",
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Erro:', error);
+      Swal.fire({
+        icon: "error",
+        title: "Erro de conexão",
+        text: "Não foi possível conectar com o servidor. Verifique sua internet ou tente novamente.",
       });
+    });
   });
 }
 
@@ -124,7 +131,11 @@ function carregarDisciplinas() {
     })
     .catch(error => {
       console.error('Erro:', error);
-      Swal.fire("Erro", "Erro ao conectar com o servidor.", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Erro de conexão",
+        text: "Erro ao conectar com o servidor.",
+      });
     });
 }
 
@@ -170,7 +181,11 @@ disciplinaForm.addEventListener('submit', function (event) {
       })
       .catch(error => {
         console.error('Erro:', error);
-        Swal.fire("Erro", "Erro ao conectar com o servidor.", "error");
+        Swal.fire({
+          icon: "error",
+          title: "Erro de conexão",
+          text: "Erro ao conectar com o servidor.",
+        });
       });
   }
 });

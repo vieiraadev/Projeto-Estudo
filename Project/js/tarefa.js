@@ -1,3 +1,24 @@
+function carregarDisciplinas(idSelecionado = null) {
+  fetch('/Projeto-Planner/Project/php/get_disciplinas.php')
+    .then(res => res.json())
+    .then(disciplinas => {
+      const select = document.getElementById('fk_id_disciplina');
+      select.innerHTML = '<option value="">Selecionar disciplina (opcional)</option>';
+      disciplinas.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d.id_disciplina;
+        opt.textContent = d.nome_disciplina;
+        if (idSelecionado && d.id_disciplina == idSelecionado) {
+          opt.selected = true;
+        }
+        select.appendChild(opt);
+      });
+    })
+    .catch(err => {
+      console.error('Erro ao carregar disciplinas:', err);
+    });
+}
+
 function abrirPopup(tarefa = null) {
   const popup = document.getElementById("popup");
   popup.style.display = "flex";
@@ -13,6 +34,8 @@ function abrirPopup(tarefa = null) {
     document.querySelector('select[name="prioridade"]').value = tarefa.prioridade;
     document.querySelector('input[name="hora_validade"]').value = tarefa.hora_validade || tarefa.hora;
 
+    carregarDisciplinas(tarefa.fk_id_disciplina);
+
     document.querySelector(".criar-btn").textContent = "Atualizar tarefa";
   } else {
     document.querySelector(".popup-header h3").textContent = "Nova Tarefa";
@@ -20,6 +43,7 @@ function abrirPopup(tarefa = null) {
     document.querySelector("form").removeAttribute("data-id");
     document.querySelector("form").removeAttribute("data-dia");
     document.querySelector(".criar-btn").textContent = "Criar tarefa";
+    carregarDisciplinas();
   }
 }
 

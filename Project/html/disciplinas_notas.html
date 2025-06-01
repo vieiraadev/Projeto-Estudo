@@ -10,30 +10,12 @@
 <body>
     <aside>
         <nav>
-            <a href="/Projeto-Planner/Project/html/home.html">
-                <i class='bx bx-home'></i>
-                <span class="nav-title">Home</span>
-            </a>
-            <a href="/Projeto-Planner/Project/html/inbox.html">
-                <i class='bx bxs-inbox'></i>
-                <span class="nav-title">Caixa de Entrada</span>
-            </a>
-            <a href="/Projeto-Planner/Project/html/disciplinas.html">
-                <i class='bx bx-book'></i>
-                <span class="nav-title">Disciplinas</span>
-            </a>
-            <a href="/Projeto-Planner/Project/html/disciplinas_notas.html">
-              <i class='bx bx-bar-chart'></i>
-              <span class="nav-title">Notas</span>
-          </a>
-            <a href="/Projeto-Planner/Project/html/ia.html">
-                <i class='bx bx-brain'></i>
-                <span class="nav-title">IA Estudo+</span>
-            </a>
-            <a href="/Projeto-Planner/Project/html/suporte.html">
-                <i class='bx bx-cog'></i>
-                <span class="nav-title">Suporte</span>
-            </a>
+            <a href="/Projeto-Planner/Project/html/home.html"><i class='bx bx-home'></i><span class="nav-title">Home</span></a>
+            <a href="/Projeto-Planner/Project/html/inbox.html"><i class='bx bxs-inbox'></i><span class="nav-title">Caixa de Entrada</span></a>
+            <a href="/Projeto-Planner/Project/html/disciplinas.html"><i class='bx bx-book'></i><span class="nav-title">Disciplinas</span></a>
+            <a href="/Projeto-Planner/Project/html/disciplinas_notas.html"><i class='bx bx-bar-chart'></i><span class="nav-title">Notas</span></a>
+            <a href="/Projeto-Planner/Project/html/ia.html"><i class='bx bx-brain'></i><span class="nav-title">IA Estudo+</span></a>
+            <a href="/Projeto-Planner/Project/html/suporte.html"><i class='bx bx-cog'></i><span class="nav-title">Suporte</span></a>
         </nav>
         <div class="perfil-sidebar">
             <a href="/Projeto-Planner/Project/html/perfil.html">
@@ -42,21 +24,35 @@
             </a>
         </div>
     </aside>
+
     <div class="main-content">
         <div class="header">
-          <h1>Acesse suas notas</h1>
-          <p>Calcule seu desempenho acadêmico</p>
+            <h1>Acesse suas notas</h1>
+            <p>Calcule seu desempenho acadêmico</p>
         </div>
-      
-        <!-- Container branco com sombra -->
+
         <div class="disciplinas-container">
-          <div class="section-title">Minhas Disciplinas</div>
-          <div class="disciplines-grid" id="disciplinesGrid">
-            <!-- JS vai inserir os cards dinamicamente -->
-          </div>
+            <div class="section-title">Minhas Disciplinas</div>
+            <div class="disciplines-grid" id="disciplinesGrid">
+                <!-- JS insere os cards -->
+            </div>
         </div>
-      </div>
-      
-<script src="/Projeto-Planner/Project/js/disciplinas_notas.js"></script>
+    </div>
+
+    <!-- POPUP TAREFAS -->
+    <div class="popup" id="popup-tarefas" style="display: none;">
+        <div class="popup-box">
+            <div class="popup-header">
+                <h3 id="titulo-popup-tarefas">Tarefas</h3>
+                <span class="close-btn" onclick="document.getElementById('popup-tarefas').style.display='none'">&times;</span>
+            </div>
+            <div class="popup-content" id="popup-tarefas-conteudo">
+                <p>Carregando tarefas...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/Projeto-Planner/Project/js/disciplinas_notas.js"></script>
+    <script src="../js/atualizar_perfil.js"></script>
 </body>
 </html>
