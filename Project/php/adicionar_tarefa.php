@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once 'conexao.php'; // aqui usamos o include para conectar ao banco
+require_once 'conexao.php';
 
 if (!isset($_SESSION['id_aluno'])) {
     http_response_code(401);
@@ -27,6 +27,9 @@ $desc = $_POST['descricao'];
 $prioridade = $_POST['prioridade'];
 $hora = $_POST['hora_validade'];
 $dia = strtolower($_POST['dia']);
+
+// 🟢 Aqui está o ajuste para tratar disciplina opcional
+$idDisciplina = isset($_POST['fk_id_disciplina']) && $_POST['fk_id_disciplina'] !== "" ? (int)$_POST['fk_id_disciplina'] : null;
 
 $diasPermitidos = ['segunda', 'terca', 'quarta', 'quinta', 'sexta'];
 if (!in_array($dia, $diasPermitidos)) {
@@ -52,17 +55,18 @@ if (strlen($desc) > $limites['descricao']) {
     exit;
 }
 
-$sql = "INSERT INTO tarefa (nome_tarefa, descricao, prioridade, hora_validade, data_criacao_tarefa, dia_da_semana, fk_id_aluno)
-        VALUES (?, ?, ?, ?, NOW(), ?, ?)";
-
-$stmt = $conexao->prepare($sql);
-if (!$stmt) {
-    http_response_code(500);
-    echo json_encode(["erro" => "Erro no prepare: " . $conexao->error]);
-    exit;
+// ✅ Condicional: com ou sem disciplina
+if ($idDisciplina === null) {
+    $sql = "INSERT INTO tarefa (nome_tarefa, descricao, prioridade, hora_validade, data_criacao_tarefa, dia_da_semana, fk_id_aluno)
+            VALUES (?, ?, ?, ?, NOW(), ?, ?)";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bind_param("sssssi", $nome, $desc, $prioridade, $hora, $dia, $id_aluno);
+} else {
+    $sql = "INSERT INTO tarefa (nome_tarefa, descricao, prioridade, hora_validade, data_criacao_tarefa, dia_da_semana, fk_id_aluno, fk_id_disciplina)
+            VALUES (?, ?, ?, ?, NOW(), ?, ?, ?)";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bind_param("sssssii", $nome, $desc, $prioridade, $hora, $dia, $id_aluno, $idDisciplina);
 }
-
-$stmt->bind_param("sssssi", $nome, $desc, $prioridade, $hora, $dia, $id_aluno);
 
 if ($stmt->execute()) {
     echo json_encode([

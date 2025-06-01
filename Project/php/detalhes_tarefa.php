@@ -7,12 +7,11 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once 'conexao.php'; // Substitui a conexão direta
+require_once 'conexao.php';
 
 if ($conexao->connect_error) {
     http_response_code(500);
-    $response = ["erro" => "Erro na conexão: " . $conexao->connect_error];
-    echo json_encode($response);
+    echo json_encode(["erro" => "Erro na conexão: " . $conexao->connect_error]);
     exit;
 }
 
@@ -32,9 +31,11 @@ if (!isset($_GET['id_tarefa'])) {
 
 $id_tarefa = intval($_GET['id_tarefa']);
 
-$sql = "SELECT id_tarefa, nome_tarefa, descricao, prioridade, hora_validade, data_criacao_tarefa, dia_da_semana 
-        FROM tarefa 
-        WHERE id_tarefa = ? AND fk_id_aluno = ?";
+$sql = "SELECT t.id_tarefa, t.nome_tarefa, t.descricao, t.prioridade, t.hora_validade,
+               t.data_criacao_tarefa, t.dia_da_semana, t.fk_id_disciplina, d.nome_disciplina
+        FROM tarefa t
+        LEFT JOIN disciplina d ON t.fk_id_disciplina = d.id_disciplina
+        WHERE t.id_tarefa = ? AND t.fk_id_aluno = ?";
 
 $stmt = $conexao->prepare($sql);
 if (!$stmt) {
@@ -56,10 +57,12 @@ if ($row = $resultado->fetch_assoc()) {
         'hora' => $row['hora_validade'],
         'hora_validade' => $row['hora_validade'],
         'data_criacao_tarefa' => $row['data_criacao_tarefa'],
-        'dia' => $row['dia_da_semana']
+        'dia' => $row['dia_da_semana'],
+        'fk_id_disciplina' => $row['fk_id_disciplina'],
+        'nome_disciplina' => $row['nome_disciplina'] ?? null
     ];
 
-    if (isset($_GET['format']) && $_GET['format'] == 'json') {
+    if (isset($_GET['format']) && $_GET['format'] === 'json') {
         header('Content-Type: application/json');
         echo json_encode($tarefaData);
     } else {
@@ -69,11 +72,14 @@ if ($row = $resultado->fetch_assoc()) {
         echo "<div><strong>Horário:</strong> " . htmlspecialchars($row['hora_validade']) . "</div>";
         echo "<div><strong>Data de Criação:</strong> " . htmlspecialchars($row['data_criacao_tarefa']) . "</div>";
         echo "<div><strong>Dia:</strong> " . htmlspecialchars($row['dia_da_semana']) . "</div>";
+        if (!empty($row['nome_disciplina'])) {
+            echo "<div><strong>Disciplina:</strong> " . htmlspecialchars($row['nome_disciplina']) . "</div>";
+        }
     }
 } else {
     http_response_code(404);
     $mensagem = "Tarefa não encontrada.";
-    echo isset($_GET['format']) && $_GET['format'] == 'json' ? json_encode(["erro" => $mensagem]) : $mensagem;
+    echo isset($_GET['format']) && $_GET['format'] === 'json' ? json_encode(["erro" => $mensagem]) : $mensagem;
 }
 
 $stmt->close();

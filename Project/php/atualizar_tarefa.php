@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once 'conexao.php'; // substitui a conexão manual
+require_once 'conexao.php';
 
 if (!isset($_SESSION['id_aluno'])) {
     http_response_code(401);
@@ -13,10 +13,13 @@ if (!isset($_SESSION['id_aluno'])) {
 
 $id_aluno = $_SESSION['id_aluno'];
 
-if (!isset($_POST['id_tarefa']) || !isset($_POST['nome_tarefa']) || !isset($_POST['prioridade']) || !isset($_POST['hora_validade']) || !isset($_POST['dia'])) {
-    http_response_code(400);
-    echo json_encode(['erro' => "Dados incompletos para atualização."]);
-    exit;
+$camposObrigatorios = ['id_tarefa', 'nome_tarefa', 'prioridade', 'hora_validade', 'dia'];
+foreach ($camposObrigatorios as $campo) {
+    if (!isset($_POST[$campo])) {
+        http_response_code(400);
+        echo json_encode(['erro' => "Campo obrigatório ausente: $campo"]);
+        exit;
+    }
 }
 
 $id_tarefa = intval($_POST['id_tarefa']);
@@ -24,7 +27,9 @@ $nome_tarefa = trim($_POST['nome_tarefa']);
 $descricao = isset($_POST['descricao']) ? trim($_POST['descricao']) : '';
 $prioridade = $_POST['prioridade'];
 $hora_validade = $_POST['hora_validade'];
-$dia = $_POST['dia'];
+$dia = strtolower($_POST['dia']);
+$fk_id_disciplina = $_POST['fk_id_disciplina'] ?? null;
+$fk_id_disciplina = $fk_id_disciplina !== '' ? intval($fk_id_disciplina) : null;
 
 $diasPermitidos = ['segunda', 'terca', 'quarta', 'quinta', 'sexta'];
 if (!in_array($dia, $diasPermitidos)) {
@@ -33,7 +38,8 @@ if (!in_array($dia, $diasPermitidos)) {
     exit;
 }
 
-$sql = "UPDATE tarefa SET nome_tarefa = ?, descricao = ?, prioridade = ?, hora_validade = ?, dia_da_semana = ?
+$sql = "UPDATE tarefa 
+        SET nome_tarefa = ?, descricao = ?, prioridade = ?, hora_validade = ?, dia_da_semana = ?, fk_id_disciplina = ?
         WHERE id_tarefa = ? AND fk_id_aluno = ?";
 
 $stmt = $conexao->prepare($sql);
@@ -43,20 +49,20 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("ssssssi", $nome_tarefa, $descricao, $prioridade, $hora_validade, $dia, $id_tarefa, $id_aluno);
+$stmt->bind_param("ssssssii", $nome_tarefa, $descricao, $prioridade, $hora_validade, $dia, $fk_id_disciplina, $id_tarefa, $id_aluno);
 $resultado = $stmt->execute();
 
 if ($resultado) {
-    $tarefaAtualizada = [
+    echo json_encode([
         'id_tarefa' => $id_tarefa,
         'nome_tarefa' => $nome_tarefa,
         'descricao' => $descricao,
         'prioridade' => $prioridade,
         'hora' => $hora_validade,
         'hora_validade' => $hora_validade,
-        'dia' => $dia
-    ];
-    echo json_encode($tarefaAtualizada);
+        'dia' => $dia,
+        'fk_id_disciplina' => $fk_id_disciplina
+    ]);
 } else {
     http_response_code(500);
     echo json_encode(['erro' => "Erro ao atualizar a tarefa: " . $stmt->error]);
