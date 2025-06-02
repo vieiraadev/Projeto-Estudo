@@ -1,6 +1,6 @@
-let idRaSelecionado = null; // nome do RA selecionado
-let idRaMap = {}; // mapeia ra_nome -> id_ra
-let idRaAtivo = null; // guarda o id numérico do RA atualmente em edição
+let idRaSelecionado = null;
+let idRaMap = {};
+let idRaAtivo = null;
 const urlParams = new URLSearchParams(window.location.search);
 const idDisciplinaSelecionada = urlParams.get("id_disciplina");
 
@@ -9,7 +9,7 @@ document.getElementById("btn-adicionar-ra").addEventListener("click", () => {
     const raPeso = document.getElementById("novo-ra-peso").value;
 
     if (!raNome || !raPeso) {
-        alert("Preencha o nome e o peso do RA.");
+        Swal.fire("Atenção", "Preencha o nome e o peso do RA.", "warning");
         return;
     }
 
@@ -24,7 +24,7 @@ document.getElementById("btn-adicionar-ra").addEventListener("click", () => {
     })
     .then(res => res.json())
     .then(data => {
-        alert(data.message);
+        Swal.fire("Resultado", data.message, data.success ? "success" : "error");
         if (data.success) {
             adicionarRAnaInterface(raNome, raPeso, [], [], data.id_ra);
             document.getElementById("novo-ra-nome").value = "";
@@ -33,7 +33,7 @@ document.getElementById("btn-adicionar-ra").addEventListener("click", () => {
     })
     .catch(error => {
         console.error("Erro ao salvar RA:", error);
-        alert("Erro ao salvar RA.");
+        Swal.fire("Erro", "Erro ao salvar RA.", "error");
     });
 });
 
@@ -75,25 +75,34 @@ function adicionarRAnaInterface(nome, peso, provas = [], trabalhos = [], id_ra =
     btnRemover.textContent = "Remover";
     btnRemover.className = "btn btn-vermelho";
     btnRemover.onclick = () => {
-        if (confirm("Tem certeza que deseja remover este RA?")) {
-            fetch("/Projeto-Planner/Project/php/remover_ra.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams({ id_ra: id_ra })
-            })
-            .then(res => res.text())
-            .then(data => {
-                alert(data);
-                if (data.includes("sucesso")) {
-                    raContainer.remove();
-                    window.location.reload();
-                }
-            })
-            .catch(error => {
-                console.error("Erro ao remover RA:", error);
-                alert("Erro ao remover RA.");
-            });
-        }
+        Swal.fire({
+            title: "Tem certeza?",
+            text: "Deseja remover este RA?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sim",
+            cancelButtonText: "Cancelar"
+        }).then(result => {
+            if (result.isConfirmed) {
+                fetch("/Projeto-Planner/Project/php/remover_ra.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams({ id_ra: id_ra })
+                })
+                .then(res => res.text())
+                .then(data => {
+                    Swal.fire("Resultado", data, data.includes("sucesso") ? "success" : "error");
+                    if (data.includes("sucesso")) {
+                        raContainer.remove();
+                        window.location.reload();
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao remover RA:", error);
+                    Swal.fire("Erro", "Erro ao remover RA.", "error");
+                });
+            }
+        });
     };
 
     btnsDiv.appendChild(btnNotas);
@@ -103,7 +112,6 @@ function adicionarRAnaInterface(nome, peso, provas = [], trabalhos = [], id_ra =
     header.appendChild(btnsDiv);
     raContainer.appendChild(header);
 
-    // Mapeia nome para ID
     if (id_ra) idRaMap[nome] = id_ra;
 
     const renderNotas = (items, tipo) => {
@@ -150,47 +158,43 @@ function adicionarRAnaInterface(nome, peso, provas = [], trabalhos = [], id_ra =
     atualizarMediaFinal();
 }
 
-// === Modal Avaliações ===
-
 function abrirModalNotas(raNome) {
     document.getElementById("modal-overlay").style.display = "block";
     document.getElementById("modal-titulo").textContent = raNome;
     idRaSelecionado = raNome;
-    idRaAtivo = idRaMap[raNome]; // <-- agora SEMPRE define o id do RA que será salvo
+    idRaAtivo = idRaMap[raNome];
 
-    // LIMPA listas ANTES de popular com dados do banco!
     document.getElementById("lista-provas").innerHTML = "";
     document.getElementById("lista-trabalhos").innerHTML = "";
     document.getElementById("provas-adicionadas").style.display = "none";
     document.getElementById("trabalhos-adicionados").style.display = "none";
 
-    // Busca provas e trabalhos já cadastrados para esse RA e preenche as listas
     fetch(`/Projeto-Planner/Project/php/get_avaliacoes.php?id_ra=${idRaAtivo}`)
-      .then(res => res.json())
-      .then(data => {
-          if (data.provas && data.provas.length > 0) {
-              data.provas.forEach(p => {
-                  const li = document.createElement("li");
-                  li.textContent = `${p.nome_prova} - Nota: ${p.nota} - Peso: ${p.peso}`;
-                  li.dataset.nome = p.nome_prova;
-                  li.dataset.nota = p.nota;
-                  li.dataset.peso = p.peso;
-                  document.getElementById("lista-provas").appendChild(li);
-                  document.getElementById("provas-adicionadas").style.display = "block";
-              });
-          }
-          if (data.trabalhos && data.trabalhos.length > 0) {
-              data.trabalhos.forEach(t => {
-                  const li = document.createElement("li");
-                  li.textContent = `${t.nome_trabalho} - Nota: ${t.nota} - Peso: ${t.peso}`;
-                  li.dataset.nome = t.nome_trabalho;
-                  li.dataset.nota = t.nota;
-                  li.dataset.peso = t.peso;
-                  document.getElementById("lista-trabalhos").appendChild(li);
-                  document.getElementById("trabalhos-adicionados").style.display = "block";
-              });
-          }
-      });
+    .then(res => res.json())
+    .then(data => {
+        if (data.provas?.length) {
+            data.provas.forEach(p => {
+                const li = document.createElement("li");
+                li.textContent = `${p.nome_prova} - Nota: ${p.nota} - Peso: ${p.peso}`;
+                li.dataset.nome = p.nome_prova;
+                li.dataset.nota = p.nota;
+                li.dataset.peso = p.peso;
+                document.getElementById("lista-provas").appendChild(li);
+                document.getElementById("provas-adicionadas").style.display = "block";
+            });
+        }
+        if (data.trabalhos?.length) {
+            data.trabalhos.forEach(t => {
+                const li = document.createElement("li");
+                li.textContent = `${t.nome_trabalho} - Nota: ${t.nota} - Peso: ${t.peso}`;
+                li.dataset.nome = t.nome_trabalho;
+                li.dataset.nota = t.nota;
+                li.dataset.peso = t.peso;
+                document.getElementById("lista-trabalhos").appendChild(li);
+                document.getElementById("trabalhos-adicionados").style.display = "block";
+            });
+        }
+    });
 }
 
 document.getElementById("btn-cancelar").addEventListener("click", () => {
@@ -207,19 +211,16 @@ document.getElementById("btn-adicionar-prova").addEventListener("click", () => {
     const peso = document.getElementById("nova-prova-peso").value;
 
     if (!nome || nota === "" || peso === "") {
-        alert("Preencha todos os campos da prova.");
+        Swal.fire("Atenção", "Preencha todos os campos da prova.", "warning");
         return;
     }
 
-    // Não permite duplicadas pelo nome
     const lista = document.getElementById("lista-provas");
-    let jaExiste = false;
-    lista.querySelectorAll("li").forEach(li => {
-        if (li.dataset.nome === nome) jaExiste = true;
-    });
-    if (jaExiste) {
-        alert("Já existe uma prova com esse nome.");
-        return;
+    for (const li of lista.querySelectorAll("li")) {
+        if (li.dataset.nome === nome) {
+            Swal.fire("Erro", "Já existe uma prova com esse nome.", "error");
+            return;
+        }
     }
 
     const li = document.createElement("li");
@@ -241,19 +242,16 @@ document.getElementById("btn-adicionar-trabalho").addEventListener("click", () =
     const peso = document.getElementById("novo-trabalho-peso").value;
 
     if (!nome || nota === "" || peso === "") {
-        alert("Preencha todos os campos do trabalho.");
+        Swal.fire("Atenção", "Preencha todos os campos do trabalho.", "warning");
         return;
     }
 
-    // Não permite duplicadas pelo nome
     const lista = document.getElementById("lista-trabalhos");
-    let jaExiste = false;
-    lista.querySelectorAll("li").forEach(li => {
-        if (li.dataset.nome === nome) jaExiste = true;
-    });
-    if (jaExiste) {
-        alert("Já existe um trabalho com esse nome.");
-        return;
+    for (const li of lista.querySelectorAll("li")) {
+        if (li.dataset.nome === nome) {
+            Swal.fire("Erro", "Já existe um trabalho com esse nome.", "error");
+            return;
+        }
     }
 
     const li = document.createElement("li");
@@ -288,41 +286,31 @@ document.getElementById("btn-salvar").addEventListener("click", () => {
         });
     });
 
-    // Usa SEMPRE o id numérico global salvo ao abrir o modal
     const id_ra = idRaAtivo;
     if (!id_ra) {
-        alert("Erro: ID do RA não encontrado.");
+        Swal.fire("Erro", "ID do RA não encontrado.", "error");
         return;
     }
 
-    console.log("Provas enviadas:", provas);
-    console.log("Trabalhos enviados:", trabalhos);
-    console.log("ID RA enviado:", id_ra);
-
-
-
     fetch("/Projeto-Planner/Project/php/salvar_avaliacoes.php", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-        id_ra: idRaAtivo,
-        provas: JSON.stringify(provas),
-        trabalhos: JSON.stringify(trabalhos)
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+            id_ra: idRaAtivo,
+            provas: JSON.stringify(provas),
+            trabalhos: JSON.stringify(trabalhos)
+        })
     })
-    
-})
-
-    
     .then(res => res.json())
     .then(data => {
-        alert(data.message);
-        document.getElementById("modal-overlay").style.display = "none";
-
-        window.location.reload();
+        Swal.fire("Resultado", data.message, data.success ? "success" : "error").then(() => {
+            document.getElementById("modal-overlay").style.display = "none";
+            window.location.reload();
+        });
     })
     .catch(error => {
         console.error("Erro ao salvar avaliações:", error);
-        alert("Erro ao salvar provas/trabalhos.");
+        Swal.fire("Erro", "Erro ao salvar provas/trabalhos.", "error");
     });
 });
 
@@ -332,7 +320,7 @@ window.addEventListener("DOMContentLoaded", () => {
     .then(ras => {
         if (!Array.isArray(ras)) {
             console.error("Erro ao carregar RAs: resposta não é uma lista", ras);
-            atualizarMediaFinal(); // <-- Mesmo se der erro, garanta que rode!
+            atualizarMediaFinal();
             return;
         }
 
@@ -340,14 +328,13 @@ window.addEventListener("DOMContentLoaded", () => {
             adicionarRAnaInterface(ra.nome_ra, ra.peso_ra, ra.provas, ra.trabalhos, ra.id_ra);
         });
 
-        atualizarMediaFinal(); // <-- Depois de adicionar todos os RAs
+        atualizarMediaFinal();
     })
     .catch(error => {
         console.error("Erro ao carregar RAs:", error);
-        atualizarMediaFinal(); // <-- Garante que sempre é chamada
+        atualizarMediaFinal();
     });
 });
-
 
 function atualizarMediaFinal() {
     let somaMediasPonderadas = 0;
@@ -387,9 +374,7 @@ function atualizarMediaFinal() {
 
     fetch('/Projeto-Planner/Project/php/atualizar_nota_disciplina.php', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             id_disciplina: idDisciplinaSelecionada,
             nota: mediaFinal.toFixed(2)
