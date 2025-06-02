@@ -309,6 +309,7 @@ document.getElementById("btn-salvar").addEventListener("click", () => {
         provas: JSON.stringify(provas),
         trabalhos: JSON.stringify(trabalhos)
     })
+    
 })
 
     
@@ -316,7 +317,8 @@ document.getElementById("btn-salvar").addEventListener("click", () => {
     .then(data => {
         alert(data.message);
         document.getElementById("modal-overlay").style.display = "none";
-        // window.location.reload();
+
+        window.location.reload();
     })
     .catch(error => {
         console.error("Erro ao salvar avaliações:", error);
@@ -330,17 +332,22 @@ window.addEventListener("DOMContentLoaded", () => {
     .then(ras => {
         if (!Array.isArray(ras)) {
             console.error("Erro ao carregar RAs: resposta não é uma lista", ras);
+            atualizarMediaFinal(); // <-- Mesmo se der erro, garanta que rode!
             return;
         }
 
         ras.forEach(ra => {
             adicionarRAnaInterface(ra.nome_ra, ra.peso_ra, ra.provas, ra.trabalhos, ra.id_ra);
         });
+
+        atualizarMediaFinal(); // <-- Depois de adicionar todos os RAs
     })
     .catch(error => {
         console.error("Erro ao carregar RAs:", error);
+        atualizarMediaFinal(); // <-- Garante que sempre é chamada
     });
 });
+
 
 function atualizarMediaFinal() {
     let somaMediasPonderadas = 0;
