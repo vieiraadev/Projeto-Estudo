@@ -106,11 +106,15 @@ aside:hover .perfil-sidebar {
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 10px;
   padding: 0.5rem;
   border-radius: 12px;
   transition: all 0.3s ease;
   color: #333;
+}
+
+.perfil-sidebar a:hover {
+  background-color: transparent !important;
 }
 
 .perfil-sidebar a:hover {

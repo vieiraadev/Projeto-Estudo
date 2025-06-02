@@ -113,7 +113,7 @@ aside {
   }
   
   .perfil-sidebar a:hover {
-    background-color: #f0f8ff;
+    background-color: transparent !important;
   }
   
   .profile-photo-iniciais {
