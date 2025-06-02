@@ -427,8 +427,8 @@ aside-sidebar {
 }
 
 .perfil-sidebar {
-  margin-top: auto; /* empurra a foto para o final do aside */
-  margin-bottom: 10px; /* distância da base da sidebar */
+  margin-top: auto; 
+  margin-bottom: 10px; 
 }
 
 .perfil-sidebar .profile-photo-iniciais {
@@ -446,21 +446,46 @@ aside-sidebar {
 }
 
 .perfil-sidebar a {
-  text-decoration: none;  /* Remove o sublinhado */
-  border: none;           /* Remove qualquer borda */
-  outline: none;          /* Remove o contorno */
-  box-shadow: none;       /* Remove qualquer sombra */
+  text-decoration: none; 
+  border: none;          
+  outline: none;          
+  box-shadow: none;       
 }
 
-a {
-  text-decoration: none;  /* Remove o sublinhado */
-  border: none;           /* Remove qualquer borda */
-  outline: none;          /* Remove o contorno */
-  box-shadow: none;       /* Remove qualquer sombra */
+select#fk_id_disciplina {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  color: #333;
+  background-color: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
-/* Estilo para o botão de editar */
+
+select#fk_id_disciplina option:first-child {
+  color: #aaa;
+}
+
+select#fk_id_disciplina:focus {
+  outline: none;
+  border-color: #999;
+}
+
+
+a {
+  text-decoration: none; 
+  border: none;           
+  outline: none;         
+  box-shadow: none;       
+}
+
 .botao-acao.editar {
-  background-color:#2e86de; /* Cor de fundo (verde, por exemplo) */
+  background-color:#2e86de; 
   color: white;
   border: none;
   border-radius: 6px;
@@ -475,5 +500,5 @@ a {
 
 
 .botao-acao.editar:hover {
-  background-color: #0d63b8; /* Cor de fundo ao passar o mouse */
+  background-color: #0d63b8; 
 }
