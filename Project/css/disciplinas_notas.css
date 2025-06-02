@@ -300,6 +300,38 @@ aside {
     font-size: 1.1rem;
 }
 
+.view-tasks-btn {
+  background-color: #e6781e;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.view-tasks-btn:hover {
+  background-color: #AB6124;
+  transform: scale(1.05);
+}
+
+.view-grades-btn {
+  margin-right: 10px;
+
+}
+
+.view-grades-btn:hover {
+  background-color: #00a085;
+  transform: scale(1.05);
+}
+
+
+
 .add-discipline-btn {
     background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
     color: white;
