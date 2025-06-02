@@ -159,6 +159,13 @@ aside:hover .perfil-sidebar {
     font-size: 1rem;
 }
 
+.linha-horizontal {
+  border: none;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin-top: 10px;
+}
+
 .section-title {
     font-size: 1.4rem;
     color: #2c3e50;

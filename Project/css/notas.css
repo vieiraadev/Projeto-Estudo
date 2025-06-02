@@ -137,14 +137,20 @@ aside {
   }
 
 
-.container {
+  .container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin-left: 60px; 
+    margin-right: auto; 
 }
+
+
+
 
 .header {
     padding: 20px;
     background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 .header h1 {
@@ -338,12 +344,11 @@ aside {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
+    display: none; /* Escondido por padrão */
     justify-content: center;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
-    display: none;
 }
 
 .modal {
@@ -400,8 +405,8 @@ aside {
 .form-flex .sufixo {
     display: inline-flex;
     align-items: center;
-    height: 38px; /* igual à altura do input, ajuste se necessário */
-    padding-top: 2px; /* pequeno ajuste para alinhar com botão */
+    height: 38px; 
+    padding-top: 2px; 
     font-size: 14px;
     color: black;
   }

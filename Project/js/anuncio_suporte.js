@@ -1,123 +1,142 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('/Projeto-Planner/Project/php/anuncios_suporte.php')
-    .then(response => response.json())
-    .then(data => {
-        const container = document.querySelector('.ad-cards');
-        container.innerHTML = '';
+  const container = document.querySelector('.ad-cards');
+  const inputBusca = document.querySelector('.search-input');
+  let anunciosOriginais = [];
+  let anuncioIdParaRecusar = null;
 
-        if (Array.isArray(data)) {
-            data.forEach(anuncio => {
-                const card = document.createElement('div');
-                card.classList.add('ad-card');
+  // Buscar anúncios
+  fetch('/Projeto-Planner/Project/php/anuncios_suporte.php')
+      .then(response => response.json())
+      .then(data => {
+          if (Array.isArray(data)) {
+              anunciosOriginais = data;
+              renderizarAnuncios(anunciosOriginais);
+          } else {
+              container.innerHTML = "<p>Erro ao carregar anúncios.</p>";
+          }
+      })
+      .catch(error => {
+          console.error('Erro ao carregar anúncios:', error);
+          container.innerHTML = "<p>Erro ao carregar anúncios.</p>";
+      });
 
-                card.innerHTML = `
-                    <div class="ad-image">
-                        <img src="${anuncio.imagem}" alt="${anuncio.titulo} Logo">
-                    </div>
-                    <div class="ad-details">
-                        <h3 class="ad-title">${anuncio.titulo}</h3>
-                        <p class="ad-info"><i class='bx bx-link'></i> ${anuncio.site_empresa}</p>
-                        <p class="ad-info"><i class='bx bx-tag'></i> Categoria: ${anuncio.categoria}</p>
-                        <p class="ad-info"><i class='bx bx-time'></i> Duração: ${anuncio.duracao} dias</p>
-                        <div class="ad-actions">
-                            <a href="#" class="btn btn-edit btn-aprovar" data-id="${anuncio.id_anuncio}">Aprovar</a>
-                            <button class="btn btn-delete" data-id="1">Recusar</button>
+  // Renderizar cards
+  function renderizarAnuncios(lista) {
+      container.innerHTML = '';
 
-                        </div>
-                    </div>
-                `;
+      lista.forEach(anuncio => {
+          const card = document.createElement('div');
+          card.classList.add('ad-card');
 
-                container.appendChild(card);
-            });
+          card.innerHTML = `
+              <div class="ad-image">
+                  <img src="${anuncio.imagem}" alt="${anuncio.titulo} Logo">
+              </div>
+              <div class="ad-details">
+                  <h3 class="ad-title">${anuncio.titulo}</h3>
+                  <p class="ad-info"><i class='bx bx-link'></i> ${anuncio.site_empresa}</p>
+                  <p class="ad-info"><i class='bx bx-tag'></i> Categoria: ${anuncio.categoria}</p>
+                  <p class="ad-info"><i class='bx bx-time'></i> Duração: ${anuncio.duracao} dias</p>
+                  <div class="ad-actions">
+                      <a href="#" class="btn btn-edit btn-aprovar" data-id="${anuncio.id_anuncio}">Aprovar</a>
+                      <button class="btn btn-delete" data-id="${anuncio.id_anuncio}">Recusar</button>
+                  </div>
+              </div>
+          `;
 
-            document.querySelectorAll('.btn-aprovar').forEach(botao => {
-                botao.addEventListener('click', (e) => {
-                  e.preventDefault();
-              
-                  // Pergunta se o usuário tem certeza
-                  if (!confirm('Tem certeza que deseja aprovar este anúncio?')) {
-                    return; // Se cancelar, não faz nada
-                  }
-              
-                  const id = botao.getAttribute('data-id');
-              
-                  fetch('/Projeto-Planner/Project/php/aprovar_anuncio.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id_anuncio: parseInt(id) })
-                  })
-                  .then(res => res.json())
-                  .then(response => {
-                    if (response.sucesso) {
-                      alert('Anúncio aprovado com sucesso!');
-                      botao.closest('.ad-card').remove(); // Remove o card aprovado da tela
-                    } else {
-                      alert('Erro ao aprovar anúncio.');
-                    }
-                  })
-                  .catch(() => {
-                    alert('Erro na requisição.');
-                  });
-                });
-              });
-              let anuncioIdParaRecusar = null;
+          container.appendChild(card);
+      });
 
-              document.querySelectorAll('.btn-delete').forEach(botao => {
-                botao.addEventListener('click', (e) => {
-                  e.preventDefault();
-              
-                  anuncioIdParaRecusar = botao.closest('.ad-card').querySelector('.btn-aprovar').dataset.id;
-              
-                  document.getElementById('comentario-recusa').value = '';
-                  document.getElementById('modal-recusar').classList.remove('hidden');
-                });
-              });
-              
-              document.getElementById('cancelar-recusa').addEventListener('click', () => {
-                document.getElementById('modal-recusar').classList.add('hidden');
-                anuncioIdParaRecusar = null;
-              });
-              
-              document.getElementById('confirmar-recusa').addEventListener('click', () => {
-                const comentario = document.getElementById('comentario-recusa').value.trim();
-              
-                if (!comentario) {
-                  alert('Por favor, digite um comentário.');
-                  return;
-                }
-              
-                fetch('/Projeto-Planner/Project/php/recusar_anuncio.php', {
+      aplicarEventos();
+  }
+
+  // Filtro da barra de pesquisa
+  inputBusca.addEventListener('keyup', (e) => {
+      const termo = e.target.value.toLowerCase();
+      const filtrados = anunciosOriginais.filter(anuncio =>
+          anuncio.titulo.toLowerCase().includes(termo) ||
+          anuncio.categoria.toLowerCase().includes(termo) ||
+          anuncio.site_empresa.toLowerCase().includes(termo)
+      );
+      renderizarAnuncios(filtrados);
+  });
+
+  // Eventos Aprovar/Recusar
+  function aplicarEventos() {
+      document.querySelectorAll('.btn-aprovar').forEach(botao => {
+          botao.addEventListener('click', (e) => {
+              e.preventDefault();
+              if (!confirm('Tem certeza que deseja aprovar este anúncio?')) return;
+
+              const id = botao.getAttribute('data-id');
+
+              fetch('/Projeto-Planner/Project/php/aprovar_anuncio.php', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    id_anuncio: parseInt(anuncioIdParaRecusar),
-                    comentario: comentario
-                  })
-                })
-                .then(res => res.json())
-                .then(response => {
+                  body: JSON.stringify({ id_anuncio: parseInt(id) })
+              })
+              .then(res => res.json())
+              .then(response => {
                   if (response.sucesso) {
-                    alert('Anúncio recusado com sucesso!');
-                    document.querySelector(`.btn-aprovar[data-id="${anuncioIdParaRecusar}"]`)
-                            .closest('.ad-card').remove();
+                      alert('Anúncio aprovado com sucesso!');
+                      botao.closest('.ad-card').remove();
                   } else {
-                    alert('Erro ao recusar anúncio.');
+                      alert('Erro ao aprovar anúncio.');
                   }
-                })
-                .catch(() => {
+              })
+              .catch(() => {
                   alert('Erro na requisição.');
-                })
-                .finally(() => {
-                  document.getElementById('modal-recusar').classList.add('hidden');
-                  anuncioIdParaRecusar = null;
-                });
               });
-              
-        } else {
-            container.innerHTML = "<p>Erro ao carregar anúncios.</p>";
-        }
-    })
-    .catch(error => {
-        console.error('Erro ao carregar anúncios:', error);
-    });
+          });
+      });
+
+      document.querySelectorAll('.btn-delete').forEach(botao => {
+          botao.addEventListener('click', (e) => {
+              e.preventDefault();
+              anuncioIdParaRecusar = botao.getAttribute('data-id');
+              document.getElementById('comentario-recusa').value = '';
+              document.getElementById('modal-recusar').classList.remove('hidden');
+          });
+      });
+
+      document.getElementById('cancelar-recusa').addEventListener('click', () => {
+          document.getElementById('modal-recusar').classList.add('hidden');
+          anuncioIdParaRecusar = null;
+      });
+
+      document.getElementById('confirmar-recusa').addEventListener('click', () => {
+          const comentario = document.getElementById('comentario-recusa').value.trim();
+
+          if (!comentario) {
+              alert('Por favor, digite um comentário.');
+              return;
+          }
+
+          fetch('/Projeto-Planner/Project/php/recusar_anuncio.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                  id_anuncio: parseInt(anuncioIdParaRecusar),
+                  comentario: comentario
+              })
+          })
+          .then(res => res.json())
+          .then(response => {
+              if (response.sucesso) {
+                  alert('Anúncio recusado com sucesso!');
+                  document.querySelector(`.btn-aprovar[data-id="${anuncioIdParaRecusar}"]`)
+                          .closest('.ad-card').remove();
+              } else {
+                  alert('Erro ao recusar anúncio.');
+              }
+          })
+          .catch(() => {
+              alert('Erro na requisição.');
+          })
+          .finally(() => {
+              document.getElementById('modal-recusar').classList.add('hidden');
+              anuncioIdParaRecusar = null;
+          });
+      });
+  }
 });

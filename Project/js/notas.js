@@ -159,7 +159,7 @@ function adicionarRAnaInterface(nome, peso, provas = [], trabalhos = [], id_ra =
 }
 
 function abrirModalNotas(raNome) {
-    document.getElementById("modal-overlay").style.display = "block";
+    document.getElementById("modal-overlay").style.display = "flex";
     document.getElementById("modal-titulo").textContent = raNome;
     idRaSelecionado = raNome;
     idRaAtivo = idRaMap[raNome];

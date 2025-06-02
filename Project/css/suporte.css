@@ -183,7 +183,7 @@ h1 {
     right: 5px;
     top: 50%;
     transform: translateY(-50%);
-    background-color: #3f7a89;
+    background-color: #2e86de;
     border: none;
     border-radius: 50%;
     width: 40px;
@@ -235,7 +235,7 @@ h1 {
 
 .card-icon {
     margin: 0 auto 20px;
-    color: #2c5d6f;
+    color: #2e86de;
     font-size: 2.5rem;
 }
 
@@ -286,7 +286,7 @@ h1 {
 
 .accordion-title {
     font-size: 1.1rem;
-    color: #2c5d6f;
+    color: #2e86de;
     font-weight: bold;
 }
 
@@ -314,18 +314,6 @@ h1 {
     }
 }
 
-
-
-
-.perfil-sidebar img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 3px solid #2e86de;
-    object-fit: cover;
-  }
-  
-  
   aside-sidebar {
     display: flex;
     flex-direction: column;
@@ -342,8 +330,8 @@ h1 {
   }
   
   .perfil-sidebar {
-    margin-top: auto; /* empurra a foto para o final do aside */
-    margin-bottom: 10px; /* distância da base da sidebar */
+    margin-top: auto; 
+    margin-bottom: 10px; 
   }
   
   .perfil-sidebar .profile-photo-iniciais {
@@ -361,15 +349,15 @@ h1 {
   }
   
   .perfil-sidebar a {
-    text-decoration: none;  /* Remove o sublinhado */
-    border: none;           /* Remove qualquer borda */
-    outline: none;          /* Remove o contorno */
-    box-shadow: none;       /* Remove qualquer sombra */
+    text-decoration: none;  
+    border: none;           
+    outline: none;      
+    box-shadow: none;     
   }
   
   a {
-    text-decoration: none;  /* Remove o sublinhado */
-    border: none;           /* Remove qualquer borda */
-    outline: none;          /* Remove o contorno */
-    box-shadow: none;       /* Remove qualquer sombra */
+    text-decoration: none;  
+    border: none;        
+    outline: none;          
+    box-shadow: none;       
   }

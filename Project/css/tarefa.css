@@ -234,7 +234,7 @@ h2 {
 .btn-add {
   margin-top: 1rem;
   padding: 0.4rem 1rem;
-  background-color: #3d869c;
+  background-color: #2e86de;
   color: white;
   border: none;
   border-radius: 6px;
@@ -242,7 +242,14 @@ h2 {
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
+.btn-add:hover {
+  background-color: #1b4f72; 
+  transform: scale(1.03); 
+}
+
 
 .btn-add i {
   font-size: 1.4rem;
@@ -281,12 +288,18 @@ h2 {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  background-color: #3d869c;
+  background-color: #2e86de;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   border: none;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.next-day:hover {
+  background-color: #1b4f72; 
+  transform: scale(1.05); 
 }
 
 .popup {

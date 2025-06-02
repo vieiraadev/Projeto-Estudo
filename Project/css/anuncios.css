@@ -1,6 +1,6 @@
 :root {
-    --primary-color: #4995b7;
-    --secondary-color: #bf4c43;
+    --primary-color: #3498db;
+    --secondary-color: #ce1606;
     --light-bg: #f5f7fa;
     --text-dark: #333;
     --text-light: #666;
@@ -288,14 +288,25 @@ a {
 }
 
 .btn-edit {
-    background-color: var(--primary-color);
-    color: var(--white);
+  background-color: var(--primary-color);
+  color: var(--white);
+  transition: background-color 0.3s;
+}
+
+.btn-edit:hover {
+  background-color: #2c80b4; 
 }
 
 .btn-delete {
-    background-color: var(--secondary-color);
-    color: var(--white);
+  background-color: var(--secondary-color);
+  color: var(--white);
+  transition: background-color 0.3s;
 }
+
+.btn-delete:hover {
+  background-color: #a51204; 
+}
+
 
 .filters {
     display: flex;
@@ -352,23 +363,22 @@ a {
         justify-content: space-between;
     }
 }
-/* Fundo do modal */
+
 #editModal {
-    display: none; /* escondido por padrão */
-    position: fixed; /* fixa na tela */
-    z-index: 1000; /* fica acima de outros elementos */
+    display: none; 
+    position: fixed;
+    z-index: 1000; 
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto; /* rolagem se necessário */
-    background-color: rgba(0, 0, 0, 0.5); /* fundo preto transparente */
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.5); 
   }
   
-  /* Conteúdo do modal */
   #editModal .modal-content {
     background-color: #fff;
-    margin: 10% auto; /* distância do topo e centralizado horizontalmente */
+    margin: 10% auto; 
     padding: 20px;
     border-radius: 8px;
     width: 90%;
@@ -377,7 +387,6 @@ a {
     position: relative;
   }
   
-  /* Botão fechar (x) no canto superior direito */
   #closeModal {
     position: absolute;
     top: 12px;
@@ -391,10 +400,9 @@ a {
   }
   
   #closeModal:hover {
-    color: #e74c3c; /* vermelho ao passar o mouse */
+    color: #e74c3c;
   }
   
-  /* Inputs do formulário */
   #editForm input[type="text"],
   #editForm input[type="url"],
   #editForm input[type="number"] {
@@ -406,7 +414,6 @@ a {
     box-sizing: border-box;
   }
   
-  /* Botão salvar */
   #editForm button[type="submit"] {
     background-color: #3498db;
     color: white;

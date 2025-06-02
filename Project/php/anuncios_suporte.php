@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once 'conexao.php'; // substitui a conexão manual
+require_once 'conexao.php'; 
 
 $sql = "SELECT titulo, site_empresa, categoria, duracao, imagem_anuncio, id_anuncio FROM anuncio WHERE situacao = 'pendente'";
 $result = $conexao->query($sql);
