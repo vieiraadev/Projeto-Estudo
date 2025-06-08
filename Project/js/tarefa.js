@@ -247,10 +247,11 @@ function adicionarTarefaNoDOM(tarefa) {
   div.addEventListener("click", () => {
     const jaExiste = div.querySelector(".detalhes-tarefa");
     if (jaExiste) {
-      jaExiste.remove();
+      jaExiste.classList.remove("mostrar");
+      setTimeout(() => jaExiste.remove(), 500); // aguarda a animação antes de remover
       return;
     }
-
+  
     fetch(`/Projeto-Planner/Project/php/detalhes_tarefa.php?id_tarefa=${tarefa.id_tarefa}&dia=${tarefa.dia}`)
       .then((res) => res.text())
       .then((html) => {
@@ -258,11 +259,17 @@ function adicionarTarefaNoDOM(tarefa) {
         detalhes.className = "detalhes-tarefa";
         detalhes.innerHTML = html;
         div.appendChild(detalhes);
+  
+        // Garante que a animação aconteça
+        requestAnimationFrame(() => {
+          detalhes.classList.add("mostrar");
+        });
       })
       .catch(() => {
         showAlert("Erro ao carregar detalhes da tarefa.", "error");
       });
   });
+  
 
   document.getElementById("lista-tarefas").appendChild(div);
 }
