@@ -30,7 +30,7 @@ $stmt = $conexao->prepare("UPDATE anuncio SET situacao = 'recusado', comentario_
 $stmt->bind_param('si', $comentario, $id_anuncio);
 
 if ($stmt->execute()) {
-    echo json_encode(['sucesso' => true]);
+    echo json_encode(['sucesso' => true, 'mensagem' => 'Anúncio recusado com sucesso.']);
 } else {
     echo json_encode(['sucesso' => false, 'mensagem' => 'Erro ao atualizar o anúncio.']);
 }

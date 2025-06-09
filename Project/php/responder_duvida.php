@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 require_once 'conexao.php'; // Importa a conexão como $conexao
 
 $id_suporte = $_POST['id_suporte'] ?? null;

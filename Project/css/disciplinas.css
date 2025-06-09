@@ -700,3 +700,49 @@ aside {
 .disciplina-card {
     animation: fadeIn 0.3s ease-out;
 }
+
+.disciplina-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 20px rgba(116, 185, 255, 0.3);
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.disciplina-acoes {
+    display: flex;
+    gap: 10px;
+}
+
+.editar-btn,
+.excluir-btn {
+    padding: 6px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+}
+
+.editar-btn {
+    background-color: #3498db;
+}
+
+.editar-btn:hover {
+    background-color: #2980b9;
+}
+
+.excluir-btn {
+    background-color: #e74c3c;
+}
+
+.excluir-btn:hover {
+    background-color: #c0392b;
+}

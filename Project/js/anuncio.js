@@ -14,15 +14,32 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(res => res.json())
             .then(dados => {
                 if (dados.sucesso) {
-                    alert("" + dados.mensagem);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: dados.mensagem,
+                        confirmButtonText: 'OK',
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
                     form.reset();
                 } else {
-                    alert("Erro: " + dados.erro);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: dados.erro || 'Erro ao cadastrar o anúncio.',
+                        confirmButtonText: 'Tentar novamente'
+                    });
                 }
             })
             .catch(erro => {
                 console.error("Erro:", erro);
-                alert("Erro inesperado ao enviar o anúncio.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro de conexão!',
+                    text: 'Não foi possível conectar ao servidor.',
+                    confirmButtonText: 'Fechar'
+                });
             });
         });
     }
@@ -44,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const wrapper = document.createElement('div');
                     wrapper.style.position = 'relative';
                     wrapper.style.display = 'inline-block';
-                    
+
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.style.width = '100px';
@@ -60,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     closeBtn.style.top = '-6px';
                     closeBtn.style.right = '-6px';
                     closeBtn.style.width = '20px';
-                    closeBtn.style.lineHeight = '20px'; // centraliza verticalmente
+                    closeBtn.style.lineHeight = '20px';
                     closeBtn.style.height = '20px';
                     closeBtn.style.borderRadius = '50%';
                     closeBtn.style.backgroundColor = '#ff4d4f';

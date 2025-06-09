@@ -7,22 +7,25 @@ const disciplinasList = document.getElementById('disciplinasList');
 const descricaoModal = document.getElementById("descricaoModal");
 const modalDisciplinaNome = document.getElementById("modalDisciplinaNome");
 const modalDisciplinaDescricao = document.getElementById("modalDisciplinaDescricao");
-const editarButton = document.getElementById('editarButton');
-const excluirButton = document.getElementById('excluirButton');
 
 let editandoDisciplina = false;
 let disciplinaAtual = null;
 
-function openModal() {
+function openModal(isEdicao = false) {
   modalOverlay.classList.add('active');
-  disciplinaForm.reset();
-  editarButton.style.display = 'none';
-  excluirButton.style.display = 'none';
+
+  if (!isEdicao) {
+    disciplinaForm.reset();
+    editandoDisciplina = false;
+    disciplinaAtual = null;
+  }
 }
 
 function closeModal() {
   modalOverlay.classList.remove('active');
   disciplinaForm.reset();
+  editandoDisciplina = false;
+  disciplinaAtual = null;
 }
 
 function abrirDescricaoModal(nome, descricao, id_disciplina) {
@@ -31,15 +34,6 @@ function abrirDescricaoModal(nome, descricao, id_disciplina) {
 
   descricaoModal.style.display = "flex";
   descricaoModal.classList.add("active");
-
-  editarButton.style.display = 'inline-block';
-  excluirButton.style.display = 'inline-block';
-
-  editarButton.onclick = () => {
-    editarDisciplina(id_disciplina, nome, descricao);
-    fecharDescricaoModal();
-  };
-  excluirButton.onclick = () => excluirDisciplina(id_disciplina);
 }
 
 function fecharDescricaoModal() {
@@ -49,10 +43,36 @@ function fecharDescricaoModal() {
 function addDisciplina(nome, descricao, id_disciplina) {
   const disciplinaItem = document.createElement('div');
   disciplinaItem.className = 'disciplina-item';
-  disciplinaItem.innerHTML = `<span>${nome}</span>`;
 
-  disciplinaItem.addEventListener('click', (e) => {
+  const disciplinaNome = document.createElement('span');
+  disciplinaNome.textContent = nome;
+
+  const botoes = document.createElement('div');
+  botoes.className = 'disciplina-acoes';
+
+  const editarBtn = document.createElement('button');
+  editarBtn.className = 'editar-btn';
+  editarBtn.textContent = 'Editar';
+  editarBtn.addEventListener('click', (e) => {
     e.stopPropagation();
+    editarDisciplina(id_disciplina, nome, descricao);
+  });
+
+  const excluirBtn = document.createElement('button');
+  excluirBtn.className = 'excluir-btn';
+  excluirBtn.textContent = 'Excluir';
+  excluirBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    excluirDisciplina(id_disciplina);
+  });
+
+  botoes.appendChild(editarBtn);
+  botoes.appendChild(excluirBtn);
+
+  disciplinaItem.appendChild(disciplinaNome);
+  disciplinaItem.appendChild(botoes);
+
+  disciplinaItem.addEventListener('click', () => {
     abrirDescricaoModal(nome, descricao, id_disciplina);
   });
 
@@ -60,15 +80,14 @@ function addDisciplina(nome, descricao, id_disciplina) {
 }
 
 function editarDisciplina(id_disciplina, nome, descricao) {
-  openModal();
+  fecharDescricaoModal();
+  openModal(true);
+
   editandoDisciplina = true;
   disciplinaAtual = { id: id_disciplina, nome, descricao };
 
   document.getElementById('nome_disciplina').value = nome;
   document.getElementById('descricao_disciplina').value = descricao;
-
-  editarButton.style.display = 'inline-block';
-  excluirButton.style.display = 'inline-block';
 }
 
 function excluirDisciplina(id_disciplina) {
@@ -98,20 +117,12 @@ function excluirDisciplina(id_disciplina) {
         carregarDisciplinas();
         Swal.fire("Excluído!", "Disciplina removida com sucesso.", "success");
       } else {
-        Swal.fire({
-          icon: "error",
-          title: "Erro ao excluir disciplina",
-          text: data.erro || "Erro desconhecido. Tente novamente.",
-        });
+        Swal.fire("Erro", data.erro || "Erro ao excluir disciplina.", "error");
       }
     })
     .catch(error => {
       console.error('Erro:', error);
-      Swal.fire({
-        icon: "error",
-        title: "Erro de conexão",
-        text: "Não foi possível conectar com o servidor. Verifique sua internet ou tente novamente.",
-      });
+      Swal.fire("Erro", "Erro ao conectar com o servidor.", "error");
     });
   });
 }
@@ -131,11 +142,7 @@ function carregarDisciplinas() {
     })
     .catch(error => {
       console.error('Erro:', error);
-      Swal.fire({
-        icon: "error",
-        title: "Erro de conexão",
-        text: "Erro ao conectar com o servidor.",
-      });
+      Swal.fire("Erro", "Erro ao conectar com o servidor.", "error");
     });
 }
 
@@ -150,11 +157,10 @@ disciplinaForm.addEventListener('submit', function (event) {
       ? '/Projeto-Planner/Project/php/editar_disciplina.php'
       : '/Projeto-Planner/Project/php/salvar_disciplina.php';
 
-    const metodo = 'POST';
     const id = editandoDisciplina ? `&id_disciplina=${encodeURIComponent(disciplinaAtual?.id || '')}` : '';
 
     fetch(url, {
-      method: metodo,
+      method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -163,34 +169,25 @@ disciplinaForm.addEventListener('submit', function (event) {
       .then(response => response.json())
       .then(data => {
         if (data.status === 'sucesso') {
-          if (editandoDisciplina) {
-            fecharDescricaoModal();
-            carregarDisciplinas();
-            Swal.fire("Atualizado!", "Disciplina editada com sucesso.", "success");
-          } else {
-            const nova = data.disciplina;
-            addDisciplina(nova.nome_disciplina, nova.descricao_disciplina, nova.id_disciplina);
-            Swal.fire("Criado!", "Disciplina criada com sucesso.", "success");
-          }
+          carregarDisciplinas();
+          Swal.fire(
+            editandoDisciplina ? "Atualizado!" : "Criado!",
+            editandoDisciplina ? "Disciplina editada com sucesso." : "Disciplina criada com sucesso.",
+            "success"
+          );
           closeModal();
-          editandoDisciplina = false;
-          disciplinaAtual = null;
         } else {
           Swal.fire("Erro", data.erro || "Erro ao salvar disciplina.", "error");
         }
       })
       .catch(error => {
         console.error('Erro:', error);
-        Swal.fire({
-          icon: "error",
-          title: "Erro de conexão",
-          text: "Erro ao conectar com o servidor.",
-        });
+        Swal.fire("Erro", "Erro ao conectar com o servidor.", "error");
       });
   }
 });
 
-addDisciplinaButton.addEventListener('click', openModal);
+addDisciplinaButton.addEventListener('click', () => openModal());
 closeModalButton.addEventListener('click', closeModal);
 cancelButton.addEventListener('click', closeModal);
 

@@ -68,6 +68,7 @@ function carregarDuvidas() {
         })
         .catch(error => {
             console.error("Erro ao carregar dúvidas:", error);
+            Swal.fire("Erro!", "Falha ao carregar dúvidas.", "error");
         });
 }
 
@@ -76,12 +77,12 @@ function enviarResposta() {
     const emailAtivo = document.querySelector('.email-item.active-email');
 
     if (!resposta) {
-        alert("Digite uma resposta antes de enviar.");
+        Swal.fire("Aviso", "Digite uma resposta antes de enviar.", "warning");
         return;
     }
 
     if (!emailAtivo) {
-        alert("Selecione uma dúvida para responder.");
+        Swal.fire("Aviso", "Selecione uma dúvida para responder.", "warning");
         return;
     }
 
@@ -94,16 +95,20 @@ function enviarResposta() {
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.mensagem);
+        Swal.fire({
+            icon: data.status === 'sucesso' ? 'success' : 'error',
+            title: data.status === 'sucesso' ? 'Sucesso' : 'Erro',
+            text: data.mensagem
+        });
+
         if (data.status === 'sucesso') {
             document.getElementById('resposta-texto').value = '';
-            // Atualiza a visualização
             carregarDuvidas();
         }
     })
     .catch(error => {
         console.error('Erro ao enviar resposta:', error);
-        alert("Erro ao enviar resposta.");
+        Swal.fire("Erro!", "Erro ao enviar resposta.", "error");
     });
 }
 

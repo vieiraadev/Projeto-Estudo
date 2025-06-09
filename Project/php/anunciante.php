@@ -1,12 +1,13 @@
 <?php
 session_start(); // Inicia a sessão
+header('Content-Type: application/json'); // Adicionado
 
 require_once 'conexao.php'; // substitui a conexão manual
 
 // Verifica se o ID do anunciante está na sessão
 if (!isset($_SESSION['id_anunciante'])) {
     http_response_code(401); // Não autorizado
-    echo json_encode(["erro" => "Usuário não está autenticado."]);
+    echo json_encode(["sucesso" => false, "erro" => "Usuário não está autenticado."]);
     exit;
 }
 
@@ -18,7 +19,7 @@ $campos = ['titulo', 'site_empresa', 'categoria', 'duracao'];
 foreach ($campos as $campo) {
     if (!isset($_POST[$campo])) {
         http_response_code(400);
-        echo json_encode(["erro" => "Campo obrigatório ausente: $campo"]);
+        echo json_encode(["sucesso" => false, "erro" => "Campo obrigatório ausente: $campo"]);
         exit;
     }
 }
@@ -26,7 +27,7 @@ foreach ($campos as $campo) {
 // Verifica se a imagem foi enviada corretamente
 if (!isset($_FILES['imagem_anuncio']) || $_FILES['imagem_anuncio']['error'] !== UPLOAD_ERR_OK) {
     http_response_code(400);
-    echo json_encode(["erro" => "Erro no upload da imagem."]);
+    echo json_encode(["sucesso" => false, "erro" => "Erro no upload da imagem."]);
     exit;
 }
 
@@ -45,7 +46,7 @@ $caminhoImagem = $diretorioUpload . $nomeImagem;
 // Move o arquivo
 if (!move_uploaded_file($_FILES['imagem_anuncio']['tmp_name'], $caminhoImagem)) {
     http_response_code(500);
-    echo json_encode(["erro" => "Falha ao mover o arquivo para o destino."]);
+    echo json_encode(["sucesso" => false, "erro" => "Falha ao mover o arquivo para o destino."]);
     exit;
 }
 
@@ -64,7 +65,7 @@ $sql = "INSERT INTO anuncio (titulo, imagem_anuncio, site_empresa, categoria, du
 $stmt = $conexao->prepare($sql);
 if (!$stmt) {
     http_response_code(500);
-    echo json_encode(["erro" => "Erro no prepare: " . $conexao->error]);
+    echo json_encode(["sucesso" => false, "erro" => "Erro no prepare: " . $conexao->error]);
     exit;
 }
 
@@ -74,7 +75,7 @@ if ($stmt->execute()) {
     echo json_encode(["sucesso" => true, "mensagem" => "Anúncio cadastrado com sucesso!"]);
 } else {
     http_response_code(500);
-    echo json_encode(["erro" => "Erro ao inserir no banco: " . $stmt->error]);
+    echo json_encode(["sucesso" => false, "erro" => "Erro ao inserir no banco: " . $stmt->error]);
 }
 
 $stmt->close();
