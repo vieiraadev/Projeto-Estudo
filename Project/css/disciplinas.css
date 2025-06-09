@@ -721,14 +721,15 @@ aside {
 
 .editar-btn,
 .excluir-btn {
-    padding: 6px 16px;
+    padding: 10px 20px;
     border: none;
-    border-radius: 8px;
-    font-size: 14px;
+    border-radius: 25px;
+    font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     color: white;
+    text-decoration: none; /* previne sublinhado se tiver <a> */
 }
 
 .editar-btn {
@@ -737,6 +738,8 @@ aside {
 
 .editar-btn:hover {
     background-color: #2980b9;
+    transform: scale(1.05);
+    color: white; /* fixa a cor branca no hover */
 }
 
 .excluir-btn {
@@ -745,4 +748,6 @@ aside {
 
 .excluir-btn:hover {
     background-color: #c0392b;
+    transform: scale(1.05);
+    color: white; /* fixa a cor branca no hover */
 }
