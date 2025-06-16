@@ -8,44 +8,19 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link rel="stylesheet" href="/Projeto-Planner/Project/css/home.css">
-    <style>
-       
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 </head>
 <body>
     <aside>
         <nav>
-            <a href="/Projeto-Planner/Project/html/home.html">
-                <i class='bx bx-home'></i>
-                <span class="nav-title">Home</span>
-            </a>
-            <a href="/Projeto-Planner/Project/html/inbox.html">
-                <i class='bx bxs-inbox'></i>
-                <span class="nav-title">Caixa de Entrada</span>
-            </a>
-            <a href="/Projeto-Planner/Project/html/disciplinas.html">
-                <i class='bx bx-book'></i>
-                <span class="nav-title">Disciplinas</span>
-            </a>
-            <a href="/Projeto-Planner/Project/html/disciplinas_notas.html">
-                <i class='bx bx-bar-chart'></i>
-                <span class="nav-title">Notas</span>
-            </a>
-            <a href="/Projeto-Planner/Project/html/ia.html">
-                <i class='bx bx-brain'></i>
-                <span class="nav-title">IA Estudo+</span>
-            </a>
-            <a href="/Projeto-Planner/Project/html/suporte.html">
-                <i class='bx bx-cog'></i>
-                <span class="nav-title">Suporte</span>
-            </a>
-            <a href="/Projeto-Planner/Project/php/logout.php">
-                <i class='bx bx-log-out'></i>
-                <span class="nav-title">Sair</span>
-            </a>
+            <a href="/Projeto-Planner/Project/html/home.html"><i class='bx bx-home'></i><span class="nav-title">Home</span></a>
+            <a href="/Projeto-Planner/Project/html/inbox.html"><i class='bx bxs-inbox'></i><span class="nav-title">Caixa de Entrada</span></a>
+            <a href="/Projeto-Planner/Project/html/disciplinas.html"><i class='bx bx-book'></i><span class="nav-title">Disciplinas</span></a>
+            <a href="/Projeto-Planner/Project/html/disciplinas_notas.html"><i class='bx bx-bar-chart'></i><span class="nav-title">Notas</span></a>
+            <a href="/Projeto-Planner/Project/html/ia.html"><i class='bx bx-brain'></i><span class="nav-title">IA Estudo+</span></a>
+            <a href="/Projeto-Planner/Project/html/suporte.html"><i class='bx bx-cog'></i><span class="nav-title">Suporte</span></a>
+            <a href="/Projeto-Planner/Project/php/logout.php"><i class='bx bx-log-out'></i><span class="nav-title">Sair</span></a>
         </nav>
-
-        
         <div class="perfil-sidebar">
             <a href="/Projeto-Planner/Project/html/perfil.html">
                 <div class="profile-photo-iniciais" id="profile-initials-sidebar"></div>
@@ -53,111 +28,177 @@
             </a>
         </div>
     </aside>
-    
 
-    <main>
-      <h1 id="mensagem">Olá,...</h1>
-        
-        <div class="subheader">Tarefas semanais</div>
-        <div class="semana">
-          <div class="dia">
-            <span>Seg</span>
-            <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_segunda.html'">Ver tarefas</button>
-          </div>
-          <div class="dia">
-            <span>Ter</span>
-            <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_terca.html'">Ver tarefas</button>
-          </div>
-          
-          <div class="dia">
-            <span>Qua</span>
-            <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quarta.html'">Ver tarefas</button>
-          </div>
-          
-          <div class="dia">
-            <span>Qui</span>
-            <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quinta.html'">Ver tarefas</button>
-          </div>
-          
-          <div class="dia">
-            <span>Sex</span>
-            <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_sexta.html'">Ver tarefas</button>
-          </div>
-          
+    <main id="home-sections">
+        <div class="home-block" id="bloco-ola">
+            <h1 id="mensagem">Olá,...</h1>
+            <div class="subheader">Tarefas semanais</div>
         </div>
 
-        <!-- Cards Section -->
-        <div class="cards-section">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class='bx bx-chart'></i>
-                    </div>
-                    <h3 class="card-title">Desempenho Acadêmico</h3>
-                </div>
-                <div class="chart-container">
-                    <canvas id="performanceChart"></canvas>
-                </div>
-                <div class="subject-list">
-                    <div class="subject-item">
-                        <span class="subject-name">Matemática</span>
-                        <span class="subject-grade">8.5</span>
-                    </div>
-                    <div class="subject-item">
-                        <span class="subject-name">Português</span>
-                        <span class="subject-grade">9.2</span>
-                    </div>
-                    <div class="subject-item">
-                        <span class="subject-name">História</span>
-                        <span class="subject-grade">7.8</span>
-                    </div>
-                </div>
-                <button class="btn-view-all" onclick="window.location.href='/Projeto-Planner/Project/html/disciplinas_notas.html'" >
-                    Ver Todas as Notas
-                </button>
+        <div class="home-block" id="bloco-semana">
+            <div class="semana">
+                <div class="dia"><span>Seg</span><button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_segunda.html'">Ver tarefas</button></div>
+                <div class="dia"><span>Ter</span><button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_terca.html'">Ver tarefas</button></div>
+                <div class="dia"><span>Qua</span><button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quarta.html'">Ver tarefas</button></div>
+                <div class="dia"><span>Qui</span><button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quinta.html'">Ver tarefas</button></div>
+                <div class="dia"><span>Sex</span><button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_sexta.html'">Ver tarefas</button></div>
             </div>
-
-            <div class="card">
-              <div class="card-header">
-                  <div class="card-icon">
-                      <i class='bx bx-task'></i>
-                  </div>
-                  <h3 class="card-title">Tarefas Recentes</h3>
-              </div>
-              <div class="task-list" id="listaTarefas">
-                  <!-- Tarefas serão inseridas aqui via JS -->
-              </div>
-              <button class="btn-view-all-tarefas">
-                  Ver Todas as Tarefas
-              </button>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-                <div class="card-icon">
-                    <i class='bx bx-envelope'></i>
-                </div>
-                <h3 class="card-title">Caixa de Entrada</h3>
-            </div>
-            <div class="message-list" id="mensagens-suporte">
-                <!-- As mensagens do suporte serão inseridas aqui -->
-            </div>
-            <button class="btn-view-all-caixa">
-                Ver Todas as Mensagens
-            </button>
         </div>
+<div class="home-block" id="bloco-cards">
+            <div class="cards-section">
+                <!-- Cards superiores -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon"><i class='bx bx-chart'></i></div>
+                        <h3 class="card-title">Desempenho Acadêmico</h3>
+                    </div>
+                    <div class="chart-container"><canvas id="performanceChart"></canvas></div>
+                    <div class="subject-list">
+                        <div class="subject-item"><span class="subject-name">Matemática</span><span class="subject-grade">8.5</span></div>
+                        <div class="subject-item"><span class="subject-name">Português</span><span class="subject-grade">9.2</span></div>
+                        <div class="subject-item"><span class="subject-name">História</span><span class="subject-grade">7.8</span></div>
+                    </div>
+                    <button class="btn-view-all" onclick="window.location.href='/Projeto-Planner/Project/html/disciplinas_notas.html'">Ver Todas as Notas</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon"><i class='bx bx-task'></i></div>
+                        <h3 class="card-title">Tarefas Recentes</h3>
+                    </div>
+                    <div class="task-list" id="listaTarefas"></div>
+                    <button class="btn-view-all-tarefas">Ver Todas as Tarefas</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon"><i class='bx bx-envelope'></i></div>
+                        <h3 class="card-title">Caixa de Entrada</h3>
+                    </div>
+                    <div class="message-list" id="mensagens-suporte"></div>
+                    <button class="btn-view-all-caixa">Ver Todas as Mensagens</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="home-block" id="bloco-trello">
+            <!-- Quadro Trello completo -->
+            <div class="board" id="board">
+                <div class="column" data-column="backlog">
+                    <div class="column-header">
+                        <span class="column-title">Todas as tarefas</span>
+                        <span class="column-menu">⋯</span>
+                    </div>
+                    <div class="cards-container" id="cards-backlog">
+                        <!-- Cards serão adicionados aqui -->
+                    </div>
+                    <div class="drop-zone" id="drop-backlog">
+                        Solte aqui para mover para Backlog
+                    </div>
+                    <button class="add-card-btn" onclick="showAddCardForm('backlog')">
+                        + Adicionar tarefa
+                    </button>
+                    <div class="add-card-form" id="form-backlog">
+                        <textarea placeholder="Digite o título da tarefa..."></textarea>
+                        <div class="form-actions">
+                            <button class="btn btn-primary" onclick="addCard('backlog')">Adicionar</button>
+                            <button class="btn btn-secondary" onclick="hideAddCardForm('backlog')">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="column" data-column="todo">
+                    <div class="column-header">
+                        <span class="column-title">A Fazer (To Do)</span>
+                        <span class="column-menu">⋯</span>
+                    </div>
+                    <div class="cards-container" id="cards-todo">
+                        <!-- Cards serão adicionados aqui -->
+                    </div>
+                    <div class="drop-zone" id="drop-todo">
+                        Solte aqui para mover para A Fazer
+                    </div>
+                    <button class="add-card-btn" onclick="showAddCardForm('todo')">
+                        + Adicionar tarefa
+                    </button>
+                    <div class="add-card-form" id="form-todo">
+                        <textarea placeholder="Digite o título da tarefa..."></textarea>
+                        <div class="form-actions">
+                            <button class="btn btn-primary" onclick="addCard('todo')">Adicionar</button>
+                            <button class="btn btn-secondary" onclick="hideAddCardForm('todo')">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="column" data-column="doing">
+                    <div class="column-header">
+                        <span class="column-title">Fazendo (Doing)</span>
+                        <span class="column-menu">⋯</span>
+                    </div>
+                    <div class="cards-container" id="cards-doing">
+                        <!-- Cards serão adicionados aqui -->
+                    </div>
+                    <div class="drop-zone" id="drop-doing">
+                        Solte aqui para mover para Fazendo
+                    </div>
+                    <button class="add-card-btn" onclick="showAddCardForm('doing')">
+                        + Adicionar tarefa
+                    </button>
+                    <div class="add-card-form" id="form-doing">
+                        <textarea placeholder="Digite o título da tarefa..."></textarea>
+                        <div class="form-actions">
+                            <button class="btn btn-primary" onclick="addCard('doing')">Adicionar</button>
+                            <button class="btn btn-secondary" onclick="hideAddCardForm('doing')">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="column" data-column="done">
+                    <div class="column-header">
+                        <span class="column-title">Feito (Done)</span>
+                        <span class="column-menu">⋯</span>
+                    </div>
+                    <div class="cards-container" id="cards-done">
+                        <!-- Cards serão adicionados aqui -->
+                    </div>
+                    <div class="drop-zone" id="drop-done">
+                        Solte aqui para mover para Feito
+                    </div>
+                    <button class="add-card-btn" onclick="showAddCardForm('done')">
+                        + Adicionar tarefa
+                    </button>
+                    <div class="add-card-form" id="form-done">
+                        <textarea placeholder="Digite o título da tarefa..."></textarea>
+                        <div class="form-actions">
+                            <button class="btn btn-primary" onclick="addCard('done')">Adicionar</button>
+                            <button class="btn btn-secondary" onclick="hideAddCardForm('done')">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="header-Anuncios">Anúncios em destaque</div>
-        <div class="carousel-wrapper">
-          <div class="carousel" id="carousel">
-            <!-- Os anúncios serão carregados aqui -->
-          </div>
-      </div>
-  
+        <div class="home-block" id="bloco-anuncios">
+            <div class="header-Anuncios">Anúncios em destaque</div>
+            <div class="carousel-wrapper">
+                <div class="carousel" id="carousel"></div>
+            </div>
+        </div>
     </main>
 
-<script src="/Projeto-Planner/Project/js/home.js"></script>
-<script src="/Projeto-Planner/Project/js/atualizar_perfil.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const homeSections = document.getElementById('home-sections');
+            if (homeSections) {
+                Sortable.create(homeSections, {
+                    animation: 200,
+                    ghostClass: 'ghost-section'
+                });
+            }
+        });
+    </script>
+    <script src="/Projeto-Planner/Project/js/home.js"></script>
+    <script src="/Projeto-Planner/Project/js/atualizar_perfil.js"></script>
 </body>
 </html>
