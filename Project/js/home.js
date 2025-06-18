@@ -24,76 +24,31 @@ fetch('/Projeto-Planner/Project/php/home.php')
           document.getElementById('mensagem').textContent = 'Erro ao carregar nome.';
         });
 
-// Inicializar gráfico de desempenho
-fetch('/Projeto-Planner/Project/php/listar_disciplinas.php')
-    .then(response => response.json())
-    .then(response => {
-    if (!response.sucesso) throw new Error("Falha ao carregar disciplinas");
-    const disciplinas = response.disciplinas;
-
-    const labels = disciplinas.map(d => d.nome_disciplina);
-    const notas = disciplinas.map(d => parseFloat(d.nota));
-
-    const ctx = document.getElementById('performanceChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: labels,
-            datasets: [{
-                data: notas,
-                backgroundColor: [
-                    '#3a7ca5',
-                    '#2e86de',
-                    '#54a0ff',
-                    '#5f27cd',
-                    '#00d2d3',
-                    '#ff9ff3',
-                    '#feca57',
-                    '#48dbfb',
-                    '#1dd1a1',
-                    '#ff6b6b'
-                ],
-                borderWidth: 0,
-                borderRadius: 4,
-                spacing: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        padding: 15,
-                        font: { size: 12 }
-                    }
-                }
-            },
-            cutout: '60%'
-        }
-    });
-
-    // Atualizar a lista de disciplinas com nota (se tiver essa parte também)
-    const subjectList = document.querySelector(".subject-list");
-    if (subjectList) {
-        subjectList.innerHTML = "";
-        disciplinas.forEach(d => {
-            const div = document.createElement("div");
-            div.className = "subject-item";
-            div.innerHTML = `
-                <span class="subject-name">${d.nome_disciplina}</span>
-                <span class="subject-grade">${parseFloat(d.nota).toFixed(1)}</span>
-            `;
-            subjectList.appendChild(div);
+        fetch('/Projeto-Planner/Project/php/listar_disciplinas.php')
+        .then(response => response.json())
+        .then(response => {
+            if (!response.sucesso) throw new Error("Falha ao carregar disciplinas");
+    
+            const disciplinas = response.disciplinas;
+    
+            const subjectList = document.querySelector(".subject-list");
+            if (subjectList) {
+                subjectList.innerHTML = "";
+                disciplinas.forEach(d => {
+                    const div = document.createElement("div");
+                    div.className = "subject-item";
+                    div.innerHTML = `
+                        <span class="subject-name">${d.nome_disciplina}</span>
+                        <span class="subject-grade">${parseFloat(d.nota).toFixed(1)}</span>
+                    `;
+                    subjectList.appendChild(div);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao carregar disciplinas:', error);
         });
-    }
-
-})
-.catch(error => {
-    console.error('Erro ao carregar disciplinas:', error);
-});
-
+        
 
 document.addEventListener("DOMContentLoaded", () => {
   fetch('/Projeto-Planner/Project/php/tarefas_recentes.php')
@@ -146,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
                       <div class="message-title">${truncate(item.resposta)}</div>
                       <div class="message-date">${new Date(item.data_envio).toLocaleString()}</div>
                   </div>
-                  <span class="message-status status-read">Respondido</span>
+                  <span class="message-status status-read">Não Lida</span>
               `;
 
               container.appendChild(messageDiv);
@@ -556,4 +511,86 @@ function abrirModal(card) {
         });
     }
   });
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch('/Projeto-Planner/Project/php/carregar_tarefas_dias.php')
+      .then(response => response.json())
+      .then(data => {
+        const dias = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'];
+  
+        dias.forEach(dia => {
+          const diaDiv = document.getElementById(dia);
+          if (!diaDiv) return;
+  
+          const ul = diaDiv.querySelector('ul.resumo');
+          const contador = diaDiv.querySelector('.contador-tarefas');
+          if (!ul || !contador) return;
+  
+          ul.innerHTML = ''; // limpar lista
+          let tarefas = data[dia] || [];
+  
+          // Exibir só as 3 primeiras na <ul>
+          if (tarefas.length > 0) {
+            tarefas.slice(0, 3).forEach(tarefa => {
+              const li = document.createElement('li');
+              li.textContent = tarefa;
+              ul.appendChild(li);
+            });
+          } else {
+            const li = document.createElement('li');
+            li.textContent = 'Sem tarefas';
+            ul.appendChild(li);
+          }
+  
+          // Contador com total real de tarefas
+          contador.innerHTML = `<i class='bx bx-list-check'></i> ${tarefas.length} tarefa${tarefas.length !== 1 ? 's' : ''} no dia`;
+        });
+      })
+      .catch(error => {
+        console.error('Erro ao carregar resumo de tarefas:', error);
+      });
+  });
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch('/Projeto-Planner/Project/php/avaliacoes_recentes.php')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.querySelector(".item-list");
+        if (!container) return;
+  
+        container.innerHTML = "";
+  
+        let totalProvas = 0;
+        let totalTrabalhos = 0;
+  
+        data.forEach(item => {
+          const tipo = item.tipo === "prova" ? "P" : "T";
+          const classe = item.tipo === "prova" ? "prova-icon" : "trabalho-icon";
+          const prioridade = item.tipo === "prova" ? "priority-high" : "";
+  
+          if (item.tipo === "prova") totalProvas++;
+          else if (item.tipo === "trabalho") totalTrabalhos++;
+  
+          const itemHTML = `
+            <div class="item ${prioridade}">
+                <div class="item-icon ${classe}">${tipo}</div>
+                <div class="item-info">
+                    <div class="item-title">${item.nome} — Nota: ${parseFloat(item.nota).toFixed(2)}</div>
+                    <div class="item-date">${item.nome_disciplina} | Peso: ${item.peso}</div>
+                </div>
+            </div>
+          `;
+          container.insertAdjacentHTML("beforeend", itemHTML);
+        });
+  
+        // Atualiza os números nas estatísticas (certifique-se que esses elementos existem no HTML)
+        const provaEl = document.querySelector(".stat-number.provas");
+        const trabalhoEl = document.querySelector(".stat-number.trabalhos");
+  
+        if (provaEl) provaEl.textContent = totalProvas;
+        if (trabalhoEl) trabalhoEl.textContent = totalTrabalhos;
+      })
+      .catch(err => console.error("Erro ao carregar avaliações:", err));
+  });
+  
+  
   

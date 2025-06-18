@@ -37,11 +37,38 @@
 
         <div class="home-block" id="bloco-semana">
             <div class="semana">
-                <div class="dia"><span>Seg</span><button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_segunda.html'">Ver tarefas</button></div>
-                <div class="dia"><span>Ter</span><button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_terca.html'">Ver tarefas</button></div>
-                <div class="dia"><span>Qua</span><button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quarta.html'">Ver tarefas</button></div>
-                <div class="dia"><span>Qui</span><button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quinta.html'">Ver tarefas</button></div>
-                <div class="dia"><span>Sex</span><button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_sexta.html'">Ver tarefas</button></div>
+                <div class="dia" id="Seg">
+                    <span>Seg</span>
+                    <ul class="resumo"></ul>
+                    <div class="contador-tarefas">
+                        <i class='bx bx-list-check'></i>
+                    </div>
+                    <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_segunda.html'">Ver tarefas</button>
+                </div>
+                <div class="dia" id="Ter">
+                    <span>Ter</span>
+                    <ul class="resumo"></ul>
+                    <div class="contador-tarefas"></div> 
+                    <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_terca.html'">Ver tarefas</button>
+                </div>
+                <div class="dia" id="Qua">
+                    <span>Qua</span>
+                    <ul class="resumo"></ul>
+                    <div class="contador-tarefas"></div> 
+                    <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quarta.html'">Ver tarefas</button>
+                </div>
+                <div class="dia" id="Qui">
+                    <span>Qui</span>
+                    <ul class="resumo"></ul>
+                    <div class="contador-tarefas"></div> 
+                    <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_quinta.html'">Ver tarefas</button>
+                </div>
+                <div class="dia" id="Sex">
+                    <span>Sex</span>
+                    <ul class="resumo"></ul>
+                    <div class="contador-tarefas"></div> 
+                    <button onclick="window.location.href='/Projeto-Planner/Project/html/tarefa_sexta.html'">Ver tarefas</button>
+                </div>
             </div>
         </div>
 <div class="home-block" id="bloco-cards">
@@ -52,13 +79,12 @@
                         <div class="card-icon"><i class='bx bx-chart'></i></div>
                         <h3 class="card-title">Desempenho Acadêmico</h3>
                     </div>
-                    <div class="chart-container"><canvas id="performanceChart"></canvas></div>
                     <div class="subject-list">
                         <div class="subject-item"><span class="subject-name">Matemática</span><span class="subject-grade">8.5</span></div>
                         <div class="subject-item"><span class="subject-name">Português</span><span class="subject-grade">9.2</span></div>
                         <div class="subject-item"><span class="subject-name">História</span><span class="subject-grade">7.8</span></div>
                     </div>
-                    <button class="btn-view-all" onclick="window.location.href='/Projeto-Planner/Project/html/disciplinas_notas.html'">Ver Todas as Notas</button>
+                    <button class="btn-view-all-caixa" onclick="window.location.href='/Projeto-Planner/Project/html/disciplinas_notas.html'">Ver Todas as Notas</button>
                 </div>
 
                 <div class="card">
@@ -179,12 +205,144 @@
             </div>
         </div>
 
+        <div class="dashboard-container">
+            <div class="card-container">
+                <div class="card-header">
+                    <h2 class="main-title">Provas e atividades avaliativas recentes</h2>
+                </div>
+                
+                <div class="card-content">
+                    <div class="content-top">
+                        <div class="stats-section">
+                            <div class="section-title">Estatísticas</div>
+                            <div class="stats-grid">
+                              <div class="stat-item">
+                                <div class="stat-number trabalhos">0</div>
+                                <div class="stat-label">Trabalhos</div>
+                              </div>
+                              <div class="stat-item">
+                                <div class="stat-number provas">0</div>
+                                <div class="stat-label">Provas</div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                        
+                        <div class="recent-section">
+                            <div class="recent-items">
+                                <div class="section-title">Recentes</div>
+                                <div class="item-list">
+                                    <div class="item priority-high">
+                                        <div class="item-icon prova-icon">P</div>
+                                        <div class="item-info">
+                                            <div class="item-title">Prova 1 — Nota: 30.00</div>
+                                            <div class="item-date">RA: 1 | Peso: 20</div>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="item">
+                                        <div class="item-icon prova-icon">P</div>
+                                        <div class="item-info">
+                                            <div class="item-title">PROVA 2 — Nota: 40.00</div>
+                                            <div class="item-date">RA: 2 | Peso: 30</div>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="item">
+                                        <div class="item-icon trabalho-icon">T</div>
+                                        <div class="item-info">
+                                            <div class="item-title">trabalho 1 — Nota: 30.00</div>
+                                            <div class="item-date">RA: 1 | Peso: 50</div>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="item">
+                                        <div class="item-icon trabalho-icon">T</div>
+                                        <div class="item-info">
+                                            <div class="item-title">TRAB 1 — Nota: 100.00</div>
+                                            <div class="item-date">RA: 2 | Peso: 70</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+    
+            <div class="materials-card">
+                <div class="card-header">
+                    <h2 class="card-title">MATERIAIS E RECURSOS</h2>
+                    <div class="menu-icon">⋯</div>
+                </div>
+        
+                <button class="add-button">Adicionar material</button>
+        
+                <div class="stats-section">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">MATERIAIS</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">PENDENTES</div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="materials-section">
+                    <h3 class="section-title">Recentes</h3>
+                    <div class="materials-list">
+                        <div class="material-item">
+                            <div class="material-icon pdf">P</div>
+                            <div class="material-content">
+                                <div class="material-title">Apostila de Cálculo I</div>
+                                <div class="material-subject">Matemática</div>
+                            </div>
+                            <div class="material-status status-available"></div>
+                        </div>
+        
+                        <div class="material-item">
+                            <div class="material-icon link">L</div>
+                            <div class="material-content">
+                                <div class="material-title">Khan Academy - Química</div>
+                                <div class="material-subject">Química Orgânica</div>
+                            </div>
+                            <div class="material-status status-available"></div>
+                        </div>
+        
+                        <div class="material-item">
+                            <div class="material-icon book">B</div>
+                            <div class="material-content">
+                                <div class="material-title">História do Brasil</div>
+                                <div class="material-subject">História</div>
+                            </div>
+                            <div class="material-status status-pending"></div>
+                        </div>
+        
+                        <div class="material-item">
+                            <div class="material-icon download">D</div>
+                            <div class="material-content">
+                                <div class="material-title">Exercícios de Física</div>
+                                <div class="material-subject">Física Moderna</div>
+                            </div>
+                            <div class="material-status status-pending"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="home-block" id="bloco-anuncios">
             <div class="header-Anuncios">Anúncios em destaque</div>
             <div class="carousel-wrapper">
                 <div class="carousel" id="carousel"></div>
             </div>
         </div>
+            
     </main>
 
     <script>
