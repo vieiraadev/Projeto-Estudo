@@ -467,8 +467,8 @@ function abrirModal(card) {
     document.getElementById('tarefaModal').style.display = 'none';
   }
   
-  document.addEventListener('DOMContentLoaded', function () {
-    // Arraste dos cards superiores da home
+// 1. Inicializar arraste dos cards superiores
+document.addEventListener('DOMContentLoaded', function () {
     const cardsSection = document.querySelector('.cards-section');
     if (cardsSection) {
       Sortable.create(cardsSection, {
@@ -477,40 +477,37 @@ function abrirModal(card) {
         handle: '.card-header'
       });
     }
+  });
   
-    // Arraste e persistência dos blocos principais da home
+  // 2. Inicializar arraste e salvar layout da home com localStorage
+  document.addEventListener('DOMContentLoaded', function () {
     const homeSections = document.getElementById('home-sections');
   
     if (homeSections) {
-      // Reordena com base no que veio do banco
-      fetch('/Projeto-Planner/Project/php/obter_layout_home.php')
-        .then(res => res.json())
-        .then(savedOrder => {
-          if (Array.isArray(savedOrder)) {
-            savedOrder.forEach(id => {
-              const el = document.getElementById(id);
-              if (el) homeSections.appendChild(el);
-            });
-          }
-  
-          // Ativa drag com salvamento
-          Sortable.create(homeSections, {
-            animation: 200,
-            ghostClass: 'ghost-section',
-            onEnd: function () {
-              const order = Array.from(homeSections.children).map(el => el.id);
-              fetch('/Projeto-Planner/Project/php/salvar_layout_home.php', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ ordem: order })
-              });
-            }
+      try {
+        const ordemSalva = JSON.parse(localStorage.getItem('ordemCardsHome'));
+        if (Array.isArray(ordemSalva)) {
+          ordemSalva.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) homeSections.appendChild(el);
           });
-        });
+        }
+      } catch (e) {
+        console.warn("Erro ao carregar ordem:", e);
+      }
+  
+      Sortable.create(homeSections, {
+        animation: 200,
+        ghostClass: 'ghost-section',
+        onEnd: function () {
+          const ordemAtual = Array.from(homeSections.children).map(el => el.id);
+          localStorage.setItem('ordemCardsHome', JSON.stringify(ordemAtual));
+        }
+      });
     }
   });
+  
+  
   document.addEventListener("DOMContentLoaded", function () {
     fetch('/Projeto-Planner/Project/php/carregar_tarefas_dias.php')
       .then(response => response.json())
@@ -575,7 +572,7 @@ function abrirModal(card) {
                 <div class="item-icon ${classe}">${tipo}</div>
                 <div class="item-info">
                     <div class="item-title">${item.nome} — Nota: ${parseFloat(item.nota).toFixed(2)}</div>
-                    <div class="item-date">${item.nome_disciplina} | Peso: ${item.peso}</div>
+                    <div class="item-date">RA${item.fk_id_ra} | Peso: ${item.peso}</div>
                 </div>
             </div>
           `;
